@@ -1,0 +1,10 @@
+POST http://localhost:3000/client
+Content-Type: application/json
+
+{
+    "mail":"ga@gmail.com",
+    "mdp":"mdpprome",
+    "nom":"d",
+    "prenom":"d",
+    "dateInscription": ""
+}
