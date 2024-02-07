@@ -1,20 +1,36 @@
-const {inscription} = require("../service/clientService");
+const { inscription,connexion } = require("../service/clientService");
+const { getError } = require("../helper/validation");
 
 async function register( req , res ) {
     try{
-        await inscription(req.body);
-        res.status(200).send({
-            "message":"User added",
-            "data": {}
+        const registre = await inscription(req.body);
+        res.status(registre.status).send({
+            "message": registre.message,
+            "data": registre.data
         });
     }catch(error){
-        res.send({
-            "message": error,
-            "data": {}
+        res.status(getError(error).status).send({
+            "message": getError(error).message,
+            "data": req.body
         });
     }
 }
 
+async function login(req, res) {
+    try{
+        const log = await connexion(req.body);
+        res.status(log.status).send({
+            "message": log.message,
+            "data": log.data
+        });
+    }catch(error){
+        res.status(getError(error).status).send({
+            "message": getError(error).message,
+            "data": req.body
+        });
+    }
+}
 module.exports = {
-    register
+    register,
+    login
 }

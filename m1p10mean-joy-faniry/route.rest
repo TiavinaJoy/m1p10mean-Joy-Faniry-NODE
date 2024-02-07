@@ -2,9 +2,26 @@ POST http://localhost:3000/client
 Content-Type: application/json
 
 {
-    "mail":"ga@gmail.com",
-    "mdp":"mdpprome",
-    "nom":"d",
-    "prenom":"d",
-    "dateInscription": ""
+    "mail":"tet@gmail.com",
+    "mdp":"Mpp1!lkm",
+    "nom":"Tete",
+    "prenom":"Tete"
+}
+
+###
+POST http://localhost:3000/client/login
+Content-Type: application/json
+
+{
+    "mail":"faaagmail.com",
+    "mdp":"ddddd1!D"
+}
+
+###
+POST http://localhost:3000/personnel
+Content-Type: application/json
+
+{
+    "mail":"felana@gmail.com",
+    "mdp":"Mpp1!lkm"
 }

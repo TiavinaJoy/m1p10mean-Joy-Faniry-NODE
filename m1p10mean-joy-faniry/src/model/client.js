@@ -1,9 +1,7 @@
-const { Timestamp } = require('mongodb');
-const mongoose = require('mongoose');
+const { connection,mongoose } = require("../configuration/database");
 const uniqueValidator = require('mongoose-unique-validator');
-/*Déclaration du schéma du client avec validation*/
 
-var message = "";
+connection();
 const clientSchema = new mongoose.Schema({
   mail: {
     type: String,
@@ -13,34 +11,42 @@ const clientSchema = new mongoose.Schema({
     lowercase: [true,"L'email ne doit pas contenir de caractère en majuscule"],
     validate: {
         validator: function(email) {
-           if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            message = "Ce n'est pas un email valide.";
-           }
+          return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
         },
-        message: message 
+        message:"Ce n'est pas un email valide."
     }
   },
   mdp: {
     type: String,
     required: [true,"Mot de passe obligatoire."],
     minLength:[8,"Le mot de passe doit contenir 8 lettres au minimum."],
-    validate: {
-        validator: function(mdp) {
-            if(!/[A-Z]/.test(mdp)){
-              message = "Le mot de passe doit contenir un caractère majuscule.";
-            }
-            else if(!/[a-z]/.test(mdp)){
-              message = 'Le mot de passe doit contenir des caractères minuscule.';
-            }  
-            else if(!/[!@#$%^&*()_+/{}\[\]:;<>,.?\\-]/.test(mdp)){
-              message = 'Le mot de passe doit contenir des caractères spéciaux';
-            }  
-            else if(!/\d/.test(mdp)){
-              message = 'Le mot de passe doit contenir des chiffres.';
-            } 
+    validate: 
+    [
+      {
+        validator: function (mdp) {
+            return /[A-Z]/.test(mdp)
+          },
+          message: 'Le mot de passe doit contenir un caractère majuscule.'
+      },
+      {
+        validator: function (mdp) {
+          return /[a-z]/.test(mdp)
         },
-        message: message 
-    }
+        message: 'Le mot de passe doit contenir des caractères minuscule.'
+      },
+      {
+        validator: function (mdp) {
+            return /[!@#$%^&*()_+/{}\[\]:;<>,.?\\-]/.test(mdp)
+          },
+          message: 'Le mot de passe doit contenir des caractères spéciaux.'
+      },
+      {
+        validator: function (mdp) {
+          return /\d/.test(mdp)
+        },
+        message: 'Le mot de passe doit contenir des chiffres.'
+      }
+    ]
   },
   nom: {
     type: String,
@@ -52,13 +58,17 @@ const clientSchema = new mongoose.Schema({
   },
   dateInscription: {
     type: Date,
+    default: new Date()
   },
+  statut: {
+    type:Boolean,
+    default: 0
+  }
 });
 
 clientSchema.set('timestamps',true);
-clientSchema.plugin(uniqueValidator);
+clientSchema.plugin(uniqueValidator, {message: "L'email {VALUE} existe déjà. "});
 
 const client = mongoose.model('client', clientSchema,'client');
-//client.validateSync();
 
 module.exports = client;
