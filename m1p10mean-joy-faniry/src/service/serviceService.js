@@ -16,6 +16,25 @@ async function listeService() {
      } 
 }
 
+async function createService(data) {
+    const retour = {};
+    try{
+        const newService = new service(data);
+        newService.statut = 1;
+        await newService.save();
+        retour.status = 201;
+        retour.message = "Service créé.";
+        retour.data = {
+            service: newService
+        };
+        return retour;
+    }catch(error){
+       throw error;
+    }finally{
+        mongoose.connection.close
+    }    
+}
+
 module.exports = {
-    listeService
+    listeService, createService
 };
