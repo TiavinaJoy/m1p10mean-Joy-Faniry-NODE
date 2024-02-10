@@ -1,4 +1,5 @@
 const { connection,mongoose } = require("../configuration/database");
+const serviceCategorie = require("./serviceCategorie");
 
 connection();
 const serviceSchema = new mongoose.Schema({
@@ -27,8 +28,8 @@ const serviceSchema = new mongoose.Schema({
         required: [true,"La description est obligatoire."]
     },
     categorie: {
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: 'serviceCategorie'
+        type: serviceCategorie.schema,
+        required: true
     }
 });
 
@@ -36,4 +37,4 @@ serviceSchema.set('timestamps',true);
 
 const service = mongoose.model('service', serviceSchema,'service');
 
-module.exports = service;
+module.exports =  service;

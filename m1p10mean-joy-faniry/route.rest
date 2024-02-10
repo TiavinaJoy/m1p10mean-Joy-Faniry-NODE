@@ -3,9 +3,9 @@ Content-Type: application/json
 
 {
     "mail":"tet@gmail.com",
-    "mdp":"Mpp1!lkm",
-    "nom":"Tete",
-    "prenom":"Tete"
+    "mdp":"Mdpprom13/",
+    "nom":"Test",
+    "prenom":"Test"
 }
 
 ###
@@ -13,8 +13,8 @@ POST http://localhost:3000/client/login
 Content-Type: application/json
 
 {
-    "mail":"faaagmail.com",
-    "mdp":"ddddd1!D"
+    "mail":"test@gmail.com",
+    "mdp":"Mdpprom13*"
 }
 
 ###
@@ -22,6 +22,16 @@ POST http://localhost:3000/personnel
 Content-Type: application/json
 
 {
-    "mail":"felana@gmail.com",
-    "mdp":"Mpp1!lkm"
+    "mail":"manager@gmail.com",
+    "mdp":"Mdpprom13!"
 }
+
+
+###
+GET http://localhost:3000/service
+Content-Type: application/json
+
+###
+GET http://localhost:3000/clientTest
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiZGF0ZUV4cGlyYXRpb24iOiIyMDI0LTAyLTExVDE0OjM1OjE2LjU3MVoiLCJ0eXBlIjoiY2xpZW50IiwiaWF0IjoxNzA3NDAyOTE2LCJleHAiOjE3MDc2NjIxMTZ9.dqvf38IdSh4Tu8CBto9td3SlBoiSkAT-yvLTLcNY8hc

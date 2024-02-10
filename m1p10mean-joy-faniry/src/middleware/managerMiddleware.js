@@ -1,6 +1,6 @@
 const {verifyAccessToken} = require("../service/tokenService");
 
-function authenticateClientToken (req, res, next) {
+function authenticateManagerToken(req, res, next) {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
 
@@ -12,8 +12,8 @@ function authenticateClientToken (req, res, next) {
     }
   
     const result = verifyAccessToken(token);
-
-    if(((result.data.type === 'manager' || result.data.type === 'employe') && !result.statut) || !result.statut || result.data.type !== 'client')
+    
+    if(((result.data.type === 'employe' || result.data.type === 'client') && !result.statut) || !result.statut || result.data.type !== 'manager')
     {
         return res.status(403).send({
             data:"",
@@ -26,5 +26,5 @@ function authenticateClientToken (req, res, next) {
 }
 
 module.exports = {
-    authenticateClientToken
+    authenticateManagerToken
 }

@@ -1,4 +1,6 @@
 const { connection,mongoose } = require("../configuration/database");
+const service = require("./service");
+const rolePersonnel = require("./rolePersonnel");
 
 connection();
 const personnelSchema = new mongoose.Schema({
@@ -64,17 +66,17 @@ const personnelSchema = new mongoose.Schema({
         type: Date
     },
     role: {
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: 'rolePersonnel'
+      type: rolePersonnel.schema,
+      required: true
     },
     salaire: {
         type: Number,
         required: [true,"Le salaire est obligatoire."]
     },
-    categorieService: {
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: 'service'
-    }
+    service:{
+      type: [service.schema],
+      required: true
+    } 
 });
 
 personnelSchema.set('timestamps',true);

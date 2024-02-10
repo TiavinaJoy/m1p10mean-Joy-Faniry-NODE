@@ -1,6 +1,6 @@
 const client = require("../model/client");
-const { validateEmail } = require("../helper/validation");
-const { generateAccessToken  } = require("../model/token");
+const { validateEmail,isEmpty } = require("../helper/validation");
+const { generateAccessToken  } = require("./tokenService");
 const { mongoose } = require("../configuration/database");
 const bcrypt = require("bcrypt");
 
@@ -22,7 +22,10 @@ async function inscription(data) {
         const token = generateAccessToken(data,'client');
         retour.status = 201;
         retour.message = "Client inscrit";
-        retour.data = token;
+        retour.data = {
+            token: token,
+            user: newClient
+        };
         return retour;
     }catch(error){
        throw error;
@@ -44,20 +47,35 @@ async function connexion(data) {
             retour.data = data;
             return retour;
         }
+        if(isEmpty(mdp)) {
+            retour.status = 400;
+            retour.message = "Mot de passe obligatoire.";
+            retour.data = data;
+            return retour;
+        }
 
         const util = await client.findOne({ mail: email });
-        const compareMdp = await bcrypt.compare(mdp,util.mdp);
-        if(util && compareMdp) {
-            retour.status = 200;
-            retour.message = "Connecté";
-            retour.data = {
-                token: generateAccessToken(data,'client'),
-                client: util
-            }
-        } else {
-            retour.status = 401;
-            retour.message = "Email ou mot de passe incorrect.";
+
+        if(util === null) {
+            retour.status = 400;
+            retour.message = "Utilisateur inexistant.";
             retour.data = data;
+        }else if (util){
+            const compareMdp = await bcrypt.compare(mdp,util.mdp);
+            
+            if(compareMdp) {
+                retour.status = 200;
+                retour.message = "Connecté";
+                retour.data = {
+                    token: generateAccessToken(data,'client'),
+                    user: util,
+                    type: 'client'
+                }
+            }else {
+                retour.status = 400;
+                retour.message = "Email ou mot de passe incorrect.";
+                retour.data = data;
+            }
         }
 
         return retour;

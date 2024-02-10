@@ -15,7 +15,7 @@ function generateAccessToken(user,type) {
       type: type
     };
     const secret = process.env.SECRET_KEY;
-console.log(payload)
+
     const exp = process.env.EXPIRATION + 'd';
 
     const options = { expiresIn:  exp};

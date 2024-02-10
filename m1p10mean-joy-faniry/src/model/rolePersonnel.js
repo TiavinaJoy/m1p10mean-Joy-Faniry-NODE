@@ -12,4 +12,4 @@ rolePersonnelSchema.set('timestamps',true);
 
 const rolePersonnel = mongoose.model('rolePersonnel', rolePersonnelSchema,'rolePersonnel');
 
-module.exports = rolePersonnel;
+module.exports =  rolePersonnel;
