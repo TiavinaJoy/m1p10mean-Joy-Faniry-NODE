@@ -18,13 +18,13 @@ async function getServices( req , res ) {
     }
 }
 
-async function createService(req,res) {
+async function addService(req , res) {
     try {
         const service = await createService(req.body);
         res.status(service.status).send({
             "status": service.status,
-            "message": serviceservice.message,
-            "data": registre.data
+            "message": service.message,
+            "data": service.data
         });
     }catch(error){
         res.status(getError(error).status).send({
@@ -37,5 +37,5 @@ async function createService(req,res) {
 
 
 module.exports = {
-    getServices, createService
+    getServices, addService
 }
