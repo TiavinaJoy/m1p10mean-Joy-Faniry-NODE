@@ -12,7 +12,7 @@ async function connexion(data) {
         const mdp = data.mdp;
         const email = data.mail;
 
-        if(!validateEmail(email)) {
+        if(validateEmail(email)) {
             retour.status = 400;
             retour.message = "Email invalide.";
             retour.data = data;
@@ -41,7 +41,7 @@ async function connexion(data) {
             const compareMdpManager = await bcrypt.compare(mdp,manager.mdp);
             employe.type = 'employe';
             manager.type = 'manager';
-            if(compareMdpEmp) {
+            if(!compareMdpEmp) {
                 retour.status = 200;
                 retour.message = "Connecté";
                 retour.data = {
