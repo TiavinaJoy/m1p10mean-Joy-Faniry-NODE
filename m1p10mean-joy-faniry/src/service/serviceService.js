@@ -45,6 +45,34 @@ async function createService(data) {
     }    
 }
 
+async function modifyService(data){ /* hoe ilay id anle data ihany no alaina hanaovana filtre */
+    const retour = {};
+    try {
+        const filtre = {_id: new ObjectId (data.id)};
+        const newData = {$set:{
+            nom: data.nom,
+            prix: data.prix,
+            commission: data.commission,
+            duree: data.duree,
+            // statut: data.statut, /* misy statut ve ???? */
+            description: data.description,
+            categorie: data.categorie
+        }}
+        const updateService = await service.updateOne(filtre, newData);
+        retour.status = 200;
+        retour.message = "Service mis à jour.";
+        retour.data = {
+            service: updateService
+        };
+        return retour
+    } catch (error) {
+        console.log(error)
+        throw error;
+    }finally{
+        mongoose.connection.close
+    }
+}
+
 module.exports = {
-    listeService, createService
+    listeService, createService, modifyService
 };

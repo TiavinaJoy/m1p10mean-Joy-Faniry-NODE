@@ -9,5 +9,6 @@ router.get('/service', serviceController.getServices);
 
 router.post('/service', /* authenticateManagerToken, */ serviceController.addService)
 
+router.put('/service', /* authenticateManagerToken, */ serviceController.updateService)
 
 module.exports = router;

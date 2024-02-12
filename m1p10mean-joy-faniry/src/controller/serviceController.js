@@ -1,4 +1,4 @@
-const { listeService, createService } = require("../service/serviceService");
+const { listeService, createService, modifyService} = require("../service/serviceService");
 const { getError } = require("../helper/error");
 
 async function getServices( req , res ) {
@@ -35,7 +35,24 @@ async function addService(req , res) {
     }
 }
 
+async function updateService(req, res) {
+    try {
+        const service = await modifyService(req.body);
+        res.status(service.status).send({
+            "status": service.status,
+            "message": service.message,
+            "data": service.data
+        });
+    }catch(error){
+        res.status(getError(error).status).send({
+            "status": getError(error).status,
+            "message": getError(error).message,
+            "data": req.body
+        });  
+    }
+}
+
 
 module.exports = {
-    getServices, addService
+    getServices, addService, updateService
 }
