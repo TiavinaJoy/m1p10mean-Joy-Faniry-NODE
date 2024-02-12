@@ -55,7 +55,7 @@ async function updateService(req, res) {
 async function changeServiceStatut(req, res) {
     try {
         const data = req.query;
-        const service = await modifierStatutService(req.query); 
+        const service = await modifierStatutService(req.params, req.query); 
         res.status(service.status).send({
             "status": service.status,
             "message": service.message,
@@ -69,6 +69,10 @@ async function changeServiceStatut(req, res) {
         }); 
     }
 }
+
+async function getServiceDetail(req,res) {
+    
+}
 module.exports = {
-    getServices, addService, updateService, changeServiceStatut
+    getServices, addService, updateService, changeServiceStatut, getServiceDetail
 }

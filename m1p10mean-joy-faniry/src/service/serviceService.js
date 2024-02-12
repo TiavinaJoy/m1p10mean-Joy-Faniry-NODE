@@ -23,7 +23,6 @@ async function createService(data) {
     const retour = {};
     try{
         const newService = new service(data);
-        // Mila alaina any am base ilay categorie
         const categorieId = data.categorie
         const categorie = await findById(categorieId);
         if(categorie.length != 1) throw new Error('Categorie introuvable.');
@@ -46,7 +45,7 @@ async function createService(data) {
     }    
 }
 
-async function modifyService(params, data){ /*  ilay id anle data ihany no alaina hanaovana filtre */
+async function modifyService(params, data){
     const retour = data;
     try {
         const filtre = {_id: new ObjectId (params.serviceId)};
@@ -58,7 +57,6 @@ async function modifyService(params, data){ /*  ilay id anle data ihany no alain
             statut: data.statut ?? 1, /* misy statut ve ???? */
             description: data.description,
             categorie: await findById(data.categorie)
-            // id no raisina amle categorie fa ts objet
         }}
         const updateService = await service.updateOne(filtre, newData);
         retour.status = 200;
@@ -74,9 +72,9 @@ async function modifyService(params, data){ /*  ilay id anle data ihany no alain
     }
 }
 
-async function modifierStatutService(data){
+async function modifierStatutService(params, query){
     try {
-        const updateService = await service.updateOne({_id: new ObjectId(data.id)}, {$set:{statut: data.statut}});
+        const updateService = await service.updateOne({_id: new ObjectId(params.id)}, {$set:{statut: query.statut}});
         return {
             status : 200,
             message : "Service mis à jour.",
