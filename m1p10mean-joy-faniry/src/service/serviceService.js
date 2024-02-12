@@ -46,10 +46,10 @@ async function createService(data) {
     }    
 }
 
-async function modifyService(data){ /*  ilay id anle data ihany no alaina hanaovana filtre */
+async function modifyService(params, data){ /*  ilay id anle data ihany no alaina hanaovana filtre */
     const retour = data;
     try {
-        const filtre = {_id: new ObjectId (data.id)};
+        const filtre = {_id: new ObjectId (params.serviceId)};
         const newData = {$set:{
             nom: data.nom,
             prix: data.prix,

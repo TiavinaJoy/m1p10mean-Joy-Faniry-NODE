@@ -37,7 +37,7 @@ async function addService(req , res) {
 
 async function updateService(req, res) {
     try {
-        const service = await modifyService(req.body);
+        const service = await modifyService(req.params,req.body);
         res.status(service.status).send({
             "status": service.status,
             "message": service.message,
