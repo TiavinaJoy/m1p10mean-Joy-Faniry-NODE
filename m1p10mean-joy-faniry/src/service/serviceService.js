@@ -88,6 +88,31 @@ async function modifierStatutService(params, query){
         mongoose.connection.close
     }
 }
+
+async function detailService(params){
+    const retour = {};
+    try {
+        const id = params;
+        const findService = await service.find({_id: new ObjectId(params.serviceId)});
+        if(findService.length == 1) {
+            retour.status = 200;
+            retour.message = "";
+            retour.data = {
+                service: findService[0]
+            };
+            return retour;
+        };
+        throw new Error('Service introuvable.')
+    } catch (error) {
+        throw error;
+    }finally{
+        mongoose.connection.close
+    } 
+}
+
+
 module.exports = {
-    listeService, createService, modifyService, modifierStatutService
+    listeService, createService, modifyService, modifierStatutService, detailService
+
+
 };

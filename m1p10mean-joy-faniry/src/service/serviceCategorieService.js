@@ -32,7 +32,6 @@ async function findById(id){
 }
 
 
-
 module.exports = {
     listeCategorie, findById
 };
