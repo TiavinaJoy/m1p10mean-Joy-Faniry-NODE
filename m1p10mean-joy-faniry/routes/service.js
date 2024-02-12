@@ -11,4 +11,6 @@ router.post('/service', /* authenticateManagerToken, */ serviceController.addSer
 
 router.put('/service', /* authenticateManagerToken, */ serviceController.updateService)
 
+router.put('/service/statut', /* authenticateManagerToken, */ serviceController.changeServiceStatut)
+
 module.exports = router;

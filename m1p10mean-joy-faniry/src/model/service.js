@@ -20,8 +20,8 @@ const serviceSchema = new mongoose.Schema({
         required: [true,"La durée est obligatoire."]
     },
     statut: {
-        type: String,
-        required: [true,"Le statut est obligatoire."]
+        type: Boolean,
+        default:1
     },
     description: {
         type: String,

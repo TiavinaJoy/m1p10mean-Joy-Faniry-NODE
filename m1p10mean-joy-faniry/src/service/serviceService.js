@@ -1,6 +1,7 @@
 const service = require("../model/service");
 const serviceCategorie = require("../model/serviceCategorie");
 const { mongoose } = require("../configuration/database");
+const {findById} = require("./serviceCategorieService");
 const { ObjectId } = require("mongodb");
 
 async function listeService() {
@@ -24,7 +25,7 @@ async function createService(data) {
         const newService = new service(data);
         // Mila alaina any am base ilay categorie
         const categorieId = data.categorie
-        const categorie = await serviceCategorie.find(new ObjectId(categorieId));
+        const categorie = await findById(categorieId);
         if(categorie.length != 1) throw new Error('Categorie introuvable.');
         newService.categorie = categorie[0];
         console.log(categorie)
@@ -45,8 +46,8 @@ async function createService(data) {
     }    
 }
 
-async function modifyService(data){ /* hoe ilay id anle data ihany no alaina hanaovana filtre */
-    const retour = {};
+async function modifyService(data){ /*  ilay id anle data ihany no alaina hanaovana filtre */
+    const retour = data;
     try {
         const filtre = {_id: new ObjectId (data.id)};
         const newData = {$set:{
@@ -54,9 +55,10 @@ async function modifyService(data){ /* hoe ilay id anle data ihany no alaina han
             prix: data.prix,
             commission: data.commission,
             duree: data.duree,
-            // statut: data.statut, /* misy statut ve ???? */
+            statut: data.statut ?? 1, /* misy statut ve ???? */
             description: data.description,
-            categorie: data.categorie
+            categorie: await findById(data.categorie)
+            // id no raisina amle categorie fa ts objet
         }}
         const updateService = await service.updateOne(filtre, newData);
         retour.status = 200;
@@ -66,13 +68,28 @@ async function modifyService(data){ /* hoe ilay id anle data ihany no alaina han
         };
         return retour
     } catch (error) {
-        console.log(error)
         throw error;
     }finally{
         mongoose.connection.close
     }
 }
 
+async function modifierStatutService(data){
+    try {
+        const updateService = await service.updateOne({_id: new ObjectId(data.id)}, {$set:{statut: data.statut}});
+        return {
+            status : 200,
+            message : "Service mis à jour.",
+            data:{
+                service:updateService
+            }
+        }
+    } catch (error) {
+        throw error;   
+    }finally{
+        mongoose.connection.close
+    }
+}
 module.exports = {
-    listeService, createService, modifyService
+    listeService, createService, modifyService, modifierStatutService
 };
