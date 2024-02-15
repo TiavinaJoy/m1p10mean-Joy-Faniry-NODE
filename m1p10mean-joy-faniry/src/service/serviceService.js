@@ -74,7 +74,7 @@ async function modifyService(params, data){
 
 async function modifierStatutService(params, query){
     try {
-        const updateService = await service.updateOne({_id: new ObjectId(params.id)}, {$set:{statut: query.statut}});
+        const updateService = await service.updateOne({_id: new ObjectId(params.serviceId)}, {$set:{statut: query.statut}});
         return {
             status : 200,
             message : "Service mis à jour.",
