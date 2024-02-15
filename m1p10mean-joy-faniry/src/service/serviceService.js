@@ -25,8 +25,7 @@ async function createService(data) {
         const newService = new service(data);
         const categorieId = data.categorie
         const categorie = await findById(categorieId);
-        if(categorie.length != 1) throw new Error('Categorie introuvable.');
-        newService.categorie = categorie[0];
+        newService.categorie = categorie;
         console.log(categorie)
         console.log(newService);
         newService.statut = 1;
