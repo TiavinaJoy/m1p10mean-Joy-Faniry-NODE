@@ -6,7 +6,7 @@ function authenticateEmployeToken (req, res, next) {
 
     if (!token) {
         return res.status(401).send({
-            data: req.body,
+            data: "",
             message:"Access non autorisé."
         });
     }

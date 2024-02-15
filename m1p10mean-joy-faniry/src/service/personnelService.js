@@ -6,6 +6,40 @@ const bcrypt = require("bcrypt");
 
 
 /*Connexion personnel */
+async function loginPersonnel(data) {
+    const retour = {}
+    try{
+        const personne = await personnel.findOne({ mail: data.mail});
+        if(personne === null) {
+            retour.status = 400;
+            retour.message = "Email ou mot de passe incorrect";
+            retour.data = data;
+        }else {
+            const compareMdpEmp= await bcrypt.compare(data.mdp,personne.mdp);
+            if(compareMdpEmp){
+                personne.mdp ="";
+                personne.type = personne.role.intitule;
+                retour.status = 200;
+                retour.message = "Connecté";
+                retour.data = {
+                    token: generateAccessToken(data,personne.role.intitule),
+                    user: personne,
+                    type: personne.role.intitule
+                }
+            } else {
+                retour.status = 401;
+                retour.message = "Email ou mot de passe incorrect.";
+                retour.data = {};  
+             }
+        }
+        return retour;
+    }catch(error) {
+        throw error;
+    }finally{
+        mongoose.connection.close;
+    }
+}
+
 async function connexion(data) {
     const retour = {}
     try{
@@ -41,7 +75,7 @@ async function connexion(data) {
             const compareMdpManager = await bcrypt.compare(mdp,manager.mdp);
             employe.type = 'employe';
             manager.type = 'manager';
-            if(!compareMdpEmp) {
+            if(compareMdpEmp) {
                 retour.status = 200;
                 retour.message = "Connecté";
                 retour.data = {
@@ -72,7 +106,10 @@ async function connexion(data) {
         mongoose.connection.close;
     }
 }
+async function createPersonnel(data){
+
+}
 
 module.exports = {
-    connexion
+    connexion, loginPersonnel, createPersonnel
 };
