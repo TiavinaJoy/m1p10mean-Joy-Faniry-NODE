@@ -1,6 +1,6 @@
 const { connection,mongoose } = require("../configuration/database");
 const uniqueValidator = require('mongoose-unique-validator');
-const infoPersonnel = require("./infoPersonnel");
+const infoEmploye = require("./infoEmploye");
 const role = require("./role");
 
 connection();
@@ -67,10 +67,11 @@ const utilisateurSchema = new mongoose.Schema({
     default: 0
   },
   role: {
-    type: role.schema
+    type: role.schema,
+    required:[true, "Chaque utilisateur"]
   },
   infoPersonnel: {
-    type: infoPersonnel.schema
+    type: infoEmploye.schema
   }
 });
 

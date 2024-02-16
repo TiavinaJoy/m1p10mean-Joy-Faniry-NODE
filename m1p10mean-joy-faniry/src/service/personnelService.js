@@ -1,6 +1,8 @@
 const personnel = require("../model/personnel");
-const { validateEmail,isEmpty } = require("../helper/validation");
+const utilisateur = require("../model/utilisateur");
 const { generateAccessToken  } = require("./tokenService");
+const { createInfoEmploye  } = require("./infoEmployeService");
+const roleService = require("./roleService");
 const { mongoose } = require("../configuration/database");
 const bcrypt = require("bcrypt");
 
@@ -107,7 +109,33 @@ async function connexion(data) {
     }
 }
 async function createPersonnel(data){
-
+    const retour = {};
+    try{
+        const newInfoEmploye = {
+            salaire: data.salaire,
+            dateEmbauche: data.dateEmbauche,
+            finContrat: finContrat ?? "",
+            service : data.service
+        }
+        const addNewInfoEmploye = await createInfoEmploye(newInfoEmploye);
+        const role = roleService.findById(data.role);
+        data.infoEmploye = addNewInfoEmploye.data;
+        data.role = role;
+        data.statut = 1;
+        const newUser = new utilisateur(data);
+        await newUser.save();
+        // d aveo creena le utilisateur
+        retour.status = 201;
+        retour.message = "Utilisateur ajouté.";
+        retour.data = {
+            service: newUser
+        };
+        return retour;
+    }catch(error){
+       throw error;
+    }finally{
+        mongoose.connection.close
+    }    
 }
 
 module.exports = {

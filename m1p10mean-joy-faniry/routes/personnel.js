@@ -6,7 +6,7 @@ var { authenticateManagerToken } = require("../src/middleware/managerMiddleware"
 
 router.post('/personnel/auth', personnelController.login);
 
-router.post ('/personnel',authenticateManagerToken, personnelController.addPersonnel)
+router.post ('/personnel' /*,authenticateManagerToken*/, personnelController.addPersonnel)
 
 router.put('/personnel/:personnelId', authenticateEmployeToken, personnelController.updatePersonnel)
 

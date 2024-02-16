@@ -3,7 +3,7 @@ const service = require("./service");
 const rolePersonnel = require("./role");
 
 connection();
-const infoPersonnelSchema = new mongoose.Schema({
+const infoEmployeSchema = new mongoose.Schema({
     dateEmbauche: {
         type: Date,
         default: new Date(),
@@ -22,8 +22,8 @@ const infoPersonnelSchema = new mongoose.Schema({
     } 
 });
 
-infoPersonnelSchema.set('timestamps',true);
+infoEmployeSchema.set('timestamps',true);
 
-const infoPersonnel = mongoose.model('infoPersonnel', infoPersonnelSchema,'infoPersonnel');
+const infoPersonnel = mongoose.model('infoEmploye', infoEmployeSchema,'infoEmploye');
 
 module.exports = infoPersonnel;

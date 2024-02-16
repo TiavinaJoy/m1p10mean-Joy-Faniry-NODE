@@ -66,10 +66,10 @@ const personnelSchema = new mongoose.Schema({
     finContrat: {
         type: Date
     },
-    role: {
-      type: rolePersonnel.schema,
-      required: true
-    },
+    // role: {
+    //   type: rolePersonnel.schema,
+    //   required: true
+    // },
     salaire: {
         type: Number,
         required: [true,"Le salaire est obligatoire."]
