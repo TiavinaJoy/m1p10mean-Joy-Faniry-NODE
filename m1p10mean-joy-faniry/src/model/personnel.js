@@ -1,6 +1,7 @@
 const { connection,mongoose } = require("../configuration/database");
 const service = require("./service");
-const rolePersonnel = require("./rolePersonnel");
+const role = require("./role");
+
 
 connection();
 const personnelSchema = new mongoose.Schema({
