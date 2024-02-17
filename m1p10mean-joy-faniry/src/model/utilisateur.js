@@ -69,7 +69,7 @@ const utilisateurSchema = new mongoose.Schema({
     type: role.schema,
     required:[true, "Chaque utilisateur"]
   },
-  infoPersonnel: {
+  infoEmploye: {
     type: infoEmploye.schema
   }
 });

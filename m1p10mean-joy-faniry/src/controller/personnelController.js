@@ -22,10 +22,10 @@ async function login(req, res) {
 async function addPersonnel(req, res){
     try {
         const personnel = await createPersonnel(req.body);
-        res.status(service.status).send({
-            "status": service.status,
-            "message": service.message,
-            "data": service.data
+        res.status(personnel.status).send({
+            "status": personnel.status,
+            "message": personnel.message,
+            "data": personnel.data
         });
     }catch(error){
         res.status(getError(error).status).send({
