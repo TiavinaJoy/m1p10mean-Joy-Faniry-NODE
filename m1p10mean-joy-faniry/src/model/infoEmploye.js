@@ -1,8 +1,8 @@
-const { connection,mongoose } = require("../configuration/database");
+const { mongoose } = require("../configuration/database");
 const service = require("./service");
 const rolePersonnel = require("./role");
 
-connection();
+
 const infoEmployeSchema = new mongoose.Schema({
     dateEmbauche: {
         type: Date,

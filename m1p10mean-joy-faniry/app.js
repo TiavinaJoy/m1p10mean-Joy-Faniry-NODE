@@ -11,6 +11,9 @@ var personnelRouter = require('./routes/personnel');
 var serviceRouter = require('./routes/service');
 
 var app = express();
+/* Connexion */
+const {connection} = require("./src/configuration/database");
+connection();
 
 const allowedOrigin = ["http://localhost:4200"];
 const options = cors.CorsOptions = {

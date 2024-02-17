@@ -1,7 +1,7 @@
-const { connection,mongoose } = require("../configuration/database");
+const {mongoose } = require("../configuration/database");
 const serviceCategorie = require("./serviceCategorie");
 
-connection();
+
 const serviceSchema = new mongoose.Schema({
     nom: {
         type: String,

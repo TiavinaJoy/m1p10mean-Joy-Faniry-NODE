@@ -1,9 +1,8 @@
-const { connection,mongoose } = require("../configuration/database");
+const {mongoose } = require("../configuration/database");
 const uniqueValidator = require('mongoose-unique-validator');
 const infoEmploye = require("./infoEmploye");
 const role = require("./role");
 
-connection();
 const utilisateurSchema = new mongoose.Schema({
   mail: {
     type: String,

@@ -1,9 +1,8 @@
-const { connection,mongoose } = require("../configuration/database");
+const {mongoose } = require("../configuration/database");
 const service = require("./service");
 const role = require("./role");
 
 
-connection();
 const personnelSchema = new mongoose.Schema({
     mail: {
         type: String,
