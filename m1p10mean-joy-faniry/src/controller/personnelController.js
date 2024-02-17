@@ -1,4 +1,4 @@
-const { connexion, loginPersonnel, createPersonnel, changeStatutPersonnel } = require("../service/personnelService");
+const { connexion, loginPersonnel, createPersonnel, changeStatutPersonnel , modificationPersonnel} = require("../service/personnelService");
 const { getError } = require("../helper/error");
 
 
@@ -36,7 +36,20 @@ async function addPersonnel(req, res){
     }
 }
 async function updatePersonnel(req, res){
-    res.status(501).send()
+    try {
+        const personnel = await modificationPersonnel(req.params, req.body);
+        res.status(personnel.status).send({
+            "status": personnel.status,
+            "message": personnel.message,
+            "data": personnel.data
+        });
+    }catch(error){
+        res.status(getError(error).status).send({
+            "status": getError(error).status,
+            "message": getError(error).message,
+            "data": req.body
+        });  
+    }
 }
 
 async function changePersonnelStatut(req, res){

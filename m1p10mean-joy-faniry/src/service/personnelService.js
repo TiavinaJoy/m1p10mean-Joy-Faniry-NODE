@@ -165,6 +165,52 @@ async function changeStatutPersonnel(params, query){
         mongoose.connection.close
     }
 }
+
+async function modificationPersonnel(params, data){
+    const retour = data;
+    try {
+        if(data.mdp.localeCompare(data.confirmMdp)!==0){
+            retour.status = 400,
+            retour.message = "Les mots de passes ne correspondent pas.",
+            retour.data = {};
+            return retour
+        }
+        const filtre = {_id: new ObjectId (params.personnelId), $or:[
+            { 'role.intitule': "Manager"} ,
+            { 'role.intitule': "Employé" }
+        ]};
+        const employe = {
+            nom: data.nom,
+            prenom: data.prenom,
+            mail:data.mail
+        }
+       
+        const hashedPassword = await new Promise((resolve, reject) => {
+            bcrypt.hash(data.mdp, 10, function(err, hash) {
+            if (err) reject(err)
+            resolve(hash)
+            });
+        })
+
+        employe.mdp = hashedPassword;
+        // bcrypt.genSalt(10,  (err,salt) => {
+        //     const hash =  bcrypt.hash(data.mdp, salt);
+        //     employe.mdp = hash;
+        // });
+        console.log(employe);
+        const updatePersonnel = await utilisateur.updateOne(filtre,{$set:employe} );
+        retour.status = 200;
+        retour.message = "Utilisateur mis à jour.";
+        retour.data = {
+            utilisateur: employe
+        };
+        return retour
+    } catch (error) {
+        throw error;
+    }finally{
+        mongoose.connection.close
+    }
+}
 module.exports = {
-    connexion, loginPersonnel, createPersonnel, changeStatutPersonnel
+    connexion, loginPersonnel, createPersonnel, changeStatutPersonnel, modificationPersonnel
 };
