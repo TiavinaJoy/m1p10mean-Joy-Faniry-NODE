@@ -110,29 +110,35 @@ async function connexion(data) {
 }
 async function createPersonnel(data){
     const retour = {};
+    const session =  await mongoose.startSession();
+    session.startTransaction();
     try{
         const newInfoEmploye = {
             salaire: data.salaire,
             dateEmbauche: data.dateEmbauche,
-            finContrat: finContrat ?? "",
+            finContrat: data.finContrat ?? "",
             service : data.service
         }
-        const addNewInfoEmploye = await createInfoEmploye(newInfoEmploye);
-        const role = roleService.findById(data.role);
-        data.infoEmploye = addNewInfoEmploye.data;
+        const addNewInfoEmploye = await createInfoEmploye(newInfoEmploye, {session});
+        const role = await roleService.findById(data.role);
+        data.infoEmploye = addNewInfoEmploye.data.infoEmploye;
         data.role = role;
         data.statut = 1;
         const newUser = new utilisateur(data);
-        await newUser.save();
+        await newUser.save({session});
         // d aveo creena le utilisateur
         retour.status = 201;
         retour.message = "Utilisateur ajouté.";
         retour.data = {
             service: newUser
         };
+        await session.commitTransaction();
+        session.endSession()
         return retour;
     }catch(error){
-       throw error;
+        await session.abortTransaction();
+    session.endSession();
+       throw error; 
     }finally{
         mongoose.connection.close
     }    

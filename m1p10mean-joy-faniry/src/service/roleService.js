@@ -21,8 +21,8 @@ async function listeRole() {
 async function findById(id){
     const retour = id;
     try {
-        const role = await role.find({_id: new ObjectId(id)});
-        if(role.length == 1) return role[0];
+        const roleFound = await role.find({_id: new ObjectId(id)});
+        if(roleFound.length == 1) return roleFound[0];
         throw new Error('Rôle introuvable.')
     } catch (error) {
         throw error;

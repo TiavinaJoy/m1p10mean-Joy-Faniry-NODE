@@ -17,24 +17,23 @@ async function findById(id){
     } 
 }
 
-async function createInfoEmploye(data){
+async function createInfoEmploye(data, option){
     const retour = {};
     try {
         // tadiavina daholo le service
         var listeIdService = [];
         data.service.forEach(service => {
-            listeIdService.append(new ObjectId(service))
+            listeIdService.push(new ObjectId(service))
         });
         const filtre = {_id:{$in:listeIdService}};
         const services = await service.find(filtre);
         data.service = services;
         const  newInfoEmploye =  new infoEmploye(data);
-        await newInfoEmploye.save()
+        await newInfoEmploye.save(option)
         retour.status = 201;
         retour.message = "Information enregistré";
         retour.data = {
-            infoEmploye: newInfoEmploye,
-            user: newClient
+            infoEmploye: newInfoEmploye
         };
         return retour;
     } catch (error) {
