@@ -17,7 +17,17 @@ function getError(error)
     }
 }
 
-
+function getExpressValidatorError(errors)
+{
+    let error = {};
+    errors.array().forEach(index =>{
+        error[index.path] = index.msg
+    });
+    return {
+        status:400,
+        message: error
+    }
+}
 module.exports = {
-    getError
+    getError, getExpressValidatorError
 };
