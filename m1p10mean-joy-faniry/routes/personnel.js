@@ -3,7 +3,7 @@ var router = express.Router();
 var personnelController = require("../src/controller/personnelController");
 var { authenticateEmployeToken } = require("../src/middleware/employeMiddleware");
 var { authenticateManagerToken } = require("../src/middleware/managerMiddleware");
-const { body, validationResult } = require('express-validator');
+const { body, validationResult, query } = require('express-validator');
 const { getExpressValidatorError } = require("../src/helper/error");
 
 
@@ -23,9 +23,18 @@ router.post ('/personnel' /*,authenticateManagerToken*/,
         await personnelController.addPersonnel(req, res);
     });
 
-router.put('/personnel/:personnelId', authenticateEmployeToken, personnelController.updatePersonnel)
+router.put('/personnel/:personnelId', /*authenticateEmployeToken,*/ personnelController.updatePersonnel)
 
-router.put('/personnel/:personnelId/statut',authenticateManagerToken, personnelController.changeServiceStatut)
+router.put('/personnel/:personnelId/statut', /*authenticateManagerToken,*/
+    [
+        query('statut').notEmpty().isNumeric().withMessage("statut invalide")
+    ], async (req, res)=>{
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+          return res.status(400).json(getExpressValidatorError(errors));
+        }
+        await personnelController.changePersonnelStatut(req, res);
+});
 
 router.get('/managerTest', authenticateManagerToken, function(req,res){
     res.status(200).send({

@@ -5,6 +5,7 @@ const { createInfoEmploye  } = require("./infoEmployeService");
 const roleService = require("./roleService");
 const { mongoose } = require("../configuration/database");
 const bcrypt = require("bcrypt");
+const { ObjectId } = require("mongodb");
 
 
 /*Connexion personnel */
@@ -144,6 +145,26 @@ async function createPersonnel(data){
     }    
 }
 
+async function changeStatutPersonnel(params, query){
+    try {
+        const updatePersonnel = await utilisateur.updateOne({_id: new ObjectId(params.personnelId), $or:[
+            { 'role.intitule': "Manager"} ,
+            { 'role.intitule': "Employé" }
+        ]}, {$set:{statut: query.statut}});
+        // tokony ampiana filtre hoe : role = manager ou employé
+        return {
+            status : 200,
+            message : "Utilisateur mis à jour.",
+            data:{
+                utilisateur:updatePersonnel
+            }
+        }
+    } catch (error) {
+        throw error;   
+    }finally{
+        mongoose.connection.close
+    }
+}
 module.exports = {
-    connexion, loginPersonnel, createPersonnel
+    connexion, loginPersonnel, createPersonnel, changeStatutPersonnel
 };
