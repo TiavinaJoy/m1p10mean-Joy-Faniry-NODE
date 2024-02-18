@@ -73,11 +73,8 @@ async function createService(data) {
         const categorieId = data.categorie
         const categorie = await findById(categorieId);
         newService.categorie = categorie;
-<<<<<<< Updated upstream
         console.log(categorie)
         console.log(newService);
-=======
->>>>>>> Stashed changes
         newService.statut = 1;
 
         await newService.save();
@@ -124,10 +121,7 @@ async function modifyService(params, data){
 async function modifierStatutService(params, query){
     try {
         const updateService = await service.updateOne({_id: new ObjectId(params.serviceId)}, {$set:{statut: query.statut}});
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
         return {
             status : 200,
             message : "Service mis à jour eeee.",
