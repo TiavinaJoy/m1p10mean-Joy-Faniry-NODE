@@ -12,7 +12,7 @@ function authenticateManagerToken(req, res, next) {
     }
   
     const result = verifyAccessToken(token);
-    
+
     if(((result.data.type === 'employe' || result.data.type === 'client') && !result.statut) || !result.statut || result.data.type !== 'manager')
     {
         return res.status(403).send({
