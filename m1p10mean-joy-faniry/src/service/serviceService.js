@@ -4,10 +4,57 @@ const { mongoose } = require("../configuration/database");
 const {findById} = require("./serviceCategorieService");
 const { ObjectId } = require("mongodb");
 
-async function listeService() {
+async function listeService(query) {
     const retour = {};
     try{
-        const services = await service.find({});
+        var categ = '';
+        var stat = false;
+        console.log(query);
+        
+        if(query.statut == 1) {
+            stat = true;
+        }
+        else if(query.statut == 0) {
+            stat = false;
+        } 
+        else {
+            stat = ''
+        }
+
+        if(query.categorie != '')  categ = new ObjectId(query.categorie)
+        console.log(' ffffffffffff ',categ);
+        var queries = {
+            $or: [
+                {
+                    prix:{ $gte: query.prixMin, $lte: query.prixMax }
+                },
+                {
+                    commission:{ $gte: query.comMin , $lte: query.comMax  }
+                },
+                {
+                    duree:{ $gte: query.dureeMin , $lte: query.dureeMax  }
+                },
+                {
+                    statut: stat
+                },
+                {
+                    nom:  { $regex: query.nom } 
+                },
+                {
+                    description:  { $regex: query.description } 
+                },
+                {
+                    'categorie._id': categ
+                }
+            ]
+        }
+        const services = await service.paginate(
+            queries,
+            { 
+                offset: query.perPage * query.page, 
+                limit: query.perPage
+            }
+        ).then({});
         retour.status = 200;
         retour.message = "OK";
         retour.data = services;
@@ -15,7 +62,7 @@ async function listeService() {
     }catch(error){
         throw error;
      }finally{
-         mongoose.connection.close
+         mongoose.connection.close;
      } 
 }
 
@@ -26,8 +73,11 @@ async function createService(data) {
         const categorieId = data.categorie
         const categorie = await findById(categorieId);
         newService.categorie = categorie;
+<<<<<<< Updated upstream
         console.log(categorie)
         console.log(newService);
+=======
+>>>>>>> Stashed changes
         newService.statut = 1;
 
         await newService.save();
@@ -74,9 +124,13 @@ async function modifyService(params, data){
 async function modifierStatutService(params, query){
     try {
         const updateService = await service.updateOne({_id: new ObjectId(params.serviceId)}, {$set:{statut: query.statut}});
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
         return {
             status : 200,
-            message : "Service mis à jour.",
+            message : "Service mis à jour eeee.",
             data:{
                 service:updateService
             }
@@ -112,6 +166,4 @@ async function detailService(params){
 
 module.exports = {
     listeService, createService, modifyService, modifierStatutService, detailService
-
-
 };
