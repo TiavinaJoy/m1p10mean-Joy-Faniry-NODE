@@ -68,6 +68,23 @@ async function changePersonnelStatut(req, res){
         });  
     }
 }
+
+async function detailPersonnel(req, res){
+    try {
+        const personnel = await getDetailPersonnel(req.params);
+        res.status(personnel.status).send({
+            "status": personnel.status,
+            "message": personnel.message,
+            "data": personnel.data
+        });
+    }catch(error){
+        res.status(getError(error).status).send({
+            "status": getError(error).status,
+            "message": getError(error).message,
+            "data": req.body
+        });  
+    }
+}
 module.exports = {
-    login, addPersonnel, updatePersonnel, changePersonnelStatut
+    login, addPersonnel, updatePersonnel, changePersonnelStatut, detailPersonnel
 }

@@ -211,6 +211,28 @@ async function modificationPersonnel(params, data){
         mongoose.connection.close
     }
 }
+
+async function getDetailPersonnel(params){
+    retour = {}
+    try {
+        const employe = await utilisateur.findOne(
+            {
+                _id: new ObjectId(params.personnelId), 
+                $or:[
+                    { 'role.intitule': "Manager"} ,
+                    { 'role.intitule': "Employé" }
+                ]
+            }
+        );
+        if(employe === null){
+            throw new Error('Employé introuvable');
+        }
+    } catch (error) {
+        throw error;
+    }finally{
+        mongoose.connection.close
+    }
+}
 module.exports = {
-    connexion, loginPersonnel, createPersonnel, changeStatutPersonnel, modificationPersonnel
+    connexion, loginPersonnel, createPersonnel, changeStatutPersonnel, modificationPersonnel, getDetailPersonnel
 };
