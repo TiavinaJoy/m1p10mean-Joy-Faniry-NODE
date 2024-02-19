@@ -6,7 +6,7 @@ const { ObjectId } = require("mongodb");
 async function listeRole() {
     const retour = {};
     try{
-        const roles = await role.find({});
+        const roles = await role.find({intitule: {$ne: 'Client'}});
         retour.status = 200;
         retour.message = "OK";
         retour.data = roles;
