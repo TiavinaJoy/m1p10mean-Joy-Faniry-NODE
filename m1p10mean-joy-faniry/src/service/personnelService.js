@@ -229,6 +229,9 @@ async function getDetailPersonnel(params){
         mongoose.connection.close
     }
 }
+async function modificationInfoEmploye(params, body){
+    
+}
 module.exports = {
-    connexion, loginPersonnel, createPersonnel, changeStatutPersonnel, modificationPersonnel, getDetailPersonnel
+    connexion, loginPersonnel, createPersonnel, changeStatutPersonnel, modificationPersonnel, getDetailPersonnel, modificationInfoEmploye
 };

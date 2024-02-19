@@ -25,6 +25,7 @@ router.post ('/personnel' /*,authenticateManagerToken*/,
 
 router.put('/personnel/:personnelId', /*authenticateEmployeToken,*/ personnelController.updatePersonnel)
 
+router.put('/personnel/infoEmploye/:personnelId', /*authenticateManagerToken,*/ personnelController.updateInfoEmploye)
 router.put('/personnel/:personnelId/statut', /*authenticateManagerToken,*/
     [
         query('statut').notEmpty().isNumeric().withMessage("statut invalide")
