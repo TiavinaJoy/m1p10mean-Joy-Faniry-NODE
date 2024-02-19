@@ -2,6 +2,7 @@ const {mongoose } = require("../configuration/database");
 const uniqueValidator = require('mongoose-unique-validator');
 const infoEmploye = require("./infoEmploye");
 const role = require("./role");
+const mongoosePaginate = require("mongoose-paginate-v2");
 
 const utilisateurSchema = new mongoose.Schema({
   mail: {
@@ -76,6 +77,7 @@ const utilisateurSchema = new mongoose.Schema({
 
 utilisateurSchema.set('timestamps',true);
 utilisateurSchema.plugin(uniqueValidator, {message: "Email {VALUE} déjà utilisé. "});
+utilisateurSchema.plugin(mongoosePaginate);
 
 const utilisateur = mongoose.model('utilisateur', utilisateurSchema,'utilisateur');
 

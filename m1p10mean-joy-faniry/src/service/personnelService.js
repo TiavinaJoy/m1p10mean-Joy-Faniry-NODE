@@ -285,18 +285,34 @@ async function modificationInfoEmploye(params, body){
 async function find(query){
     const retour = {}
     try {
-       var filtre = [];
+       var filtre = {};
     //    nom , prenom, email, dateInscription? dateEmbauche, statut, role, fincontrat, service, salaire
-        if(query.nom !=="") filtre.push({ nom: query.nom})
-        if(query.prenom !=="") filtre.push({ prenom: query.prenom})
-        if(query.mail !=="") filtre.push({ mail: query.mail})
-        if(query.statut !=="") filtre.push({ statut: Boolean(query.statut)})
-        if(query.role !=="") filtre.push({ "role._id": new ObjectId(query.role)})
+        if(query.nom ) filtre.nom = {$regex: query.nom , '$options' : 'i'};
+        if(query.prenom ) filtre.prenom = {$regex: query.prenom, '$options' : 'i'}
+        if(query.mail ) filtre.mail = {$regex: query.mail, '$options' : 'i'}
+        if(query.statut ) filtre.statut = Boolean(query.statut)
+        if(query.role ) filtre.role = {_id:new ObjectId(query.role)};
+        if(query.salaireMin || query.salaireMax){
+            if(query.salaireMin && query.salaireMax) filtre.infoEmploye.salaire = {
+                $gte: query.salaireMin, 
+                $lte: query.salaireMax
+            }
+            else if (query.salaireMin && !query.salaireMax) filtre.infoEmploye.salaire = {$gte: query.salaireMin}
+            else if (!query.salaireMin && query.salaireMax) filtre.infoEmploye.salaire = {$lte: query.salaireMax}
+        }
         
 
-
-
-       
+        const users = await utilisateur.paginate(
+             filtre,
+            { 
+                offset: query.perPage ?? 10  * query.page ?? 0, 
+                limit: query.perPage ?? 10
+            }
+        ).then({});
+        retour.status = 200;
+        retour.message = "OK";
+        retour.data = users;
+        return retour;
     } catch (error) {
         throw error
     }finally{

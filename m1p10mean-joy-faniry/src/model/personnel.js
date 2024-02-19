@@ -1,6 +1,7 @@
 const {mongoose } = require("../configuration/database");
 const service = require("./service");
 const role = require("./role");
+const mongoosePaginate = require("mongoose-paginate-v2");
 
 
 const personnelSchema = new mongoose.Schema({
@@ -80,6 +81,7 @@ const personnelSchema = new mongoose.Schema({
 });
 
 personnelSchema.set('timestamps',true);
+personnelSchema.plugin(mongoosePaginate);
 
 const personnel = mongoose.model('personnel', personnelSchema,'personnel');
 
