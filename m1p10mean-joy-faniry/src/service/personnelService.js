@@ -1,6 +1,10 @@
 require("dotenv").config();
 const personnel = require("../model/personnel");
 const utilisateur = require("../model/utilisateur");
+const service = require("../model/service");
+const role = require("../model/role");
+const infoEmploye = require("../model/infoEmploye");
+const infoEmployervice = require("../model/infoEmploye");
 const { generateAccessToken  } = require("./tokenService");
 const { createInfoEmploye  } = require("./infoEmployeService");
 const roleService = require("./roleService");
@@ -235,7 +239,46 @@ async function getDetailPersonnel(params){
     }
 }
 async function modificationInfoEmploye(params, body){
-    
+    const session =  await mongoose.startSession();
+    session.startTransaction();
+    retour = {};
+    try {
+        // tadiavina aloha le liste service attribuena aminy 
+        var listeIdService = [];
+        body.service.forEach(service => {
+            listeIdService.push(new ObjectId(service))
+        });
+        const filtreService = {_id:{$in:listeIdService}};
+        const services = await service.find(filtreService);
+        const newInfoEmp= {
+            salaire: body.salaire,
+            finContrat: body.finContrat ?? '',
+            service:services
+        }
+        // dia sao dia niova ny rôle any
+        const idRole = body.role;
+        const roleEmp = await roleService.findById(idRole);
+        // ovao amzay aloha ary le infoEMp
+        console.log(roleEmp);
+        await infoEmploye.updateOne(
+            { _id: new ObjectId(body.idInfoEmploye)},
+            {$set: newInfoEmp}
+        , {session});
+        const updatedEMp = {role: roleEmp, infoEmploye: newInfoEmp};
+        const newEMp = await utilisateur.updateOne({_id: params.personnelId},
+            {$set: updatedEMp}, {session});
+        session.commitTransaction();
+        retour.status = 200;
+        retour.message = "Utilisateur mis à jour";
+        retour.data = newEMp;
+        return retour;
+    } catch (error) {
+        console.log(error);
+        session.abortTransaction();
+        throw error
+    }finally{
+        mongoose.connection.close
+    }
 }
 
 
