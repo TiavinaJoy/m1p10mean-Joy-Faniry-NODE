@@ -1,4 +1,11 @@
-const { connexion, loginPersonnel, createPersonnel, changeStatutPersonnel , modificationPersonnel, getDetailPersonnel, find, modificationInfoEmploye} = require("../service/personnelService");
+const { connexion,
+    loginPersonnel,
+    createPersonnel,
+    changeStatutPersonnel,
+    modificationPersonnel, 
+    getDetailPersonnel, 
+    find, 
+    modificationInfoEmploye} = require("../service/personnelService");
 const { getError } = require("../helper/error");
 
 
