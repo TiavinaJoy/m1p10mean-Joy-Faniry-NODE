@@ -8,6 +8,8 @@ var serviceCategorieController = require("../src/controller/serviceCategorieCont
 
 router.get('/service', serviceController.getServices);
 
+router.get('/services', serviceController.getLesServices);
+
 router.get('/service/:serviceId',serviceController.getServiceDetail)
 
 router.post('/service', authenticateManagerToken, serviceController.addService)

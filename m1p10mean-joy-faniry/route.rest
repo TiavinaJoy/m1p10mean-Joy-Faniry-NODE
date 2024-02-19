@@ -47,3 +47,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZ
 PUT http://localhost:3000/service/65c088233e3b8a5583c602b3/statut?statut=0
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1hbmFnZXJAZ21haWwuY29tIiwiZGF0ZUV4cGlyYXRpb24iOiIyMDI0LTAyLTE3VDA3OjQxOjQ1Ljg5OFoiLCJ0eXBlIjoibWFuYWdlciIsImlhdCI6MTcwNzg5NjUwNSwiZXhwIjoxNzA4MTU1NzA1fQ.ugV4XXRHUEeVr9E9SQ0-XY3WMoXJET1Ogzx4ksl-0xU
+
+###
+GET http://localhost:3000/services
+Content-Type: application/json

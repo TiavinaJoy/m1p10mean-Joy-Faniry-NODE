@@ -1,4 +1,4 @@
-const { connection } = require("./src/configuration/database");
+//const { connection } = require("./src/configuration/database");
 
 var createError = require('http-errors');
 var express = require('express');
@@ -8,7 +8,7 @@ var logger = require('morgan');
 var cors = require('cors');
 
 //connection à la base de donnée
-connection();
+//connection();
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');

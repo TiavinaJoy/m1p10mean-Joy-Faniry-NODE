@@ -1,5 +1,22 @@
-const { listeService, createService, modifyService, modifierStatutService, detailService} = require("../service/serviceService");
+const { listeService, createService, modifyService, modifierStatutService, detailService,lesServices} = require("../service/serviceService");
 const { getError } = require("../helper/error");
+
+async function getLesServices( req , res ) {
+    try{
+        const services = await lesServices();
+        res.status(services.status).send({
+            "status": services.status,
+            "message": services.message,
+            "data": services.data
+        });
+    }catch(error){
+        res.status(getError(error).status).send({
+            "status": getError(error).status,
+            "message": getError(error).message,
+            "data": req.body
+        });
+    }
+}
 
 async function getServices( req , res ) {
     try{
@@ -88,5 +105,5 @@ async function getServiceDetail(req,res) {
     }
 }
 module.exports = {
-    getServices, addService, updateService, changeServiceStatut, getServiceDetail
+    getServices, addService, updateService, changeServiceStatut, getServiceDetail,getLesServices
 }

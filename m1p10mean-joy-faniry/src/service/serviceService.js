@@ -4,6 +4,21 @@ const { mongoose } = require("../configuration/database");
 const {findById} = require("./serviceCategorieService");
 const { ObjectId } = require("mongodb");
 
+async function lesServices() {
+    const retour = {};
+    try{
+        const services = await service.find({});
+        retour.status = 200;
+        retour.message = "OK";
+        retour.data = services;
+        return retour;
+    }catch(error){
+        throw error;
+     }finally{
+         mongoose.connection.close
+     } 
+}
+
 async function listeService(query) {
     const retour = {};
     try{
@@ -158,5 +173,5 @@ async function detailService(params){
 
 
 module.exports = {
-    listeService, createService, modifyService, modifierStatutService, detailService
+    listeService, createService, modifyService, modifierStatutService, detailService,lesServices
 };
