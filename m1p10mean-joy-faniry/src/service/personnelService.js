@@ -1,3 +1,4 @@
+require("dotenv").config();
 const personnel = require("../model/personnel");
 const utilisateur = require("../model/utilisateur");
 const { generateAccessToken  } = require("./tokenService");
@@ -113,6 +114,7 @@ async function createPersonnel(data){
     const retour = {};
     const session =  await mongoose.startSession();
     session.startTransaction();
+    const defaultMdp = process.env.DEFAULT_MDP;
     try{
         const newInfoEmploye = {
             salaire: data.salaire,
@@ -126,7 +128,7 @@ async function createPersonnel(data){
         data.role = role;
         data.statut = 1;
         const hashedPassword = await new Promise((resolve, reject) => {
-            bcrypt.hash(data.mdp, 10, function(err, hash) {
+            bcrypt.hash(defaultMdp, 10, function(err, hash) {
             if (err) reject(err)
             resolve(hash)
             });
