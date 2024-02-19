@@ -125,6 +125,13 @@ async function createPersonnel(data){
         data.infoEmploye = addNewInfoEmploye.data.infoEmploye;
         data.role = role;
         data.statut = 1;
+        const hashedPassword = await new Promise((resolve, reject) => {
+            bcrypt.hash(data.mdp, 10, function(err, hash) {
+            if (err) reject(err)
+            resolve(hash)
+            });
+        })
+        data.mdp = hashedPassword;
         const newUser = new utilisateur(data);
         await newUser.save({session});
         // d aveo creena le utilisateur
