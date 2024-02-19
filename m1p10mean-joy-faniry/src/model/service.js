@@ -1,7 +1,7 @@
-const { connection,mongoose } = require("../configuration/database");
+const { mongoose } = require("../configuration/database");
 const serviceCategorie = require("./serviceCategorie");
+const mongoosePaginate = require("mongoose-paginate-v2");
 
-connection();
 const serviceSchema = new mongoose.Schema({
     nom: {
         type: String,
@@ -34,6 +34,7 @@ const serviceSchema = new mongoose.Schema({
 });
 
 serviceSchema.set('timestamps',true);
+serviceSchema.plugin(mongoosePaginate);
 
 const service = mongoose.model('service', serviceSchema,'service');
 

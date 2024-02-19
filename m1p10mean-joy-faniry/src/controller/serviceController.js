@@ -3,7 +3,7 @@ const { getError } = require("../helper/error");
 
 async function getServices( req , res ) {
     try{
-        const services = await listeService();
+        const services = await listeService(req.query);
         res.status(services.status).send({
             "status": services.status,
             "message": services.message,
@@ -13,7 +13,7 @@ async function getServices( req , res ) {
         res.status(getError(error).status).send({
             "status": getError(error).status,
             "message": getError(error).message,
-            "data": req.body
+            "data": req.body ?? req.params
         });
     }
 }

@@ -1,6 +1,5 @@
-const { connection,mongoose } = require("../configuration/database");
+const { mongoose } = require("../configuration/database");
 
-connection();
 const rolePersonnelSchema = new mongoose.Schema({
   intitule: {
     type: String,
