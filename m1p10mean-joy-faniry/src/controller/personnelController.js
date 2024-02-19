@@ -1,4 +1,4 @@
-const { connexion, loginPersonnel, createPersonnel, changeStatutPersonnel , modificationPersonnel,modificationInfoEmploye} = require("../service/personnelService");
+const { connexion, loginPersonnel, createPersonnel, changeStatutPersonnel , modificationPersonnel, getDetailPersonnel, find, modificationInfoEmploye} = require("../service/personnelService");
 const { getError } = require("../helper/error");
 
 
@@ -102,6 +102,23 @@ async function updateInfoEmploye(req, res){
         });  
     }
 }
+
+async function searchPersonnel(req, res){
+    try {
+        const personnel = await find(req.query);
+        res.status(personnel.status).send({
+            "status": personnel.status,
+            "message": personnel.message,
+            "data": personnel.data
+        });
+    }catch(error){
+        res.status(getError(error).status).send({
+            "status": getError(error).status,
+            "message": getError(error).message,
+            "data": req.body
+        });  
+    }
+}
 module.exports = {
-    login, addPersonnel, updatePersonnel, changePersonnelStatut, detailPersonnel, updateInfoEmploye
+    login, addPersonnel, updatePersonnel, changePersonnelStatut, detailPersonnel, updateInfoEmploye, searchPersonnel
 }

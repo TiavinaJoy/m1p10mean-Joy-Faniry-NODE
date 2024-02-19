@@ -223,6 +223,11 @@ async function getDetailPersonnel(params){
         if(employe === null){
             throw new Error('Employé introuvable');
         }
+        employe.mdp = "";
+        retour.status = 200;
+        retour.message = "";
+        retour.data = employe;
+        return retour;
     } catch (error) {
         throw error;
     }finally{
@@ -232,6 +237,29 @@ async function getDetailPersonnel(params){
 async function modificationInfoEmploye(params, body){
     
 }
+
+
+async function find(query){
+    const retour = {}
+    try {
+       var filtre = [];
+    //    nom , prenom, email, dateInscription? dateEmbauche, statut, role, fincontrat, service, salaire
+        if(query.nom !=="") filtre.push({ nom: query.nom})
+        if(query.prenom !=="") filtre.push({ prenom: query.prenom})
+        if(query.mail !=="") filtre.push({ mail: query.mail})
+        if(query.statut !=="") filtre.push({ statut: Boolean(query.statut)})
+        if(query.role !=="") filtre.push({ "role._id": new ObjectId(query.role)})
+        
+
+
+
+       
+    } catch (error) {
+        throw error
+    }finally{
+        mongoose.connection.close
+    }
+}
 module.exports = {
-    connexion, loginPersonnel, createPersonnel, changeStatutPersonnel, modificationPersonnel, getDetailPersonnel, modificationInfoEmploye
-};
+    connexion, loginPersonnel, createPersonnel, changeStatutPersonnel, modificationPersonnel, getDetailPersonnel, modificationInfoEmploye, find
+}
