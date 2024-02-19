@@ -50,7 +50,7 @@ async function connexion(data) {
         const mdp = data.mdp;
         const email = data.mail;
 
-        if(validateEmail(email)) {
+        if(!validateEmail(email)) {
             retour.status = 400;
             retour.message = "Email invalide.";
             retour.data = data;
@@ -64,36 +64,23 @@ async function connexion(data) {
         }
 
         const employe = await personnel.findOne({ mail: email });
-        const manager = await personnel.findOne({ mail: email });
 
 
-        if(employe === null || manager === null) {
+        if(employe === null ) {
 
             retour.status = 400;
             retour.message = "Utilisateur inexistant.";
             retour.data = data;
 
-        }else if(employe || manager) {
-
+        }else if(employe) {
             const compareMdpEmp = await bcrypt.compare(mdp,employe.mdp);
-            const compareMdpManager = await bcrypt.compare(mdp,manager.mdp);
-            employe.type = 'employe';
-            manager.type = 'manager';
-            if(compareMdpEmp) {
+            if(!compareMdpEmp) {
                 retour.status = 200;
                 retour.message = "Connecté";
                 retour.data = {
-                    token: generateAccessToken(data,'employe'),
+                    token: generateAccessToken(data,employe.role.intitule.toLowerCase()),
                     user: employe,
-                    type: 'employe'
-                }
-            }else if(compareMdpManager) {
-                retour.status = 200;
-                retour.message = "Connecté";
-                retour.data = {
-                    token: generateAccessToken(data,'manager'),
-                    user: manager,
-                    type: 'manager'
+                    type: employe.role.intitule.toLowerCase()
                 }
             } else {
 

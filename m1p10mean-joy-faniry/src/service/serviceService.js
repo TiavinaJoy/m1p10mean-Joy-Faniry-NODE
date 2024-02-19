@@ -4,18 +4,64 @@ const { mongoose } = require("../configuration/database");
 const {findById} = require("./serviceCategorieService");
 const { ObjectId } = require("mongodb");
 
-async function listeService() {
+async function listeService(query) {
     const retour = {};
     try{
-        const services = await service.find({});
+        var stat = false;
+        
+        if(query.statut == 1) {
+            stat = true;
+        }
+        else if(query.statut == 0) {
+            stat = false;
+        } 
+        else {
+            stat = ''
+        }
+
+        var queries = {
+            $or: [
+                {
+                    prix:{ $gte: query.prixMin, $lte: query.prixMax }
+                },
+                {
+                    commission:{ $gte: query.comMin , $lte: query.comMax  }
+                },
+                {
+                    duree:{ $gte: query.dureeMin , $lte: query.dureeMax  }
+                },
+                {
+                    statut: stat
+                },
+                {
+                    nom:  { $regex: query.nom } 
+                },
+                {
+                    description:  { $regex: query.description } 
+                }
+            ]
+        }
+
+        if (query.categorie !== '') {
+            queries.$or.push({ 'categorie._id': new ObjectId(query.categorie) });
+        }
+
+        const services = await service.paginate(
+            queries,
+            { 
+                offset: query.perPage * query.page, 
+                limit: query.perPage
+            }
+        ).then({});
         retour.status = 200;
         retour.message = "OK";
         retour.data = services;
         return retour;
     }catch(error){
+        console.log(error);
         throw error;
      }finally{
-         mongoose.connection.close
+         mongoose.connection.close;
      } 
 }
 
@@ -74,9 +120,10 @@ async function modifyService(params, data){
 async function modifierStatutService(params, query){
     try {
         const updateService = await service.updateOne({_id: new ObjectId(params.serviceId)}, {$set:{statut: query.statut}});
+
         return {
             status : 200,
-            message : "Service mis à jour.",
+            message : "Service mis à jour eeee.",
             data:{
                 service:updateService
             }
@@ -112,6 +159,4 @@ async function detailService(params){
 
 module.exports = {
     listeService, createService, modifyService, modifierStatutService, detailService
-
-
 };

@@ -6,10 +6,10 @@ const { ObjectId } = require("mongodb");
 async function listeCategorie() {
     const retour = {};
     try{
-        const serviceCategorie = await serviceCategorie.find({});
+        const categorie = await serviceCategorie.find({});
         retour.status = 200;
         retour.message = "OK";
-        retour.data = services;
+        retour.data = categorie;
         return retour;
     }catch(error){
         throw error;
@@ -34,4 +34,4 @@ async function findById(id){
 
 module.exports = {
     listeCategorie, findById
-};
+}

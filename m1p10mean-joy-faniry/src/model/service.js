@@ -1,5 +1,6 @@
 const {mongoose } = require("../configuration/database");
 const serviceCategorie = require("./serviceCategorie");
+const mongoosePaginate = require("mongoose-paginate-v2");
 
 
 const serviceSchema = new mongoose.Schema({
@@ -34,6 +35,7 @@ const serviceSchema = new mongoose.Schema({
 });
 
 serviceSchema.set('timestamps',true);
+serviceSchema.plugin(mongoosePaginate);
 
 const service = mongoose.model('service', serviceSchema,'service');
 

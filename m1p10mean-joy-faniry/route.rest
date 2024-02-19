@@ -28,10 +28,22 @@ Content-Type: application/json
 
 
 ###
-GET http://localhost:3000/service
+GET http://localhost:3000/service?prixMin=1000000000&prixMax=1000000000&comMin=1000000000&comMax=1000000000&dureeMin=1000000000&dureeMax=1000000000&statut=1&nom=BOO&description=DD&categorie=&page=0&perPage=2
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1hbmFnZXJAZ21haWwuY29tIiwiZGF0ZUV4cGlyYXRpb24iOiIyMDI0LTAyLTE3VDA3OjQxOjQ1Ljg5OFoiLCJ0eXBlIjoibWFuYWdlciIsImlhdCI6MTcwNzg5NjUwNSwiZXhwIjoxNzA4MTU1NzA1fQ.ugV4XXRHUEeVr9E9SQ0-XY3WMoXJET1Ogzx4ksl-0xU
+
+###
+GET http://localhost:3000/categorie
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1hbmFnZXJAZ21haWwuY29tIiwiZGF0ZUV4cGlyYXRpb24iOiIyMDI0LTAyLTE3VDA3OjQxOjQ1Ljg5OFoiLCJ0eXBlIjoibWFuYWdlciIsImlhdCI6MTcwNzg5NjUwNSwiZXhwIjoxNzA4MTU1NzA1fQ.ugV4XXRHUEeVr9E9SQ0-XY3WMoXJET1Ogzx4ksl-0xU
+
 
 ###
 GET http://localhost:3000/clientTest
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiZGF0ZUV4cGlyYXRpb24iOiIyMDI0LTAyLTExVDE0OjM1OjE2LjU3MVoiLCJ0eXBlIjoiY2xpZW50IiwiaWF0IjoxNzA3NDAyOTE2LCJleHAiOjE3MDc2NjIxMTZ9.dqvf38IdSh4Tu8CBto9td3SlBoiSkAT-yvLTLcNY8hc
+
+###
+PUT http://localhost:3000/service/65c088233e3b8a5583c602b3/statut?statut=0
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1hbmFnZXJAZ21haWwuY29tIiwiZGF0ZUV4cGlyYXRpb24iOiIyMDI0LTAyLTE3VDA3OjQxOjQ1Ljg5OFoiLCJ0eXBlIjoibWFuYWdlciIsImlhdCI6MTcwNzg5NjUwNSwiZXhwIjoxNzA4MTU1NzA1fQ.ugV4XXRHUEeVr9E9SQ0-XY3WMoXJET1Ogzx4ksl-0xU
