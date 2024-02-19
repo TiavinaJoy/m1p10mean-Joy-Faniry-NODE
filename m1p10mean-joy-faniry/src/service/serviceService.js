@@ -7,9 +7,7 @@ const { ObjectId } = require("mongodb");
 async function listeService(query) {
     const retour = {};
     try{
-        var categ = '';
         var stat = false;
-        console.log(query);
         
         if(query.statut == 1) {
             stat = true;
@@ -21,8 +19,6 @@ async function listeService(query) {
             stat = ''
         }
 
-        if(query.categorie != '')  categ = new ObjectId(query.categorie)
-        console.log(' ffffffffffff ',categ);
         var queries = {
             $or: [
                 {
@@ -42,12 +38,14 @@ async function listeService(query) {
                 },
                 {
                     description:  { $regex: query.description } 
-                },
-                {
-                    'categorie._id': categ
                 }
             ]
         }
+
+        if (query.categorie !== '') {
+            queries.$or.push({ 'categorie._id': new ObjectId(query.categorie) });
+        }
+
         const services = await service.paginate(
             queries,
             { 
@@ -60,6 +58,7 @@ async function listeService(query) {
         retour.data = services;
         return retour;
     }catch(error){
+        console.log(error);
         throw error;
      }finally{
          mongoose.connection.close;

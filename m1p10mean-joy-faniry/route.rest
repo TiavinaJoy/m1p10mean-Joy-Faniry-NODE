@@ -28,7 +28,7 @@ Content-Type: application/json
 
 
 ###
-GET http://localhost:3000/service?prixMin=10000&prixMax=10000&comMin=10000&comMax=10000&dureeMin=10000&dureeMax=10000&statut=0&nom=BOO&description=DD&categorie=65c087fb3e3b8a5583c602b2&page=0&perPage=10000&categorie=
+GET http://localhost:3000/service?prixMin=1000000000&prixMax=1000000000&comMin=1000000000&comMax=1000000000&dureeMin=1000000000&dureeMax=1000000000&statut=1&nom=BOO&description=DD&categorie=&page=0&perPage=2
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1hbmFnZXJAZ21haWwuY29tIiwiZGF0ZUV4cGlyYXRpb24iOiIyMDI0LTAyLTE3VDA3OjQxOjQ1Ljg5OFoiLCJ0eXBlIjoibWFuYWdlciIsImlhdCI6MTcwNzg5NjUwNSwiZXhwIjoxNzA4MTU1NzA1fQ.ugV4XXRHUEeVr9E9SQ0-XY3WMoXJET1Ogzx4ksl-0xU
 
