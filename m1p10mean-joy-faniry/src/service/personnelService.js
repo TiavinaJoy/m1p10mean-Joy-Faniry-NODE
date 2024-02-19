@@ -12,7 +12,7 @@ const { ObjectId } = require("mongodb");
 async function loginPersonnel(data) {
     const retour = {}
     try{
-        const personne = await personnel.findOne({ mail: data.mail});
+        const personne = await utilisateur.findOne({ mail: data.mail});
         if(personne === null) {
             retour.status = 400;
             retour.message = "Email ou mot de passe incorrect";
