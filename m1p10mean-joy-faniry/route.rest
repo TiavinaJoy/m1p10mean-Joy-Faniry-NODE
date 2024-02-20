@@ -51,3 +51,35 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1hbmFnZ
 ###
 GET http://localhost:3000/services
 Content-Type: application/json
+
+
+###
+POST http://localhost:3000/favoris
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNsaWVudEBnbWFpbC5jb20iLCJkYXRlRXhwaXJhdGlvbiI6IjIwMjQtMDItMjNUMDc6Mzg6NDcuNDI4WiIsInR5cGUiOiJDbGllbnQiLCJpYXQiOjE3MDg0MTQ3MjcsImV4cCI6MTcwODY3MzkyN30.JXN2ryaEC5ovfFl6-V5Yu7eN9OmT-YEr26sD1uiKCWU
+
+{
+    "client":"65d454f689bb70990bb685ae",
+    "service":"65ce3762e1d3d098698cbfde",
+    "personnel":[]
+}
+
+###
+GET http://localhost:3000/favoris/65d454f689bb70990bb685ae
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNsaWVudEBnbWFpbC5jb20iLCJkYXRlRXhwaXJhdGlvbiI6IjIwMjQtMDItMjNUMDc6Mzg6NDcuNDI4WiIsInR5cGUiOiJDbGllbnQiLCJpYXQiOjE3MDg0MTQ3MjcsImV4cCI6MTcwODY3MzkyN30.JXN2ryaEC5ovfFl6-V5Yu7eN9OmT-YEr26sD1uiKCWU
+
+###
+PUT http://localhost:3000/favoris/65d4656dd67d134e4a47607e/statut?statut=0
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNsaWVudEBnbWFpbC5jb20iLCJkYXRlRXhwaXJhdGlvbiI6IjIwMjQtMDItMjNUMDc6Mzg6NDcuNDI4WiIsInR5cGUiOiJDbGllbnQiLCJpYXQiOjE3MDg0MTQ3MjcsImV4cCI6MTcwODY3MzkyN30.JXN2ryaEC5ovfFl6-V5Yu7eN9OmT-YEr26sD1uiKCWU
+
+
+###
+PUT http://localhost:3000/favoris/65d4ae48c78ee3f1822006af
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNsaWVudEBnbWFpbC5jb20iLCJkYXRlRXhwaXJhdGlvbiI6IjIwMjQtMDItMjNUMDc6Mzg6NDcuNDI4WiIsInR5cGUiOiJDbGllbnQiLCJpYXQiOjE3MDg0MTQ3MjcsImV4cCI6MTcwODY3MzkyN30.JXN2ryaEC5ovfFl6-V5Yu7eN9OmT-YEr26sD1uiKCWU
+
+{
+    "personnel":[]	
+}

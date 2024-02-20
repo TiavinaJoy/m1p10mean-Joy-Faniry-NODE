@@ -14,6 +14,7 @@ const infoEmployeSchema = new mongoose.Schema({
     },
     salaire: {
         type: Number,
+        default:1,
         required: [true,"Le salaire est obligatoire."]
     },
     service:{
