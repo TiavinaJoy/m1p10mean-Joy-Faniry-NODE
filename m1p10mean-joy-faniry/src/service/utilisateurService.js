@@ -24,6 +24,7 @@ async function inscription(data) {
         newutilisateur.statut = 1;
         const retourUser = await newutilisateur.save();
         const token = generateAccessToken(data,'utilisateur');
+        retourUser.mdp = "";
         retour.status = 201;
         retour.message = "utilisateur inscrit";
         retour.data = {
