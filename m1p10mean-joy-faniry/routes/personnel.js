@@ -10,7 +10,7 @@ router.get('/personnel', personnelController.searchPersonnel)
 router.get('/personnel/all', personnelController.getAllPersonnel)
 
 router.get('/personnel/:personnelId', personnelController.detailPersonnel)
-router.post('/personnel/auth', personnelController.login);
+// router.post('/personnel/auth', personnelController.login);
 
 router.post ('/personnel' /*,authenticateManagerToken*/,
     [

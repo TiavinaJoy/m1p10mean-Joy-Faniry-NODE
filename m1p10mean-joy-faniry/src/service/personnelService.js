@@ -1,5 +1,4 @@
 require("dotenv").config();
-const personnel = require("../model/personnel");
 const utilisateur = require("../model/utilisateur");
 const service = require("../model/service");
 const role = require("../model/role");
@@ -12,42 +11,6 @@ const { mongoose } = require("../configuration/database");
 const bcrypt = require("bcrypt");
 const { ObjectId } = require("mongodb");
 const {filtreValidation} = require('../helper/validation');
-
-
-/*Connexion personnel */
-async function loginPersonnel(data) {
-    const retour = {}
-    try{
-        const personne = await utilisateur.findOne({ mail: data.mail});
-        if(personne === null) {
-            retour.status = 400;
-            retour.message = "Email ou mot de passe incorrect";
-            retour.data = data;
-        }else {
-            const compareMdpEmp= await bcrypt.compare(data.mdp,personne.mdp);
-            if(compareMdpEmp){
-                personne.mdp ="";
-                personne.type = personne.role.intitule;
-                retour.status = 200;
-                retour.message = "Connecté";
-                retour.data = {
-                    token: generateAccessToken(personne,personne.role.intitule),
-                    user: personne,
-                    type: personne.role.intitule
-                }
-            } else {
-                retour.status = 401;
-                retour.message = "Email ou mot de passe incorrect.";
-                retour.data = {};  
-             }
-        }
-        return retour;
-    }catch(error) {
-        throw error;
-    }finally{
-        mongoose.connection.close;
-    }
-}
 
 async function connexion(data) {
     const retour = {}
@@ -354,6 +317,6 @@ async function getAllActivePersonnel(){
     }
 }
 module.exports = {
-    connexion, loginPersonnel, createPersonnel, changeStatutPersonnel, modificationPersonnel, getDetailPersonnel, modificationInfoEmploye, find
+    connexion, createPersonnel, changeStatutPersonnel, modificationPersonnel, getDetailPersonnel, modificationInfoEmploye, find
     ,getAllActivePersonnel
 }

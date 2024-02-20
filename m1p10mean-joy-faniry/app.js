@@ -11,7 +11,6 @@ var cors = require('cors');
 //connection();
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 var personnelRouter = require('./routes/personnel');
 var serviceRouter = require('./routes/service');
 const utilisateurRouter = require('./routes/utilisateur');
@@ -38,7 +37,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/', usersRouter);
 app.use('/', personnelRouter);
 app.use('/', serviceRouter);
 app.use('/', utilisateurRouter)
