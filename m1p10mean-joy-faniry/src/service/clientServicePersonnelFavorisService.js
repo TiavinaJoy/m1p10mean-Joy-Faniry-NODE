@@ -13,7 +13,8 @@ async function createClientPreference(data) {
         const lesFavorisExistant = await clientServicePersonnelFavoris.find(
             {
                 'client._id': new ObjectId(data.client),
-                'service._id': new ObjectId(data.service)
+                'service._id': new ObjectId(data.service),
+                statut: true
             }
         );
         if(lesFavorisExistant.length > 0) throw new Error("Ce service est déjà parmi vos favoris");
@@ -63,7 +64,7 @@ async function createClientPreference(data) {
 async function listeFavorisClient(params) {
     const retour = {};
     try{
-        const fav = await clientServicePersonnelFavoris.find({'client._id': new ObjectId(params.clientId) });
+        const fav = await clientServicePersonnelFavoris.find({'client._id': new ObjectId(params.clientId) , statut: true});
 
         retour.data = fav;
         retour.message = 'OK';

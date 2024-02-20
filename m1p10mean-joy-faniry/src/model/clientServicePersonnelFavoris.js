@@ -19,7 +19,7 @@ const clientServicePersonnelFavorisSchema = new mongoose.Schema({
     },
     statut:{
         type: Boolean,
-        default: 0
+        default: 1
     } 
 });
 
