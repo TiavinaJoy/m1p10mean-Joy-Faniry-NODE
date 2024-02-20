@@ -309,10 +309,15 @@ async function find(query){
         else if (filtreValidation(query.dateEmbaucheMin) && !filtreValidation(query.dateEmbaucheMax)) filtre["infoEmploye.dateEmbauche"] = {$gte: query.dateEmbaucheMin}
         else if (!filtreValidation(query.dateEmbaucheMin) && filtreValidation(query.dateEmbaucheMax)) filtre["infoEmploye.dateEmbauche"] = {$lte: query.dateEmbaucheMax}
     }
-
-
-
-        
+    if(filtreValidation(query.finContratMax) || filtreValidation(query.finContratMin)){
+        if(filtreValidation(query.finContratMin) && filtreValidation(query.finContratMax)) filtre["infoEmploye.finContrat"] ={
+            $gte: query.finContratMin, 
+            $lte: query.finContratMax
+        }
+        else if (filtreValidation(query.finContratMin) && !filtreValidation(query.finContratMax)) filtre["infoEmploye.finContrat"] = {$gte: query.finContratMin}
+        else if (!filtreValidation(query.finContratMin) && filtreValidation(query.finContratMax)) filtre["infoEmploye.finContrat"] = {$lte: query.finContratMax }
+    }
+    if(filtreValidation(query.service)) filtre["infoEmploye.service._id"] = query.service;
 
         const users = await utilisateur.paginate(
              filtre,
@@ -331,6 +336,24 @@ async function find(query){
         mongoose.connection.close
     }
 }
+
+async function getAllActivePersonnel(){
+    retour = {}
+    try {
+        const personnels = await utilisateur.find({statut: true, $or: [{ 'role.intitule': "Employé" }]});
+        retour = {
+            status : 200,
+            message : "",
+            data: personnels
+        }
+        return retour
+    } catch (error) {
+        throw error
+    }finally{
+        mongoose.connection.close
+    }
+}
 module.exports = {
     connexion, loginPersonnel, createPersonnel, changeStatutPersonnel, modificationPersonnel, getDetailPersonnel, modificationInfoEmploye, find
+    ,getAllActivePersonnel
 }
