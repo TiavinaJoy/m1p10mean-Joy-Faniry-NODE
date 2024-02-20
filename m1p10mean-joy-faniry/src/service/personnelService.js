@@ -11,6 +11,7 @@ const roleService = require("./roleService");
 const { mongoose } = require("../configuration/database");
 const bcrypt = require("bcrypt");
 const { ObjectId } = require("mongodb");
+const {filtreValidation} = require('../helper/validation');
 
 
 /*Connexion personnel */
@@ -287,19 +288,30 @@ async function find(query){
     try {
        var filtre = {};
     //    nom , prenom, email, dateInscription? dateEmbauche, statut, role, fincontrat, service, salaire
-        if(query.nom ) filtre.nom = {$regex: query.nom , '$options' : 'i'};
-        if(query.prenom ) filtre.prenom = {$regex: query.prenom, '$options' : 'i'}
-        if(query.mail ) filtre.mail = {$regex: query.mail, '$options' : 'i'}
-        if(query.statut ) filtre.statut = Boolean(query.statut)
-        if(query.role ) filtre.role = {_id:new ObjectId(query.role)};
-        if(query.salaireMin || query.salaireMax){
-            if(query.salaireMin && query.salaireMax) filtre.infoEmploye.salaire = {
-                $gte: query.salaireMin, 
-                $lte: query.salaireMax
-            }
-            else if (query.salaireMin && !query.salaireMax) filtre.infoEmploye.salaire = {$gte: query.salaireMin}
-            else if (!query.salaireMin && query.salaireMax) filtre.infoEmploye.salaire = {$lte: query.salaireMax}
+    if(filtreValidation(query.nom)) filtre.nom = {$regex: query.nom , '$options' : 'i'}
+    if(filtreValidation(query.prenom )) filtre.prenom = {$regex: query.prenom, '$options' : 'i'}
+    if(filtreValidation(query.mail )) filtre.mail = {$regex: query.mail, '$options' : 'i'}
+    if(filtreValidation(query.statut) ) filtre.statut = Boolean(query.statut)
+    if(filtreValidation(query.role) ) filtre.role = {_id:new ObjectId(query.role)}
+    if(filtreValidation(query.salaireMin) || filtreValidation(query.salaireMax)){
+        if(filtreValidation(query.salaireMin) && filtreValidation(query.salaireMax)) filtre["infoEmploye.salaire"] ={
+            $gte: query.salaireMin, 
+            $lte: query.salaireMax
         }
+        else if (filtreValidation(query.salaireMin) && !filtreValidation(query.salaireMax)) filtre["infoEmploye.salaire"] = {$gte: query.salaireMin}
+        else if (!filtreValidation(query.salaireMin) && filtreValidation(query.salaireMax)) filtre["infoEmploye.salaire"] = {$lte: query.salaireMax}
+    }
+    if(filtreValidation(query.dateEmbaucheMin) || filtreValidation(query.dateEmbaucheMax)){
+        if(filtreValidation(query.dateEmbaucheMin) && filtreValidation(query.dateEmbaucheMax)) filtre["infoEmploye.dateEmbauche"] ={
+            $gte: query.dateEmbaucheMin, 
+            $lte: query.dateEmbaucheMax
+        }
+        else if (filtreValidation(query.dateEmbaucheMin) && !filtreValidation(query.dateEmbaucheMax)) filtre["infoEmploye.dateEmbauche"] = {$gte: query.dateEmbaucheMin}
+        else if (!filtreValidation(query.dateEmbaucheMin) && filtreValidation(query.dateEmbaucheMax)) filtre["infoEmploye.dateEmbauche"] = {$lte: query.dateEmbaucheMax}
+    }
+
+
+
         
 
         const users = await utilisateur.paginate(
