@@ -43,46 +43,29 @@ async function inscription(data) {
 async function connexion(data) {
     const retour = {}
     try{
-        const mdp = data.mdp;
-        const email = data.mail;
-
-        if(!validateEmail(email)) {
+        const personne = await utilisateur.findOne({ mail: data.mail});
+        if(personne === null) {
             retour.status = 400;
-            retour.message = "Email invalide.";
+            retour.message = "Email ou mot de passe incorrect";
             retour.data = data;
-            return retour;
-        }
-        if(isEmpty(mdp)) {
-            retour.status = 400;
-            retour.message = "Mot de passe obligatoire.";
-            retour.data = data;
-            return retour;
-        }
-
-        const util = await utilisateur.findOne({ mail: email });
-
-        if(util === null) {
-            retour.status = 400;
-            retour.message = "Utilisateur inexistant.";
-            retour.data = data;
-        }else if (util){
-            const compareMdp = await bcrypt.compare(mdp,util.mdp);
-            
-            if(compareMdp) {
+        }else {
+            const compareMdpEmp= await bcrypt.compare(data.mdp,personne.mdp);
+            if(compareMdpEmp){
+                personne.mdp ="";
+                personne.type = personne.role.intitule;
                 retour.status = 200;
                 retour.message = "Connecté";
                 retour.data = {
-                    token: generateAccessToken(data,'utilisateur'),
-                    user: util,
-                    type: 'utilisateur'
+                    token: generateAccessToken(data,personne.role.intitule),
+                    user: personne,
+                    type: personne.role.intitule
                 }
-            }else {
-                retour.status = 400;
+            } else {
+                retour.status = 401;
                 retour.message = "Email ou mot de passe incorrect.";
-                retour.data = data;
-            }
+                retour.data = {};  
+             }
         }
-
         return retour;
     }catch(error) {
         throw error;

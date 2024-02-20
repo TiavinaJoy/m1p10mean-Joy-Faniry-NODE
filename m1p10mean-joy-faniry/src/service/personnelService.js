@@ -31,7 +31,7 @@ async function loginPersonnel(data) {
                 retour.status = 200;
                 retour.message = "Connecté";
                 retour.data = {
-                    token: generateAccessToken(data,personne.role.intitule),
+                    token: generateAccessToken(personne,personne.role.intitule),
                     user: personne,
                     type: personne.role.intitule
                 }
