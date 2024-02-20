@@ -7,6 +7,8 @@ const { body, validationResult, query } = require('express-validator');
 const { getExpressValidatorError } = require("../src/helper/error");
 
 router.get('/personnel', personnelController.searchPersonnel)
+router.get('/personnel/all', personnelController.getAllPersonnel)
+
 router.get('/personnel/:personnelId', personnelController.detailPersonnel)
 router.post('/personnel/auth', personnelController.login);
 

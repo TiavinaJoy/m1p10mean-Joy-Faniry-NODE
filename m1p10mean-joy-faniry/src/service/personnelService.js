@@ -336,6 +336,24 @@ async function find(query){
         mongoose.connection.close
     }
 }
+
+async function getAllActivePersonnel(){
+    retour = {}
+    try {
+        const personnels = await utilisateur.find({statut: true, $or: [{ 'role.intitule': "Employé" }]});
+        retour = {
+            status : 200,
+            message : "",
+            data: personnels
+        }
+        return retour
+    } catch (error) {
+        throw error
+    }finally{
+        mongoose.connection.close
+    }
+}
 module.exports = {
     connexion, loginPersonnel, createPersonnel, changeStatutPersonnel, modificationPersonnel, getDetailPersonnel, modificationInfoEmploye, find
+    ,getAllActivePersonnel
 }
