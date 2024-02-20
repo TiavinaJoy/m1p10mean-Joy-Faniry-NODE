@@ -13,7 +13,7 @@ function authenticateEmployeToken (req, res, next) {
   
     const result = verifyAccessToken(token);
 
-    if(((result.data.type === 'manager' || result.data.type === 'client') && !result.statut) || !result.statut || result.data.type !== 'employe')
+    if(((result.data.type === 'Manager' || result.data.type === 'Client') && !result.statut) || !result.statut || result.data.type !== 'Employé')
     {
         return res.status(403).send({
             data:"",
