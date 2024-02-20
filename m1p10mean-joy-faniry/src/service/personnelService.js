@@ -319,9 +319,6 @@ async function find(query){
     }
     if(filtreValidation(query.service)) filtre["infoEmploye.service._id"] = query.service;
 
-
-        
-
         const users = await utilisateur.paginate(
              filtre,
             { 
