@@ -23,7 +23,7 @@ async function inscription(data) {
         });
         newutilisateur.statut = 1;
         const retourUser = await newutilisateur.save();
-        const token = generateAccessToken(data,'utilisateur');
+        const token = generateAccessToken(retourUser, 'utilisateur');
         retourUser.mdp = "";
         retour.status = 201;
         retour.message = "utilisateur inscrit";
@@ -56,7 +56,7 @@ async function connexion(data) {
                 retour.status = 200;
                 retour.message = "Connecté";
                 retour.data = {
-                    token: generateAccessToken(data,personne.role.intitule),
+                    token: generateAccessToken(personne,personne.role.intitule),
                     user: personne,
                     type: personne.role.intitule
                 }
