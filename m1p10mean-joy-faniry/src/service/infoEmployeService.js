@@ -22,11 +22,14 @@ async function createInfoEmploye(data, option){
     try {
         // tadiavina daholo le service
         var listeIdService = [];
-        data.service.forEach(service => {
-            listeIdService.push(new ObjectId(service))
-        });
+        if(data.service != undefined) {
+            data.service.forEach(service => {
+                listeIdService.push(new ObjectId(service))
+            });
+        }
         const filtre = {_id:{$in:listeIdService}};
         const services = await service.find(filtre);
+        if(services.length == 0) throw Error("Service obligatoire pour l'employé") ;
         data.service = services;
         const  newInfoEmploye =  new infoEmploye(data);
         await newInfoEmploye.save(option)
@@ -37,6 +40,7 @@ async function createInfoEmploye(data, option){
         };
         return retour;
     } catch (error) {
+        console.log(error);
         throw error;
     }finally{
         mongoose.connection.close

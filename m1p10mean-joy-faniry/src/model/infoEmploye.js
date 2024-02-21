@@ -10,7 +10,13 @@ const infoEmployeSchema = new mongoose.Schema({
         required: [true,"La date d'embauche est obligatoire."]
     },
     finContrat: {
-        type: Date
+        type: Date,
+        validate: {
+            validator: function (value) {
+                return value > this.dateEmbauche;
+            },
+            message: "La date de fin de contrat doit être supérieure à la date d'embauche."
+        }
     },
     salaire: {
         type: Number,

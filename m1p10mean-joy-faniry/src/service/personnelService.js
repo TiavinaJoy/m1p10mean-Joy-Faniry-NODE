@@ -209,11 +209,14 @@ async function modificationInfoEmploye(params, body){
     try {
         // tadiavina aloha le liste service attribuena aminy 
         var listeIdService = [];
-        body.service.forEach(service => {
-            listeIdService.push(new ObjectId(service))
-        });
+        if(body.service != undefined) {
+            body.service.forEach(service => {
+                listeIdService.push(new ObjectId(service))
+            });
+        }
         const filtreService = {_id:{$in:listeIdService}};
         const services = await service.find(filtreService);
+        if(services.length == 0) throw Error("Service obligatoire pour l'employé")
         const newInfoEmp= {
             salaire: body.salaire,
             finContrat: body.finContrat ?? '',
