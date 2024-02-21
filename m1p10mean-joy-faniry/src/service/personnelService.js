@@ -285,8 +285,9 @@ async function find(query){
         const users = await utilisateur.paginate(
              filtre,
             { 
-                offset: query.perPage ?? 10  * query.page ?? 0, 
-                limit: query.perPage ?? 10
+                // offset: query.perPage ?? 10  * query.page ?? 0, 
+                limit: query.perPage ?? 10,
+                page: query.page
             }
         ).then({});
         retour.status = 200;
