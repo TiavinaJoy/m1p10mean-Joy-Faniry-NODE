@@ -3,10 +3,11 @@ var router = express.Router();
 var rendezvousController = require("../src/controller/rendezvousController");
 const { body, validationResult, param } = require('express-validator');
 var { authenticateClientToken } = require("../src/middleware/clientMiddleware");
+const { getExpressValidatorError } = require('../src/helper/error');
 
-router.post('/rendezVous', authenticateClientToken,
+router.post('/rendezVous/:utilisateurId', /*authenticateClientToken, */
 [
-    param('utilisateurId').notEmpty().trim().escape().withMessage("L'utilisateur est obligatoire"),
+    param('utilisateurId').notEmpty().trim().escape().withMessage("Le client est obligatoire"),
     body('personnel').isString().notEmpty().trim().escape().withMessage("Le personnel est obligatoire"),
     body('dateRendezVous').isString().notEmpty().trim().escape().withMessage("La date du rendez-vous est obligatoire"),
     body('service').notEmpty().withMessage("un service est requis pour un rendez-vous.")
@@ -18,6 +19,9 @@ router.post('/rendezVous', authenticateClientToken,
     await rendezvousController.addRendezVous(req, res);
 });
 
+router.get('/rendezVous/:rendezVousId', rendezvousController.detailRendezVous);
+router.get('/rendezVous/personnel/:personnelId', rendezvousController.personnelRendezVous);
+router.get('/rendezVous/client/:clientId', rendezvousController.clientRendezVous);
 
 
 module.exports = router;

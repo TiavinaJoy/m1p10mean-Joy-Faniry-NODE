@@ -2,6 +2,7 @@ const { mongoose } = require("../configuration/database");
 const service = require("./service");
 const statutRendezVous = require("./statutRendezVous");
 const utilisateur = require("./utilisateur");
+const { ObjectId } = require("mongodb");
 
 
 const rendezVousSchema = new mongoose.Schema({
@@ -20,7 +21,7 @@ const rendezVousSchema = new mongoose.Schema({
     statut:{
         type: statutRendezVous.schema,
         default:{
-            "_id":{"$oid":"65d515a1dd12de809a87a47a"}
+            "_id":{_id: new ObjectId("65d515a1dd12de809a87a47a")}
             ,"intitule":"Nouveau"}
     },
     service:{
