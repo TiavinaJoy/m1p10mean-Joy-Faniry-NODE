@@ -287,7 +287,7 @@ async function find(query){
             { 
                 // offset: query.perPage ?? 10  * query.page ?? 0, 
                 limit: query.perPage ?? 10,
-                page: query.page
+                page: query.page==0 ? 1 : query.page
             }
         ).then({});
         retour.status = 200;
