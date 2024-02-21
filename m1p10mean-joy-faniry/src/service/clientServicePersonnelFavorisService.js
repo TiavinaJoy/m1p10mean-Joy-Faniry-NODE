@@ -30,9 +30,12 @@ async function createClientPreference(data) {
         }
 
         const lesPers = [];
-        data.personnel.forEach(pers => {
-            lesPers.push(new ObjectId(pers))
-        });
+        if(data.personnel != undefined) {
+            console.log("AT V");
+            data.personnel.forEach(pers => {
+                lesPers.push(new ObjectId(pers))
+            }); 
+        }
 
         if(lesPers.length == 0) {
             disablePersonnelIndex({'personnel.mail':1});
@@ -116,11 +119,15 @@ function disablePersonnelIndex(indexeko)
 
 async function modificationFavoris(params, data){
     const retour = {};
+    
     try {
         const lesPers = [];
-        data.personnel.forEach(pers => {
-            lesPers.push(new ObjectId(pers))
-        });
+        if(data.personnel != undefined) {
+            data.personnel.forEach(pers => {
+                lesPers.push(new ObjectId(pers))
+            });
+        }
+        
         if(lesPers.length == 0)  {
             disablePersonnelIndex({'personnel.mail':1});
         }
