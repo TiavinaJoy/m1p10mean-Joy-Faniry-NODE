@@ -24,7 +24,8 @@ const rendezVousSchema = new mongoose.Schema({
             ,"intitule":"Nouveau"}
     },
     service:{
-        type:[service.schema]
+        type:service.schema,
+        required:[true, "Un service est requis "]
     }
 });
 

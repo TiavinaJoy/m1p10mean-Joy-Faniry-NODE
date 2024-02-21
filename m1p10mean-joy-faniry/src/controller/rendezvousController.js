@@ -3,7 +3,7 @@ const { ajoutRendezVous } = require("../service/rendezvousService")
 
 async function addRendezVous( req , res ) {
     try{
-        const roles = await ajoutRendezVous(req.body);
+        const roles = await ajoutRendezVous(req.params, req.body);
         res.status(roles.status).send({
             "status": roles.status,
             "message": roles.message,
