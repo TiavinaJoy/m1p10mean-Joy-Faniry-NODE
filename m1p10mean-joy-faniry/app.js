@@ -15,6 +15,7 @@ var personnelRouter = require('./routes/personnel');
 var serviceRouter = require('./routes/service');
 var favorisRouter = require('./routes/preference');
 const utilisateurRouter = require('./routes/utilisateur');
+const rendezVousRouter = require('./routes/rendezVous');
 
 var app = express();
 /* Connexion */
@@ -42,6 +43,7 @@ app.use('/', personnelRouter);
 app.use('/', serviceRouter);
 app.use('/', favorisRouter);
 app.use('/', utilisateurRouter)
+app.use('/', rendezVousRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
