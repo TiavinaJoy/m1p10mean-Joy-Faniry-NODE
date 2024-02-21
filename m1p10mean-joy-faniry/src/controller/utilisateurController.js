@@ -1,4 +1,4 @@
-const { inscription,connexion } = require("../service/clientService");
+const { inscription,connexion } = require("../service/utilisateurService.js");
 const { getError } = require("../helper/error");
 
 async function register( req , res ) {

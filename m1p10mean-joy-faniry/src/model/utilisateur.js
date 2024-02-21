@@ -68,7 +68,7 @@ const utilisateurSchema = new mongoose.Schema({
   },
   role: {
     type: role.schema,
-    required:[true, "Chaque utilisateur"]
+    required:[true, "Le rôle est obligatoire"]
   },
   infoEmploye: {
     type: infoEmploye.schema

@@ -1,0 +1,447 @@
+{
+	"info": {
+		"_postman_id": "f127d126-260b-4445-ac7c-09acd95c4643",
+		"name": "Mean",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27418220",
+		"_collection_link": "https://planetary-robot-486094.postman.co/workspace/My-Workspace~f8364764-7dfa-47de-8d8d-b7cf77c9131a/collection/27418220-f127d126-260b-4445-ac7c-09acd95c4643?action=share&source=collection_link&creator=27418220"
+	},
+	"item": [
+		{
+			"name": "Get Service",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "zazaa",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "localhost:3000/service",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"service"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Detail employé",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "zazaa",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "localhost:3000/personnel/65d070fffd2c0cdf155ce4f0",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"personnel",
+						"65d070fffd2c0cdf155ce4f0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find employé",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "zazaa",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "localhost:3000/personnel?service=65c4b8f2590309ee6a340fe8&mail=emp2",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"personnel"
+					],
+					"query": [
+						{
+							"key": "service",
+							"value": "65c4b8f2590309ee6a340fe8"
+						},
+						{
+							"key": "mail",
+							"value": "emp2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get ALL employé",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "zazaa",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "localhost:3000/personnel/all",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"personnel",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Service",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer {{managerToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nom\":\"TestJoy\",\r\n    \"prix\": 30000,\r\n    \"description\":\"blablabla\",\r\n    \"commission\":5,\r\n    \"duree\":1,\r\n    \"statut\":1,\r\n    \"categorie\":\"65c089383e3b8a5583c602b6\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/service",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"service"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"mail\":\"clientjoy@gmail.com\",\r\n    \"nom\":\"TestJoy\",\r\n    \"prenom\":\"jsp\",\r\n    \"mdp\":\"Mdpprom13.\",\r\n    \"confirmMdp\":\"Mdpprom13.\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/utilisateur/register",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"utilisateur",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Personnel",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer {{managerToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nom\":\"TestJoy\",\r\n    \"prenom\": \"Prenom\",\r\n    \"mail\":\"emp2@gmail.com\",\r\n    \"mdp\":\"Mdpprom13.\",\r\n    \"salaire\": 30000,\r\n    \"service\":[\"65c4b8f2590309ee6a340fe8\",\"65c4b97a590309ee6a340feb\"],\r\n    \"statut\":1,\r\n    \"role\":\"65cf220d4b0c10b702a48f2c\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/personnel",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"personnel"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login personnel",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"mail\":\"emp2@gmail.com\",\r\n    \"mdp\":\"Mdpprom13.\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/personnel/auth",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"personnel",
+						"auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update personnel",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nom\":\"Bozy\",\r\n    \"prenom\":\"Bozy\",\r\n    \"mail\":\"bozy@gmail.com\",\r\n    \"mdp\": \"bozybe123.\",\r\n    \"confirmMdp\":\"bozybe123.\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/personnel/65d070fffd2c0cdf155ce4f0",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"personnel",
+						"65d070fffd2c0cdf155ce4f0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update infoEmploye via manager",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"salaire\": 500000,\r\n    \"service\":[\"65c4b91c590309ee6a340fe9\",\"65d2f4fc6974917bcf32756c\"],\r\n    \"role\":\"65cf21cd4b0c10b702a48f2b\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/personnel/infoEmploye/65d070fffd2c0cdf155ce4f0/",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"personnel",
+						"infoEmploye",
+						"65d070fffd2c0cdf155ce4f0",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update Service",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "bearer {{managerToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nom\":\"brushing modif\",\r\n    \"prix\": 30000,\r\n    \"description\":\"Proin vitae malesuada augue. Proin nec nunc a ipsum blandit semper at et leo. Duis sit amet justo nisl. Quisque porta, turpis eu mollis feugiat, lacus odio laoreet mi, non porttitor leo lectus et odio. Nunc eget augue vel libero scelerisque facilisis. Fusce luctus malesuada velit, sit amet condimentum arcu eleifend et. Nunc quis ultricies libero. Morbi ullamcorper aliquet luctus. Nunc porttitor, dolor in tincidunt varius, lorem felis interdum quam, sed feugiat est leo vel quam. Nunc ac tristique ipsum. Vestibulum eu tempor tellus, ut semper erat. Nam quis libero vel nisi cursus consectetur. Maecenas suscipit lorem ex, dictum posuere eros lacinia non. Suspendisse lorem dolor, placerat eget maximus eget, hendrerit at est.\",\r\n    \"commission\":5,\r\n    \"duree\":2,\r\n    \"categorie\":\"65c089383e3b8a5583c602b6\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/service/65c088233e3b8a5583c602b3",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"service",
+						"65c088233e3b8a5583c602b3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update Service status",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer {{managerToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:3000/service/65c088233e3b8a5583c602b3/statut?statut=1",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"service",
+						"65c088233e3b8a5583c602b3",
+						"statut"
+					],
+					"query": [
+						{
+							"key": "statut",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Activate/inactivate personnel",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer {{managerToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:3000/personnel/65d070fffd2c0cdf155ce4f0/statut?statut=1",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"personnel",
+						"65d070fffd2c0cdf155ce4f0",
+						"statut"
+					],
+					"query": [
+						{
+							"key": "statut",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Detail Service",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/service/65c088233e3b8a5583c602b3",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"service",
+						"65c088233e3b8a5583c602b3"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "managerToken",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1hbmFnZXJAZ21haWwuY29tIiwiZGF0ZUV4cGlyYXRpb24iOiIyMDI0LTAyLTE1VDIwOjU5OjAyLjc3OVoiLCJ0eXBlIjoibWFuYWdlciIsImlhdCI6MTcwNzc3MTU0MiwiZXhwIjoxNzA4MDMwNzQyfQ.YYiOfBvtJNzHDt8kuVzIGe_kpbSRY75LPtZ7f-hVHOc",
+			"type": "string"
+		}
+	]
+}
