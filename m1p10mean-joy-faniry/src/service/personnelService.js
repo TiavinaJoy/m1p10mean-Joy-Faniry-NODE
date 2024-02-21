@@ -316,7 +316,20 @@ async function getAllActivePersonnel(){
         mongoose.connection.close
     }
 }
+
+
+async function findById(id){
+    try {
+        const emp = await utilisateur.find({_id: new ObjectId(id)});
+        if(emp.length == 1) return emp[0];
+        throw new Error('Employé introuvable.')
+    } catch (error) {
+        throw error;
+    }finally{
+        mongoose.connection.close
+    } 
+}
 module.exports = {
     connexion, createPersonnel, changeStatutPersonnel, modificationPersonnel, getDetailPersonnel, modificationInfoEmploye, find
-    ,getAllActivePersonnel
+    ,getAllActivePersonnel, findById
 }
