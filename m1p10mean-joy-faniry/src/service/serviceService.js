@@ -3,6 +3,7 @@ const serviceCategorie = require("../model/serviceCategorie");
 const { mongoose } = require("../configuration/database");
 const {findById} = require("./serviceCategorieService");
 const { ObjectId } = require("mongodb");
+const {filtreValidation} = require('../helper/validation');
 
 async function lesServices() {
     const retour = {};
@@ -20,6 +21,62 @@ async function lesServices() {
 }
 
 async function listeService(query) {
+    const retour = {};
+    try{
+
+        var filtre = {};
+        if(filtreValidation(query.prixMin) || filtreValidation(query.prixMax)){
+            if(filtreValidation(query.prixMin) && filtreValidation(query.prixMax)) filtre.prix ={
+                $gte: query.prixMin, 
+                $lte: query.prixMax
+            }
+            else if (filtreValidation(query.prixMin) && !filtreValidation(query.prixMax)) filtre.prix = {$gte: query.prixMin}
+            else if (!filtreValidation(query.prixMin) && filtreValidation(query.prixMax)) filtre.prix = {$lte: query.prixMax}
+        }
+        if(filtreValidation(query.comMin) || filtreValidation(query.comMax)){
+            if(filtreValidation(query.comMin) && filtreValidation(query.comMax)) filtre.commission ={
+                $gte: query.comMin, 
+                $lte: query.comMax
+            }
+            else if (filtreValidation(query.comMin) && !filtreValidation(query.comMax)) filtre.commission = {$gte: query.comMin}
+            else if (!filtreValidation(query.comMin) && filtreValidation(query.comMax)) filtre.commission = {$lte: query.comMax}
+        }
+        if(filtreValidation(query.dureeMin) || filtreValidation(query.dureeMax)){
+            if(filtreValidation(query.dureeMin) && filtreValidation(query.dureeMax)) filtre.duree ={
+                $gte: query.dureeMin, 
+                $lte: query.dureeMax
+            }
+            else if (filtreValidation(query.dureeMin) && !filtreValidation(query.dureeMax)) filtre.duree = {$gte: query.dureeMin}
+            else if (!filtreValidation(query.dureeMin) && filtreValidation(query.dureeMax)) filtre.duree = {$lte: query.dureeMax}
+        }
+        if(filtreValidation(query.nom)) filtre.nom = {$regex: query.nom , '$options' : 'i'}
+        if(filtreValidation(query.description)) filtre.description = {$regex: query.description , '$options' : 'i'}
+        if(filtreValidation(query.statut) ) filtre.statut = Boolean(query.statut)
+        if(filtreValidation(query.categorie) ) filtre.categorie = {_id:new ObjectId(query.categorie)}
+       
+        const perPage = query.perPage ?? 10;
+        const page = query.page ?? 0;
+
+        const services = await service.paginate(
+            filtre,
+            { 
+                offset: perPage * page , 
+                limit: perPage
+            }
+        ).then({});
+        retour.status = 200;
+        retour.message = "OK";
+        retour.data = services;
+        return retour;
+    }catch(error){
+        console.log(error);
+        throw error;
+     }finally{
+         mongoose.connection.close;
+     } 
+}
+
+/*async function listeService(query) {
     const retour = {};
     try{
         var stat = false;
@@ -78,7 +135,7 @@ async function listeService(query) {
      }finally{
          mongoose.connection.close;
      } 
-}
+}*/
 
 async function createService(data) {
     const retour = {};

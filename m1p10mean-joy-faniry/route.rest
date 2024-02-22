@@ -28,7 +28,7 @@ Content-Type: application/json
 
 
 ###
-GET http://localhost:3000/service?prixMin=1000000000&prixMax=1000000000&comMin=1000000000&comMax=1000000000&dureeMin=1000000000&dureeMax=1000000000&statut=1&nom=BOO&description=DD&categorie=&page=0&perPage=2
+GET http://localhost:3000/service?prixMin=&prixMax=&comMin=&comMax=&dureeMin=&dureeMax=&statut=&nom=BABA&description=&categorie=&page=0&perPage=10
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1hbmFnZXJAZ21haWwuY29tIiwiZGF0ZUV4cGlyYXRpb24iOiIyMDI0LTAyLTE3VDA3OjQxOjQ1Ljg5OFoiLCJ0eXBlIjoibWFuYWdlciIsImlhdCI6MTcwNzg5NjUwNSwiZXhwIjoxNzA4MTU1NzA1fQ.ugV4XXRHUEeVr9E9SQ0-XY3WMoXJET1Ogzx4ksl-0xU
 
@@ -50,4 +50,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1hbmFnZ
 
 ###
 GET http://localhost:3000/services
+Content-Type: application/json
+
+###
+GET http://localhost:3000/personnel?nom=TestJoy&page=1&perPage=10
 Content-Type: application/json
