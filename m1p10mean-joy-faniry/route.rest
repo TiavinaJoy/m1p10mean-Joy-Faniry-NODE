@@ -90,12 +90,13 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ZDM1ZTVjODYwMzQ0MDAyOTk0MTllNyIsImVtYWlsIjoiZmFuaXJ5a2VseUBnbWFpbC5jb20iLCJkYXRlRXhwaXJhdGlvbiI6IjIwMjQtMDItMjRUMjA6NDM6MzIuNjk2WiIsInR5cGUiOiJFbXBsb3nDqSIsImlhdCI6MTcwODU0ODIxMiwiZXhwIjoxNzA4ODA3NDEyfQ.sj4o-_nwenuv7u-JxHA5WMt0TNMlSgd5sEKx95biVSo
 
 {
-    "dateDebut": "2024-02-24 15:00", 
-    "dateFin": "2024-02-24 18:00"
+    "dateDebut": "2024-02-25 14:00", 
+    "dateFin": "2024-02-25 17:00"
 }
 
 ###
-GET http://localhost:3000/horaire/65d35e5c86034400299419e7/search?dateDebutMin=2024-02-22T08:00
+GET http://localhost:3000/horaire/65d35e5c86034400299419e7/search?dateDebutMax=2024-02-25T12:00&dateDebutMin=2024-02-25 07:00
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ZDM1ZTVjODYwMzQ0MDAyOTk0MTllNyIsImVtYWlsIjoiZmFuaXJ5a2VseUBnbWFpbC5jb20iLCJkYXRlRXhwaXJhdGlvbiI6IjIwMjQtMDItMjRUMjA6NDM6MzIuNjk2WiIsInR5cGUiOiJFbXBsb3nDqSIsImlhdCI6MTcwODU0ODIxMiwiZXhwIjoxNzA4ODA3NDEyfQ.sj4o-_nwenuv7u-JxHA5WMt0TNMlSgd5sEKx95biVSo
+
 
