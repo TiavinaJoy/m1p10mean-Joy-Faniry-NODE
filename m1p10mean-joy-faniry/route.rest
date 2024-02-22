@@ -101,5 +101,5 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ZDM1ZTVjO
 
 
 ###
-GET http://localhost:3000/personnel?nom=TestJoy&page=1&perPage=10
+GET http://localhost:3000/personnel?page=0&perPage=10
 Content-Type: application/json

@@ -284,13 +284,14 @@ async function find(query){
         else if (!filtreValidation(query.finContratMin) && filtreValidation(query.finContratMax)) filtre["infoEmploye.finContrat"] = {$lte: query.finContratMax }
     }
     if(filtreValidation(query.service)) filtre["infoEmploye.service._id"] = query.service;
-
+    const perPage = query.perPage ?? 10;
+    const page = query.page ?? 0;
         const users = await utilisateur.paginate(
              filtre,
             { 
                 // offset: query.perPage ?? 10  * query.page ?? 0, 
-                limit: query.perPage ?? 10,
-                page: query.page==0 ? 1 : query.page
+                offset: perPage * page , 
+                limit: perPage
             }
         ).then({});
         retour.status = 200;
