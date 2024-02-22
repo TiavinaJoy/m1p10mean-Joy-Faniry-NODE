@@ -9,7 +9,7 @@ function generateAccessToken(user,type) {
     expirationDate.setDate(expirationDate.getDate() + 3);
 
     const payload = {
-      id: user._id,
+      sub: user._id,
       email: user.mail,
       dateExpiration: expirationDate,
       type: type

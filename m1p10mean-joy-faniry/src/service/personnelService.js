@@ -288,8 +288,9 @@ async function find(query){
         const users = await utilisateur.paginate(
              filtre,
             { 
-                offset: query.perPage ?? 10  * query.page ?? 0, 
-                limit: query.perPage ?? 10
+                // offset: query.perPage ?? 10  * query.page ?? 0, 
+                limit: query.perPage ?? 10,
+                page: query.page==0 ? 1 : query.page
             }
         ).then({});
         retour.status = 200;
@@ -319,7 +320,20 @@ async function getAllActivePersonnel(){
         mongoose.connection.close
     }
 }
+
+
+async function findById(id){
+    try {
+        const emp = await utilisateur.find({_id: new ObjectId(id)});
+        if(emp.length == 1) return emp[0];
+        throw new Error('Employé introuvable.')
+    } catch (error) {
+        throw error;
+    }finally{
+        mongoose.connection.close
+    } 
+}
 module.exports = {
     connexion, createPersonnel, changeStatutPersonnel, modificationPersonnel, getDetailPersonnel, modificationInfoEmploye, find
-    ,getAllActivePersonnel
+    ,getAllActivePersonnel, findById
 }
