@@ -127,19 +127,13 @@ async function listeHorairesEmp(params,query) {
     }
 }
 
-async function checkHoraireRdv(dateRdv,duree,employeId) {
+async function checkHoraireRdv(dateRdv, finRdv, employeId) {
     try{
-        const datyRdv = timezoneDateTime(dateRdv);
-
-        const finRdv = timezoneDateTime(dateRdv);
-        finRdv.setMinutes(finRdv.getMinutes() + duree);
-        
         const filtre = {
             'personnel._id': new ObjectId(employeId),
-            dateDebut: { $lte: datyRdv.toISOString() },
+            dateDebut: { $lte: dateRdv },
             dateFin: { $gte: finRdv.toISOString() }
         }
-
         const getHoraires = await horairePersonnel.find(filtre);
         if(getHoraires.length > 0) return true; 
         else return false;

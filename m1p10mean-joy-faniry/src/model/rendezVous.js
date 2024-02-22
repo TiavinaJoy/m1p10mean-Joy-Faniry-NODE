@@ -14,6 +14,9 @@ const rendezVousSchema = new mongoose.Schema({
         type: Date,
         default: new Date()
     },
+    dateFin:{
+        type:Date
+    },
     personnel:{
         type: utilisateur.schema,
         required: [true, "le personnel est obligatoire"]
