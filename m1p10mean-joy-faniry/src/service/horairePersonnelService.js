@@ -17,6 +17,17 @@ async function ajoutHoraire(data,params) {
         const fin = new Date(data.dateFin);
         fin.setHours(fin.getHours() + 3);
 
+        data.personnel = personnel;
+        data.dateDebut  = debut;
+        data.dateFin = fin;
+
+        const horaire = new horairePersonnel(data);
+
+        const validation = horaire.validateSync();
+        if (validation  && validation.name === "ValidationError") {
+            throw validation;
+        }
+
         const heureAlreadyIn = await horairePersonnel.find(
             {
                 $or: [
@@ -59,11 +70,7 @@ async function ajoutHoraire(data,params) {
             if(horaireExistant.length > 0) throw new Error("Cet horaire est enregistré");
 
         }    */ 
-        data.personnel = personnel;
-        data.dateDebut  = debut;
-        data.dateFin = fin;
-
-        const horaire = new horairePersonnel(data);
+        
         await horaire.save();
 
         retour.data = horaire;
@@ -114,7 +121,16 @@ async function listeHorairesEmp(params,query) {
             }
         }
         filtre["personnel._id"] = new ObjectId(params.personnelId) 
-        const horaire = await horairePersonnel.find(filtre);
+        var page = query.page ??  0;
+        var perPage = query.perPage ?? 10;
+        //const horaire = await horairePersonnel.find(filtre);
+        const horaire = await horairePersonnel.paginate(
+            filtre,
+            { 
+                offset: perPage * page, 
+                limit: perPage
+            }
+        );
 
         retour.data = horaire;
         retour.status = 200;
