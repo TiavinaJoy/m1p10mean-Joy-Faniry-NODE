@@ -258,7 +258,7 @@ async function find(query){
     if(filtreValidation(query.prenom )) filtre.prenom = {$regex: query.prenom, '$options' : 'i'}
     if(filtreValidation(query.mail )) filtre.mail = {$regex: query.mail, '$options' : 'i'}
     if(filtreValidation(query.statut) ) filtre.statut = Boolean(query.statut)
-    if(filtreValidation(query.role) ) filtre.role = {_id:new ObjectId(query.role)}
+    if(filtreValidation(query.role) ) filtre["role._id"] = query.role
     if(filtreValidation(query.salaireMin) || filtreValidation(query.salaireMax)){
         if(filtreValidation(query.salaireMin) && filtreValidation(query.salaireMax)) filtre["infoEmploye.salaire"] ={
             $gte: query.salaireMin, 
@@ -284,6 +284,7 @@ async function find(query){
         else if (!filtreValidation(query.finContratMin) && filtreValidation(query.finContratMax)) filtre["infoEmploye.finContrat"] = {$lte: query.finContratMax }
     }
     if(filtreValidation(query.service)) filtre["infoEmploye.service._id"] = query.service;
+    console.log(filtre)
     const perPage = query.perPage ?? 10;
     const page = query.page ?? 0;
         const users = await utilisateur.paginate(
