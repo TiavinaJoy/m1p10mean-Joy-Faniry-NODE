@@ -52,7 +52,8 @@ async function listeService(query) {
         if(filtreValidation(query.nom)) filtre.nom = {$regex: query.nom , '$options' : 'i'}
         if(filtreValidation(query.description)) filtre.description = {$regex: query.description , '$options' : 'i'}
         if(filtreValidation(query.statut) ) filtre.statut = Boolean(query.statut)
-        if(filtreValidation(query.categorie) ) filtre.categorie = {_id:new ObjectId(query.categorie)}
+        if(filtreValidation(query.categorie) ) filtre["categorie._id"] = query.categorie;
+        console.log(filtre);
        
         const perPage = query.perPage ?? 10;
         const page = query.page ?? 0;
