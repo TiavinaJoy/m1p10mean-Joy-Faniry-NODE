@@ -5,7 +5,6 @@ function timezoneDateTime(dateString) {
     const hour = parseInt(hourString);
     daty.getHours() == hour ? true : daty.setHours(daty.getHours() + 3);
     daty.setHours(daty.getHours() + 3);
-    //console.log(daty);
     return daty;
 }
 
