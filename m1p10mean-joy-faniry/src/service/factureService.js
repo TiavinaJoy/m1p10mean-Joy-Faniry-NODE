@@ -76,7 +76,15 @@ async function findById(id){
     } 
 }
 
-
+async function factureSansPaiement(clientId){
+    return {
+        message: "Features in construction",
+        status: 503,
+        data:{
+            rappel : "https://chat.openai.com/share/fcc8ab75-9f71-4c92-bcc5-13a4950940d5"
+        }
+    }
+}
 module.exports = {
     listefacture, findById, createFactureFromRdv, createFactureFromId
 };
