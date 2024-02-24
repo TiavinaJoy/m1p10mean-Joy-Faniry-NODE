@@ -76,7 +76,7 @@ const utilisateurSchema = new mongoose.Schema({
 });
 
 utilisateurSchema.set('timestamps',true);
-utilisateurSchema.plugin(uniqueValidator, {message: "Email {VALUE} déjà utilisé. "});
+// utilisateurSchema.plugin(uniqueValidator, {message: "Nlife {VALUE} déjà utilisé. "});
 utilisateurSchema.plugin(mongoosePaginate);
 
 const utilisateur = mongoose.model('utilisateur', utilisateurSchema,'utilisateur');

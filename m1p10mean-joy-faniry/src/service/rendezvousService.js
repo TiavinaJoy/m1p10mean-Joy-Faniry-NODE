@@ -7,22 +7,23 @@ const service = require("../model/service");
 const { disableIndex } = require("../helper/removeIndex");
 const { timezoneDateTime } = require("../helper/DateHelper");
 const { checkHoraireRdv } = require("./horairePersonnelService");
+const { createFactureFromRdv } = require("./factureService");
 
 
 async function ajoutRendezVous(params, data) {
     const retour = {};
+    const session =await mongoose.startSession();
+    session.startTransaction();
     try{
         disableIndex(rendezVous, {'client.mail':1});
         disableIndex(rendezVous, {'personnel.mail':1});
+        disableIndex(rendezVous, {'client._id':1});
         const dateRdv = timezoneDateTime(data.dateRendezVous)
         const dateFinRdv = dateRdv;
         const client = await utilisateur.findOne({_id: new ObjectId(params.utilisateurId)});
-        //mila vérifiena hoe ilay Personnel ve afaka manao an'io service io -------
         const personnel = await utilisateur.findOne({_id: new ObjectId(data.personnel)});
         const services = await service.findOne({_id: new ObjectId(data.service)});
         dateFinRdv.setMinutes(dateFinRdv.getMinutes() + services.duree);
-        // check horraire personnel
-        console.log(dateFinRdv);
         const checkHorraire = await checkHoraireRdv(dateRdv, dateFinRdv, data.personnel);
         const checkChevauchement = await trouverCheuvauchement(dateRdv, dateFinRdv, params.utilisateurId, data.personnel);
         if( checkHorraire && !checkChevauchement ){
@@ -34,15 +35,32 @@ async function ajoutRendezVous(params, data) {
                 dateFin: dateFinRdv
             }
             const newRdv = new rendezVous(rdv);
-            const createdRdv= await newRdv.save();
+            // newRdv.collection.getIndexes((err, indexes) => {
+            //     if (err) {
+            //     //   console.error('Error retrieving indexes:', err);
+            //     } else {
+            //     //   console.log('Indexes:', indexes);
+            //     }
+            //   });
+
+              console.log('---------------------')
+            const createdRdv= await newRdv.save({session});
+            const factures = await createFactureFromRdv(createdRdv, client, services.prix, session);
             retour.status = 201;
             retour.message = "Rendez-vous plannifié.";
-            retour.data = createdRdv;
+            retour.data = {
+                rendezVous: rdv,
+                facture : factures.data
+            };
+            await session.commitTransaction()
+            session.endSession()
             return retour;
         }else{
             throw new Error("Personnel indisponible");
         }
     }catch(error){
+        await session.abortTransaction();
+        session.endSession();
         throw error;
      }finally{
          mongoose.connection.close
