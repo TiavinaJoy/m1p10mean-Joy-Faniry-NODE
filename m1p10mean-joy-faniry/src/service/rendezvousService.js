@@ -8,6 +8,7 @@ const { disableIndex } = require("../helper/removeIndex");
 const { timezoneDateTime } = require("../helper/DateHelper");
 const { checkHoraireRdv } = require("./horairePersonnelService");
 const { createFactureFromRdv } = require("./factureService");
+const statutRendezVous = require("../model/statutRendezVous");
 
 
 async function ajoutRendezVous(params, data) {
@@ -32,18 +33,10 @@ async function ajoutRendezVous(params, data) {
                 personnel: personnel,
                 service: services,
                 dateRendezVous: dateRdv,
-                dateFin: dateFinRdv
+                dateFin: dateFinRdv,
+                prixService: services.prix
             }
             const newRdv = new rendezVous(rdv);
-            // newRdv.collection.getIndexes((err, indexes) => {
-            //     if (err) {
-            //     //   console.error('Error retrieving indexes:', err);
-            //     } else {
-            //     //   console.log('Indexes:', indexes);
-            //     }
-            //   });
-
-              console.log('---------------------')
             const createdRdv= await newRdv.save({session});
             const factures = await createFactureFromRdv(createdRdv, client, services.prix, session);
             retour.status = 201;
@@ -96,7 +89,7 @@ async function getPersonnelRendezVous(params, query){
                 $lte: query.dateRendezVousMax
             }
             else if (filtreValidation(query.dateRendezVousMin) && !filtreValidation(query.dateRendezVousMax)) filtre.dateRendezVous = {$gte: timezoneDateTime(query.dateRendezVousMin).toISOString()}
-            else if (!filtreValidation(query.dateRendezVousMin) && filtreValidation(query.dateRendezVousMax)) filtre.dateRendezVous = {$lte: query.dateRendezVousMax}
+            else if (!filtreValidation(query.dateRendezVousMin) && filtreValidation(query.dateRendezVousMax)) filtre.dateRendezVous = {$lte: timezoneDateTime(query.dateRendezVousMiax).toISOString()}
         }
         const rdv = await rendezVous.find(filtre);
         rdv.forEach(element => {
@@ -161,6 +154,38 @@ async function trouverCheuvauchement(dateDebut, dateFin, client, personnel){
         mongoose.connection.close
     }
 }
+
+async function transitRendezVous(params){
+    try {
+        const transition = await statutRendezVous.findOne({_id:params.statutId});
+        if(transition === null) throw new Error('Statut introuvable.')
+        await rendezVous.updateOne({_id: new ObjectId(params.rendezVousId)},{$set:{ statut: transition}})
+        return {
+            message: "RendezVous mis à jour",
+            data:{},
+            status: 200
+        }
+    } catch (error) {
+        throw error
+    }finally{
+        mongoose.connection.close
+    }
+}
+
+async function getAllRendezVousStatut(){
+    try {
+        const statuts = await statutRendezVous.find()
+        return {
+            message: "RendezVous mis à jour",
+            data:statuts,
+            status: 200
+        }
+    } catch (error) {
+        throw error
+    }finally{
+        mongoose.connection.close
+    }
+}
 module.exports = {
-    ajoutRendezVous, getDetailRendezVous, getPersonnelRendezVous, getClientRendezVous, trouverCheuvauchement
+    ajoutRendezVous, getDetailRendezVous, getPersonnelRendezVous, getClientRendezVous, trouverCheuvauchement, transitRendezVous, getAllRendezVousStatut
 };

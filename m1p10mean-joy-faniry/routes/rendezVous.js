@@ -22,6 +22,7 @@ router.post('/rendezVous/:utilisateurId', /*authenticateClientToken, */
 router.get('/rendezVous/:rendezVousId', rendezvousController.detailRendezVous);
 router.get('/rendezVous/personnel/:personnelId', rendezvousController.personnelRendezVous);
 router.get('/rendezVous/client/:clientId', rendezvousController.clientRendezVous);
-
+router.get('/rendezVous/transitions/all', rendezvousController.rendezVousStatut);
+router.put('/rendezVous/:rendezVousId/transition/:statutId', rendezvousController.changerStatutService);
 
 module.exports = router;
