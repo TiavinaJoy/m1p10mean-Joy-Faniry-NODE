@@ -11,6 +11,11 @@ function filtreValidation(element) {
     return false;
 }
 
+function toBoolean(input){
+  // input type string
+  return  input === '1' ? true : false;
+}
+
 function disableIndex(model,indexeko)
 {
     console.log(model);
@@ -35,5 +40,6 @@ module.exports = {
     validateEmail,
     isEmpty,
     filtreValidation,
-    disableIndex
+    disableIndex,
+    toBoolean
 };

@@ -51,7 +51,7 @@ async function listeService(query) {
         }
         if(filtreValidation(query.nom)) filtre.nom = {$regex: query.nom , '$options' : 'i'}
         if(filtreValidation(query.description)) filtre.description = {$regex: query.description , '$options' : 'i'}
-        if(filtreValidation(query.statut) ) filtre.statut = Boolean(query.statut)
+        if(filtreValidation(query.statut) ) filtre.statut = toBoolean(query.statut)
         if(filtreValidation(query.categorie) ) filtre["categorie._id"] = query.categorie;
         console.log(filtre);
        

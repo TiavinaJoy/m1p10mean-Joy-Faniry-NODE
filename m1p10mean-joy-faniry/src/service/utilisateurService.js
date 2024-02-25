@@ -61,7 +61,7 @@ async function connexion(data) {
                     type: personne.role.intitule
                 }
             } else {
-                retour.status = 401;
+                retour.status = 400;
                 retour.message = "Email ou mot de passe incorrect.";
                 retour.data = {};  
              }

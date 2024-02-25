@@ -75,7 +75,7 @@ async function getDetailRendezVous(params){
         if(rdv === null) throw new Error("Rendez-vous introuvable.");
         retour.status = 200;
         retour.message = "";
-        retour.data = createdRdv;
+        retour.data = rdv;
         return retour;
     }catch(error){
         throw error;
@@ -98,7 +98,16 @@ async function getPersonnelRendezVous(params, query){
             else if (filtreValidation(query.dateRendezVousMin) && !filtreValidation(query.dateRendezVousMax)) filtre.dateRendezVous = {$gte: timezoneDateTime(query.dateRendezVousMin).toISOString()}
             else if (!filtreValidation(query.dateRendezVousMin) && filtreValidation(query.dateRendezVousMax)) filtre.dateRendezVous = {$lte: query.dateRendezVousMax}
         }
-        const rdv = await rendezVous.find(filtre);
+        const perPage = query.perPage ?? 10;
+        const page = query.page ?? 0;
+
+        const rdv = await rendezVous.paginate(
+            filtre,
+           { 
+               offset: perPage * page , 
+               limit: perPage
+           }
+       ).then({});
         rdv.forEach(element => {
             delete element.client.mdp;
             delete element.personnel.mdp;
@@ -128,7 +137,17 @@ async function getClientRendezVous(params, query){
             else if (filtreValidation(query.dateRendezVousMin) && !filtreValidation(query.dateRendezVousMax)) filtre.dateRendezVous = {$gte: timezoneDateTime(query.dateRendezVousMin).toISOString()}
             else if (!filtreValidation(query.dateRendezVousMin) && filtreValidation(query.dateRendezVousMax)) filtre.dateRendezVous = {$lte: query.dateRendezVousMax}
         }
-        const rdv = await rendezVous.find(filtre);
+
+        const perPage = query.perPage ?? 10;
+        const page = query.page ?? 0;
+
+        const rdv = await rendezVous.paginate(
+            filtre,
+           { 
+               offset: perPage * page , 
+               limit: perPage
+           }
+       ).then({});
         rdv.forEach(element => {
             delete element.client.mdp;
             delete element.personnel.mdp;

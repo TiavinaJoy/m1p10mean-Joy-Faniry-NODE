@@ -10,7 +10,7 @@ const roleService = require("./roleService");
 const { mongoose } = require("../configuration/database");
 const bcrypt = require("bcrypt");
 const { ObjectId } = require("mongodb");
-const {filtreValidation} = require('../helper/validation');
+const {filtreValidation, toBoolean} = require('../helper/validation');
 
 async function connexion(data) {
     const retour = {}
@@ -257,7 +257,7 @@ async function find(query){
     if(filtreValidation(query.nom)) filtre.nom = {$regex: query.nom , '$options' : 'i'}
     if(filtreValidation(query.prenom )) filtre.prenom = {$regex: query.prenom, '$options' : 'i'}
     if(filtreValidation(query.mail )) filtre.mail = {$regex: query.mail, '$options' : 'i'}
-    if(filtreValidation(query.statut) ) filtre.statut = Boolean(query.statut)
+    if(filtreValidation(query.statut) ) filtre.statut = toBoolean(query.statut)
     if(filtreValidation(query.role) ) filtre["role._id"] = query.role
     if(filtreValidation(query.salaireMin) || filtreValidation(query.salaireMax)){
         if(filtreValidation(query.salaireMin) && filtreValidation(query.salaireMax)) filtre["infoEmploye.salaire"] ={
