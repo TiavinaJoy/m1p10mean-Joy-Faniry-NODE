@@ -3,7 +3,7 @@ const serviceCategorie = require("../model/serviceCategorie");
 const { mongoose } = require("../configuration/database");
 const {findById} = require("./serviceCategorieService");
 const { ObjectId } = require("mongodb");
-const {filtreValidation} = require('../helper/validation');
+const {filtreValidation, toBoolean} = require('../helper/validation');
 
 async function lesServices() {
     const retour = {};
