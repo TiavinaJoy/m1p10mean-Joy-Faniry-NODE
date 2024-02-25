@@ -61,6 +61,7 @@ async function clientRendezVous(req, res){
             "data": rendesVous.data
         });
     }catch(error){
+        console.log(error);
         res.status(getError(error).status).send({
             "status": getError(error).status,
             "message": getError(error).message,

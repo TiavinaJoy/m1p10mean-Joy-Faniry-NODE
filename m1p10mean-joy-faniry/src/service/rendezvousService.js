@@ -107,8 +107,8 @@ async function getPersonnelRendezVous(params, query){
                offset: perPage * page , 
                limit: perPage
            }
-       ).then({});
-        rdv.forEach(element => {
+       );
+        rdv.docs.forEach(element => {
             delete element.client.mdp;
             delete element.personnel.mdp;
         });
@@ -147,8 +147,9 @@ async function getClientRendezVous(params, query){
                offset: perPage * page , 
                limit: perPage
            }
-       ).then({});
-        rdv.forEach(element => {
+       );
+       console.log(rdv);
+        rdv.docs.forEach(element => {
             delete element.client.mdp;
             delete element.personnel.mdp;
         });
@@ -157,6 +158,7 @@ async function getClientRendezVous(params, query){
         retour.data = rdv;
         return retour;
     }catch(error){
+        console.log(error);
         throw error;
      }finally{
          mongoose.connection.close
