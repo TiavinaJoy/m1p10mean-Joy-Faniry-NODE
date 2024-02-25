@@ -11,6 +11,8 @@ const { mongoose } = require("../configuration/database");
 const bcrypt = require("bcrypt");
 const { ObjectId } = require("mongodb");
 const {filtreValidation, toBoolean} = require('../helper/validation');
+const { timezoneDateTime } = require("../helper/DateHelper");
+const rendezVous = require("../model/rendezVous");
 
 async function connexion(data) {
     const retour = {}
@@ -335,7 +337,43 @@ async function findById(id){
         mongoose.connection.close
     } 
 }
+
+async function getCommission(params, query){
+    try {
+        const filtre = {
+            $ne:{'statut._id':new ObjectId('65d515a1dd12de809a87a47a')},
+            'personnel._id':new ObjectId(params.personnelId)
+        };
+
+        if(filtreValidation(query.dateRendezVousMin) || filtreValidation(query.dateRendezVousMax)){
+            if(filtreValidation(query.dateRendezVousMin) && filtreValidation(query.dateRendezVousMax)) filtre.dateRendezVous ={
+                $gte: query.dateRendezVousMin, 
+                $lte: query.dateRendezVousMax
+            }
+            else if (filtreValidation(query.dateRendezVousMin) && !filtreValidation(query.dateRendezVousMax)) filtre.dateRendezVous = {$gte: timezoneDateTime(query.dateRendezVousMin).toISOString()}
+            else if (!filtreValidation(query.dateRendezVousMin) && filtreValidation(query.dateRendezVousMax)) filtre.dateRendezVous = {$lte: timezoneDateTime(query.dateRendezVousMax).toISOString()}
+        }
+        // 
+        const rendezVousDonne = await rendezVous.find(filtre);
+        var somme = 0;
+        rendezVousDonne.forEach(rdv => rdv.prix!== null ? somme = somme : somme = somme+rdv.prix);
+        return {
+            message:"OK",
+            data: {
+                rendezVous:rendezVousDonne,
+                totalCommission: somme,
+                nombreRendezVous: rendezVousDonne.length
+            }
+        }
+
+        
+    } catch (error) {
+        throw error
+    }finally{
+        mongoose.connection.close
+    }
+}
 module.exports = {
     connexion, createPersonnel, changeStatutPersonnel, modificationPersonnel, getDetailPersonnel, modificationInfoEmploye, find
-    ,getAllActivePersonnel, findById
+    ,getAllActivePersonnel, findById, getCommission
 }

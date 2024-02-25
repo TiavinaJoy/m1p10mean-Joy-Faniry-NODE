@@ -21,7 +21,8 @@ const infoEmployeSchema = new mongoose.Schema({
     salaire: {
         type: Number,
         default:1,
-        required: [true,"Le salaire est obligatoire."]
+        required: [true,"Le salaire est obligatoire."],
+        min: [1,"Le salaire doit être supérieur à 0"]
     },
     service:{
       type: [service.schema],

@@ -10,15 +10,18 @@ const serviceSchema = new mongoose.Schema({
     },
     prix: {
         type: Number,
-        required: [true,"Le prix est obligatoire."]
+        required: [true,"Le prix est obligatoire."],
+        min: [1,"Le prix doit être supérieur à 0"]
     },
     commission: {
         type: Number,
-        required: [true,"La commission est obligatoire."]
+        required: [true,"La commission est obligatoire."],
+        min: [0,"La commission doit être supérieur ou égale à 0"]
     },
     duree: {
         type: Number,
-        required: [true,"La durée est obligatoire."]
+        required: [true,"La durée est obligatoire."],
+        min: [1,"La durée doit être supérieur à 0"]
     },
     statut: {
         type: Boolean,
