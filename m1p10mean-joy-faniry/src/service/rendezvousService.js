@@ -4,61 +4,116 @@ const { ObjectId } = require("mongodb");
 const utilisateur = require("../model/utilisateur");
 const { filtreValidation } = require("../helper/validation");
 const service = require("../model/service");
-const { disableIndex } = require("../helper/removeIndex");
+const { disableAllIndex } = require("../helper/removeIndex");
 const { timezoneDateTime } = require("../helper/DateHelper");
 const { checkHoraireRdv } = require("./horairePersonnelService");
 const { createFactureFromRdv } = require("./factureService");
 const statutRendezVous = require("../model/statutRendezVous");
 
 
+// async function ajoutRendezVous(params, data) {
+//     const retour = {};
+//     const session =await mongoose.startSession();
+//     session.startTransaction();
+//     try{
+//         disableAllIndex(rendezVous)
+//         const client = await utilisateur.findOne({_id: new ObjectId(params.utilisateurId)});
+//         const personnel = await utilisateur.findOne({_id: new ObjectId(data.personnel)});
+//         const services = await service.findOne({_id: new ObjectId(data.service)});
+//         const dateRdv = timezoneDateTime(data.dateRendezVous)
+//         const dateFinRdv = dateRdv;
+//         dateFinRdv.setMinutes(dateFinRdv.getMinutes() + services.duree);
+//         const checkHorraire = await checkHoraireRdv(dateRdv, dateFinRdv, data.personnel);
+//         const checkChevauchement = await trouverCheuvauchement(dateRdv, dateFinRdv, params.utilisateurId, data.personnel);
+//         if( checkHorraire && !checkChevauchement ){
+//             const rdv = {
+//                 client: client,
+//                 personnel: personnel,
+//                 service: services,
+//                 dateRendezVous: dateRdv,
+//                 dateFin: dateFinRdv,
+//                 prixService: services.prix
+//             }
+//             const newRdv = new rendezVous(rdv);
+//             const createdRdv= await newRdv.save({session});
+//             const factures = await createFactureFromRdv(createdRdv, client, services.prix, session);
+//             retour.status = 201;
+//             retour.message = "Rendez-vous plannifié.";
+//             retour.data = {
+//                 rendezVous: rdv,
+//                 facture : factures.data
+//             };
+//             await session.commitTransaction()
+//             session.endSession()
+//             return retour;
+//         }else{
+//             throw new Error("Personnel indisponible");
+//         }
+//     }catch(error){
+//         await session.abortTransaction();
+//         session.endSession();
+//         throw error;
+//      }finally{
+//          mongoose.connection.close
+//      } 
+// }
+
 async function ajoutRendezVous(params, data) {
-    const retour = {};
-    const session =await mongoose.startSession();
+    const session = await mongoose.startSession();
     session.startTransaction();
-    try{
-        disableIndex(rendezVous, {'client.mail':1});
-        disableIndex(rendezVous, {'personnel.mail':1});
-        disableIndex(rendezVous, {'client._id':1});
-        const dateRdv = timezoneDateTime(data.dateRendezVous)
-        const dateFinRdv = dateRdv;
+    try {
+        // Supprimer tous les index sur la collection rendezVous
+        await disableAllIndex(rendezVous);
+
         const client = await utilisateur.findOne({_id: new ObjectId(params.utilisateurId)});
         const personnel = await utilisateur.findOne({_id: new ObjectId(data.personnel)});
-        const services = await service.findOne({_id: new ObjectId(data.service)});
-        dateFinRdv.setMinutes(dateFinRdv.getMinutes() + services.duree);
+        const serviceData = await service.findOne({_id: new ObjectId(data.service)});
+
+        const dateRdv = timezoneDateTime(data.dateRendezVous);
+        const dateFinRdv = new Date(dateRdv.getTime() + serviceData.duree * 60000); // Ajouter la durée du service en minutes
+
         const checkHorraire = await checkHoraireRdv(dateRdv, dateFinRdv, data.personnel);
         const checkChevauchement = await trouverCheuvauchement(dateRdv, dateFinRdv, params.utilisateurId, data.personnel);
-        if( checkHorraire && !checkChevauchement ){
-            const rdv = {
+
+        if (checkHorraire && !checkChevauchement) {
+            const rdv = new rendezVous({
                 client: client,
                 personnel: personnel,
-                service: services,
+                service: serviceData,
                 dateRendezVous: dateRdv,
                 dateFin: dateFinRdv,
-                prixService: services.prix
-            }
-            const newRdv = new rendezVous(rdv);
-            const createdRdv= await newRdv.save({session});
-            const factures = await createFactureFromRdv(createdRdv, client, services.prix, session);
-            retour.status = 201;
-            retour.message = "Rendez-vous plannifié.";
-            retour.data = {
-                rendezVous: rdv,
-                facture : factures.data
+                prixService: serviceData.prix
+            });
+
+            // Créer le rendez-vous
+            const createdRdv = await rdv.save({ session: session });
+
+            // Créer la facture
+            const factures = await createFactureFromRdv(createdRdv, client, serviceData.prix, session);
+
+            // Commit de la transaction
+            await session.commitTransaction();
+            session.endSession();
+
+            return {
+                status: 201,
+                message: "Rendez-vous planifié.",
+                data: {
+                    rendezVous: rdv,
+                    facture: factures.data
+                }
             };
-            await session.commitTransaction()
-            session.endSession()
-            return retour;
-        }else{
+        } else {
             throw new Error("Personnel indisponible");
         }
-    }catch(error){
+    } catch (error) {
+        console.log(error);
         await session.abortTransaction();
         session.endSession();
         throw error;
-     }finally{
-         mongoose.connection.close
-     } 
+    }
 }
+
 
 async function getDetailRendezVous(params){
     const retour = {};

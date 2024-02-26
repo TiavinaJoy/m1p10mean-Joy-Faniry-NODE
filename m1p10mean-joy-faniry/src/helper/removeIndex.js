@@ -17,8 +17,8 @@ function disableIndex(model, indexeko) {
     });
 }
 
-function disableAllIndex(model){
-    model.collection.dropIndexes()
+async function disableAllIndex(model){
+    await model.collection.dropIndexes()
 }
 
 module.exports = {

@@ -6,11 +6,13 @@ const utilisateur = require("../model/utilisateur");
 const paiement = require("../model/paiement");
 const { filtreValidation } = require("../helper/validation");
 const { timezoneDateTime } = require("../helper/DateHelper");
+const { disableAllIndex } = require("../helper/removeIndex");
 
 
 async function ajoutPaiement(params) {
     const retour = {};
     try {
+        await disableAllIndex(paiement);
         if((await paiement.exists({"facture._id": new ObjectId(params.factureId)})) !== null){
             return {
                 message: "Facture déjà payé",
