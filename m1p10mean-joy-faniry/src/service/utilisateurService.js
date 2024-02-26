@@ -9,6 +9,7 @@ const role = require("../model/role");
 async function inscription(data) {
     const retour = {};
     try{
+        if(await verifyMailUnique(data.mail) === false)throw new Error('Mail déjà utilisé');
         if(data.mdp.localeCompare(data.confirmMdp)!=0) throw new Error("Les mots de passes ne correspondent pas.");
         const clientRole = await role.findOne({intitule: {$regex: 'Client'}});
         const newutilisateur = new utilisateur(data);
@@ -17,10 +18,16 @@ async function inscription(data) {
         if (validation  && validation.name === "ValidationError") {
             throw validation;
         }
-        bcrypt.genSalt(10, async (err,salt) => {
-            const hash = await bcrypt.hash(data.mdp, salt);
-            newutilisateur.mdp = hash;
-        });
+        newutilisateur.mdp= await new Promise((resolve, reject) => {
+            bcrypt.hash(data.mdp, 10, function(err, hash) {
+            if (err) reject(err)
+            resolve(hash)
+            });
+        })
+        // bcrypt.genSalt(10, async (err,salt) => {
+        //     const hash = await bcrypt.hash(data.mdp, salt);
+        //     newutilisateur.mdp = hash;
+        // });
         newutilisateur.statut = 1;
         const retourUser = await newutilisateur.save();
         const token = generateAccessToken(retourUser, 'utilisateur');
@@ -74,7 +81,19 @@ async function connexion(data) {
     }
 }
 
+async function verifyMailUnique(email){
+    try {
+        const user = await utilisateur.exists({mail:email})
+        return user == null;
+    } catch (error) {
+        throw error
+    }finally{
+        mongoose.connection.close
+    }
+}
+
 module.exports = {
     inscription,
-    connexion
+    connexion,
+    verifyMailUnique
 };
