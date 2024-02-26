@@ -18,6 +18,7 @@ const utilisateurRouter = require('./routes/utilisateur');
 const horaireRouter = require('./routes/horaire');
 const rendezVousRouter = require('./routes/rendezVous');
 const paiementRouter = require('./routes/paiement');
+const depenseRouter = require('./routes/depense');
 
 var app = express();
 /* Connexion */
@@ -49,6 +50,7 @@ app.use('/', horaireRouter);
 app.use('/', utilisateurRouter)
 app.use('/', rendezVousRouter)
 app.use('/', paiementRouter)
+app.use('/', depenseRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

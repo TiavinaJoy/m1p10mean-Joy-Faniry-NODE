@@ -13,6 +13,7 @@ const { ObjectId } = require("mongodb");
 const {filtreValidation, toBoolean} = require('../helper/validation');
 const { timezoneDateTime } = require("../helper/DateHelper");
 const rendezVous = require("../model/rendezVous");
+const { verifyMailUnique } = require("./utilisateurService");
 
 async function connexion(data) {
     const retour = {}
@@ -73,10 +74,11 @@ async function createPersonnel(data){
     session.startTransaction();
     const defaultMdp = process.env.DEFAULT_MDP;
     try{
+        if(await verifyMailUnique(data.mail) === false)throw new Error('Mail déjà utilisé');
         const newInfoEmploye = {
             salaire: data.salaire,
             dateEmbauche: data.dateEmbauche,
-            finContrat: data.finContrat ?? "",
+            finContrat: data.finContrat,
             service : data.service
         }
         const addNewInfoEmploye = await createInfoEmploye(newInfoEmploye, {session});
@@ -341,8 +343,8 @@ async function findById(id){
 async function getCommission(params, query){
     try {
         const filtre = {
-            $ne:{'statut._id':new ObjectId('65d515a1dd12de809a87a47a')},
-            'personnel._id':new ObjectId(params.personnelId)
+            "statut._id":{$ne:[new ObjectId('65d515a1dd12de809a87a47a')]},
+            'personnel._id':new ObjectId(params.personnelId)  
         };
 
         if(filtreValidation(query.dateRendezVousMin) || filtreValidation(query.dateRendezVousMax)){

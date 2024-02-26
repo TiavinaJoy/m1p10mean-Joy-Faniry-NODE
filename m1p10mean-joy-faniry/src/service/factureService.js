@@ -37,7 +37,7 @@ async function createFactureFromId(idRdv, idClient, prix){
 async function createFactureFromRdv(rdv, client, prix, session){
     const retour = {};
     try{
-        disableAllIndex(facture)
+        await disableAllIndex(facture)
         const factureToAdd = new facture({
             rendezVous: rdv,
             client: client,

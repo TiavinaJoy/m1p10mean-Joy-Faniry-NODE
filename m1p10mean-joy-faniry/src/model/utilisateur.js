@@ -1,5 +1,5 @@
 const {mongoose } = require("../configuration/database");
-const uniqueValidator = require('mongoose-unique-validator');
+// const uniqueValidator = require('mongoose-unique-validator');
 const infoEmploye = require("./infoEmploye");
 const role = require("./role");
 const mongoosePaginate = require("mongoose-paginate-v2");
@@ -8,7 +8,6 @@ const utilisateurSchema = new mongoose.Schema({
   mail: {
     type: String,
     required: [true,"L'email est obligatoire."],
-    unique: true,
     trim: [true,"L'email ne doit pas contenir d'espace."],
     lowercase: [true,"L'email ne doit pas contenir de caractère en majuscule"],
     validate: {
