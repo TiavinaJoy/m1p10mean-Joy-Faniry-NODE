@@ -1,15 +1,15 @@
 const { getError } = require("../helper/error");
-const { ajoutRendezVous, getDetailRendezVous, getPersonnelRendezVous, getClientRendezVous,transitRendezVous, getAllRendezVousStatut } = require("../service/rendezvousService")
+const { ajoutRendezVous, getDetailRendezVous, getPersonnelRendezVous, getClientRendezVous, transitRendezVous, getAllRendezVousStatut, updateRendezVous } = require("../service/rendezvousService")
 
-async function addRendezVous( req , res ) {
-    try{
+async function addRendezVous(req, res) {
+    try {
         const rendesVous = await ajoutRendezVous(req.params, req.body);
         res.status(rendesVous.status).send({
             "status": rendesVous.status,
             "message": rendesVous.message,
             "data": rendesVous.data
         });
-    }catch(error){
+    } catch (error) {
         res.status(getError(error).status).send({
             "status": getError(error).status,
             "message": getError(error).message,
@@ -19,14 +19,14 @@ async function addRendezVous( req , res ) {
 }
 
 async function detailRendezVous(req, res) {
-    try{
+    try {
         const rendesVous = await getDetailRendezVous(req.params);
         res.status(rendesVous.status).send({
             "status": rendesVous.status,
             "message": rendesVous.message,
             "data": rendesVous.data
         });
-    }catch(error){
+    } catch (error) {
         res.status(getError(error).status).send({
             "status": getError(error).status,
             "message": getError(error).message,
@@ -35,15 +35,15 @@ async function detailRendezVous(req, res) {
     }
 }
 
-async function personnelRendezVous(req, res){
-    try{
+async function personnelRendezVous(req, res) {
+    try {
         const rendesVous = await getPersonnelRendezVous(req.params, req.query);
         res.status(rendesVous.status).send({
             "status": rendesVous.status,
             "message": rendesVous.message,
             "data": rendesVous.data
         });
-    }catch(error){
+    } catch (error) {
         res.status(getError(error).status).send({
             "status": getError(error).status,
             "message": getError(error).message,
@@ -52,16 +52,15 @@ async function personnelRendezVous(req, res){
     }
 }
 
-async function clientRendezVous(req, res){
-    try{
+async function clientRendezVous(req, res) {
+    try {
         const rendesVous = await getClientRendezVous(req.params, req.query);
         res.status(rendesVous.status).send({
             "status": rendesVous.status,
             "message": rendesVous.message,
             "data": rendesVous.data
         });
-    }catch(error){
-        console.log(error);
+    } catch (error) {
         res.status(getError(error).status).send({
             "status": getError(error).status,
             "message": getError(error).message,
@@ -70,15 +69,15 @@ async function clientRendezVous(req, res){
     }
 }
 
-async function rendezVousStatut(req, res){
-    try{
+async function rendezVousStatut(req, res) {
+    try {
         const rendesVous = await getAllRendezVousStatut();
         res.status(rendesVous.status).send({
             "status": rendesVous.status,
             "message": rendesVous.message,
             "data": rendesVous.data
         });
-    }catch(error){
+    } catch (error) {
         res.status(getError(error).status).send({
             "status": getError(error).status,
             "message": getError(error).message,
@@ -86,15 +85,32 @@ async function rendezVousStatut(req, res){
         });
     }
 }
-async function changerStatutService(req, res){
-    try{
+async function changerStatutService(req, res) {
+    try {
         const rendesVous = await transitRendezVous(req.params);
         res.status(rendesVous.status).send({
             "status": rendesVous.status,
             "message": rendesVous.message,
             "data": rendesVous.data
         });
-    }catch(error){
+    } catch (error) {
+        res.status(getError(error).status).send({
+            "status": getError(error).status,
+            "message": getError(error).message,
+            "data": req.body
+        });
+    }
+}
+
+async function majRendezVous(req, res){
+    try {
+        const rendesVous = await updateRendezVous(req.params, req.body);
+        res.status(rendesVous.status).send({
+            "status": rendesVous.status,
+            "message": rendesVous.message,
+            "data": rendesVous.data
+        });
+    } catch (error) {
         res.status(getError(error).status).send({
             "status": getError(error).status,
             "message": getError(error).message,
@@ -103,5 +119,5 @@ async function changerStatutService(req, res){
     }
 }
 module.exports = {
-    addRendezVous, detailRendezVous, personnelRendezVous, clientRendezVous, changerStatutService, rendezVousStatut
+    addRendezVous, detailRendezVous, personnelRendezVous, clientRendezVous, changerStatutService, rendezVousStatut, majRendezVous
 };

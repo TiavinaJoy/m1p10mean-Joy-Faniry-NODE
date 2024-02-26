@@ -8,16 +8,16 @@ const horairePersonnelSchema = new mongoose.Schema({
         type: Date,
         default: new Date(),
         required: [true,"La date de début est obligatoire."],
-        validate: {
-            validator: function (value) {
-                const today = new Date();
-                today.setHours(today.getHours() + 3);
-                const daty = timezoneDateTime(value);
-                return daty > today
+        // validate: {
+        //     validator: function (value) {
+        //         const today = new Date();
+        //         today.setHours(today.getHours() + 3);
+                // const daty = timezoneDateTime(value);
+        //         return daty < today
 
-            },
-            message: "La date de début doit être supérieure à la date du jour."
-        }
+        //     },
+        //     message: "La date de début doit être supérieure à la date du jour."
+        // }
         
     },
     dateFin: {

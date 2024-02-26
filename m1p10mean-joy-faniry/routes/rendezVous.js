@@ -24,5 +24,6 @@ router.get('/rendezVous/personnel/:personnelId', rendezvousController.personnelR
 router.get('/rendezVous/client/:clientId', rendezvousController.clientRendezVous);
 router.get('/rendezVous/transitions/all', rendezvousController.rendezVousStatut);
 router.put('/rendezVous/:rendezVousId/transition/:statutId', rendezvousController.changerStatutService);
+router.put('/rendezVous/:rendezVousId',rendezvousController.majRendezVous);
 
 module.exports = router;

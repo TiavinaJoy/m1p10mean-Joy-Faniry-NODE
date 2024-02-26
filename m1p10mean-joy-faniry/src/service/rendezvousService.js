@@ -207,6 +207,58 @@ async function getAllRendezVousStatut(){
         mongoose.connection.close
     }
 }
+
+async function updateRendezVous(params, body){
+    try {
+        const [oldRdv, newPersonnel] = await Promise.all([
+            rendezVous.findOne({_id: new ObjectId(params.rendezVousId)}),
+            utilisateur.findOne({_id: new ObjectId(body.personnelId)})
+        ]);
+
+        if (oldRdv === null) {
+            throw new Error('Rendez-vous introuvable.');
+        }
+
+        if (newPersonnel === null) {
+            throw new Error('Personnel introuvable');
+        }
+
+        const dateRdv = timezoneDateTime(body.dateRendezVous);
+        const dateFinRdv = timezoneDateTime(body.dateRendezVous);
+        dateFinRdv.setMinutes(dateFinRdv.getMinutes() + oldRdv.service.duree);
+
+        const [checkHorraire, chevauchement] = await Promise.all([
+            checkHoraireRdv(dateRdv, dateFinRdv, body.personnelId),
+            trouverCheuvauchement(dateRdv, dateFinRdv, oldRdv.client._id, body.personnelId)
+        ]);
+
+        if (checkHorraire && !chevauchement) {
+            const set = {
+                dateRendezVous: dateRdv,
+                dateFin: dateFinRdv,
+                personnel: newPersonnel
+            };
+
+            if (+oldRdv.dateRendezVous !== +dateRdv) {
+                set.statut = {"_id": new ObjectId("65d51624dd12de809a87a47f"), "intitule": "Reporté"};
+            }
+
+            await rendezVous.updateOne({_id: new ObjectId(params.rendezVousId)}, {$set: set});
+
+            return {
+                message: "Rendez-vous mis à jour",
+                data: {},
+                status: 200
+            };
+        } else {
+            throw new Error(chevauchement ? 'PersonnelIndisponible' : 'Un rendez-vous existe déjà sur ce planning');
+        }
+    } catch (error) {
+        throw error
+    }finally{
+        mongoose.connection.close
+    }
+}
 module.exports = {
-    ajoutRendezVous, getDetailRendezVous, getPersonnelRendezVous, getClientRendezVous, trouverCheuvauchement, transitRendezVous, getAllRendezVousStatut
+    ajoutRendezVous, getDetailRendezVous, getPersonnelRendezVous, getClientRendezVous, trouverCheuvauchement, transitRendezVous, getAllRendezVousStatut, updateRendezVous
 };
