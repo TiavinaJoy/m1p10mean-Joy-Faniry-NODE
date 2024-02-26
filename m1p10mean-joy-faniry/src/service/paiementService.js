@@ -47,17 +47,23 @@ async function ajoutPaiement(params) {
     }
 }
 
+function createdAtTimeZone(dt){
+    const daty = new Date(dt);
+    daty.setHours(daty.getHours() - 3);
+    return daty;
+}
+
 async function getListePaiement(query){
     try {
         const filtre = {};
         const test = filtreValidation(query.datePaiementMin);
         if(filtreValidation(query.datePaiementMin) || filtreValidation(query.datePaiementMax)){
             if(filtreValidation(query.datePaiementMin) && filtreValidation(query.datePaiementMax)) filtre.createdAt ={
-                $gte: query.datePaiementMin, 
-                $lte: query.datePaiementMax
+                $gte: (createdAtTimeZone(query.datePaiementMin)).toISOString(), 
+                $lte: (createdAtTimeZone(query.datePaiementMax)).toISOString()
             }
-            else if (filtreValidation(query.datePaiementMin) && !filtreValidation(query.datePaiementMax)) filtre.createdAt = {$gte: timezoneDateTime(query.datePaiementMin).toISOString()}
-            else if (!filtreValidation(query.datePaiementMin) && filtreValidation(query.datePaiementMax)) filtre.createdAt = {$lte: timezoneDateTime(query.datePaiementMax).toISOString()}
+            else if (filtreValidation(query.datePaiementMin) && !filtreValidation(query.datePaiementMax)) filtre.createdAt = {$gte: (createdAtTimeZone(query.datePaiementMin)).toISOString()}
+            else if (!filtreValidation(query.datePaiementMin) && filtreValidation(query.datePaiementMax)) filtre.createdAt = {$lte: (createdAtTimeZone(query.datePaiementMax)).toISOString()}
         }
         if(filtreValidation(query.payeur)) filtre["payeur._id"] = new ObjectId(query.payeur);
         if(filtreValidation(query.facture)) filtre["facture._id"] = new ObjectId(query.facture);
