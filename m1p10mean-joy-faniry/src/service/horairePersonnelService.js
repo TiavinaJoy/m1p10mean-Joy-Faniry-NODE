@@ -139,10 +139,14 @@ async function checkHoraireRdv(dateRdv, finRdv, employeId) {
     try{
         const filtre = {
             'personnel._id': new ObjectId(employeId),
-            dateDebut: { $lte: dateRdv },
+            dateDebut: { $lte: dateRdv.toISOString() },
             dateFin: { $gte: finRdv.toISOString() }
         }
+        console.log(filtre);
         const getHoraires = await horairePersonnel.find(filtre);
+        console.log("Horraire")
+        console.log(getHoraires);
+        console.log("Horraire")
         if(getHoraires.length > 0) return true; 
         else return false;
     }catch(error){
