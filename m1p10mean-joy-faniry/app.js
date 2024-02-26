@@ -24,7 +24,7 @@ var app = express();
 const {connection} = require("./src/configuration/database");
 connection();
 
-const allowedOrigin = ["http://localhost:4200"];
+const allowedOrigin = ["http://localhost:4200","https://m1p10mean-joy-faniry-angular.vercel.app"];
 const options = cors.CorsOptions = {
   origin:allowedOrigin
 }
