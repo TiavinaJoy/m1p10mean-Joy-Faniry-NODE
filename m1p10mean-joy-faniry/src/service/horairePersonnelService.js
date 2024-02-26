@@ -17,17 +17,6 @@ async function ajoutHoraire(data,params) {
         const fin = new Date(data.dateFin);
         fin.setHours(fin.getHours() + 3);
 
-        data.personnel = personnel;
-        data.dateDebut  = debut;
-        data.dateFin = fin;
-
-        const horaire = new horairePersonnel(data);
-
-        const validation = horaire.validateSync();
-        if (validation  && validation.name === "ValidationError") {
-            throw validation;
-        }
-
         const heureAlreadyIn = await horairePersonnel.find(
             {
                 $or: [
@@ -70,7 +59,10 @@ async function ajoutHoraire(data,params) {
             if(horaireExistant.length > 0) throw new Error("Cet horaire est enregistré");
 
         }    */ 
-        
+        data.personnel = personnel;
+        data.dateDebut  = debut;
+        data.dateFin = fin;
+        const horaire = new horairePersonnel(data);
         await horaire.save();
 
         retour.data = horaire;
