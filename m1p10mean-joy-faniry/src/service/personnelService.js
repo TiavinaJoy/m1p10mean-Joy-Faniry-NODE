@@ -281,8 +281,8 @@ async function find(query){
     }
     if(filtreValidation(query.finContratMax) || filtreValidation(query.finContratMin)){
         if(filtreValidation(query.finContratMin) && filtreValidation(query.finContratMax)) filtre["infoEmploye.finContrat"] ={
-            $gte: query.finContratMin, 
-            $lte: query.finContratMax
+            $gte: timezoneDateTime(query.finContratMin).toISOString(), 
+            $lte: timezoneDateTime(query.finContratMax).toISOString()
         }
         else if (filtreValidation(query.finContratMin) && !filtreValidation(query.finContratMax)) filtre["infoEmploye.finContrat"] = {$gte: query.finContratMin}
         else if (!filtreValidation(query.finContratMin) && filtreValidation(query.finContratMax)) filtre["infoEmploye.finContrat"] = {$lte: query.finContratMax }
@@ -342,30 +342,35 @@ async function findById(id){
 
 async function getCommission(params, query){
     try {
+        const Ids= [new ObjectId('65d515a1dd12de809a87a47a'), new ObjectId('65d515dfdd12de809a87a47b'), new ObjectId('65d51624dd12de809a87a47f')]
         const filtre = {
-            "statut._id":{$ne:[new ObjectId('65d515a1dd12de809a87a47a')]},
+            "statut._id":{$nin:Ids},
             'personnel._id':new ObjectId(params.personnelId)  
         };
 
         if(filtreValidation(query.dateRendezVousMin) || filtreValidation(query.dateRendezVousMax)){
             if(filtreValidation(query.dateRendezVousMin) && filtreValidation(query.dateRendezVousMax)) filtre.dateRendezVous ={
-                $gte: query.dateRendezVousMin, 
-                $lte: query.dateRendezVousMax
+                $gte: timezoneDateTime(query.dateRendezVousMin).toISOString(), 
+                $lte: timezoneDateTime(query.dateRendezVousMax).toISOString()
             }
             else if (filtreValidation(query.dateRendezVousMin) && !filtreValidation(query.dateRendezVousMax)) filtre.dateRendezVous = {$gte: timezoneDateTime(query.dateRendezVousMin).toISOString()}
             else if (!filtreValidation(query.dateRendezVousMin) && filtreValidation(query.dateRendezVousMax)) filtre.dateRendezVous = {$lte: timezoneDateTime(query.dateRendezVousMax).toISOString()}
         }
+        console.log (filtre)
         // 
         const rendezVousDonne = await rendezVous.find(filtre);
         var somme = 0;
-        rendezVousDonne.forEach(rdv => rdv.prix!== null ? somme = somme : somme = somme+rdv.prix);
+        rendezVousDonne.forEach(rdv =>{
+            somme = somme+(rdv.prixService* rdv.service.commission/100)
+        })
         return {
             message:"OK",
             data: {
                 rendezVous:rendezVousDonne,
                 totalCommission: somme,
                 nombreRendezVous: rendezVousDonne.length
-            }
+            },
+            status: 200
         }
 
         

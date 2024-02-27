@@ -21,14 +21,15 @@ router.post ('/personnel' /*,authenticateManagerToken*/,
     ], async (req, res) =>{
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-          return res.status(400).json(getExpressValidatorError(errors));
+            return res.status(400).json(getExpressValidatorError(errors));
         }
         await personnelController.addPersonnel(req, res);
     });
+    
+router.get('/personnel/:personnelId/commission', /* authenticateEmployeToken,*/ personnelController.commissionPersonnel);
+router.put('/personnel/:personnelId', /*authenticateEmployeToken,*/ personnelController.updatePersonnel);
 
-router.put('/personnel/:personnelId', /*authenticateEmployeToken,*/ personnelController.updatePersonnel)
-
-router.put('/personnel/infoEmploye/:personnelId', /*authenticateManagerToken,*/ personnelController.updateInfoEmploye)
+router.put('/personnel/infoEmploye/:personnelId', /*authenticateManagerToken,*/ personnelController.updateInfoEmploye);
 router.put('/personnel/:personnelId/statut', /*authenticateManagerToken,*/
     [
         query('statut').notEmpty().isNumeric().withMessage("statut invalide")
