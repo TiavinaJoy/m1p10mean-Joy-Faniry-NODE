@@ -1,14 +1,45 @@
 const { getError } = require("../helper/error");
-const { rdvParMois } = require("../service/dash");
-const { listeRole } = require("../service/roleService")
+const { rdvParMois, rdvParJour, tempsMoyenTrav } = require("../service/dashService");
 
 async function rdvMensuel( req , res ) {
     try{
-        const roles = await rdvParMois(req.query);
-        res.status(roles.status).send({
-            "status": roles.status,
-            "message": roles.message,
-            "data": roles.data
+        const dashs = await rdvParMois(req.query);
+        res.status(dashs.status).send({
+            "status": dashs.status,
+            "message": dashs.message,
+            "data": dashs.data
+        });
+    }catch(error){
+        res.status(getError(error).status).send({
+            "status": getError(error).status,
+            "message": getError(error).message,
+            "data": req.body
+        });
+    }
+}
+async function rdvJournalier(req, res){
+    try{
+        const dashs = await rdvParJour(req.query);
+        res.status(dashs.status).send({
+            "status": dashs.status,
+            "message": dashs.message,
+            "data": dashs.data
+        });
+    }catch(error){
+        res.status(getError(error).status).send({
+            "status": getError(error).status,
+            "message": getError(error).message,
+            "data": req.body
+        });
+    }
+}
+async function avgTempsTravail(req, res){
+    try{
+        const dashs = await tempsMoyenTrav(req.query);
+        res.status(dashs.status).send({
+            "status": dashs.status,
+            "message": dashs.message,
+            "data": dashs.data
         });
     }catch(error){
         res.status(getError(error).status).send({
@@ -20,5 +51,5 @@ async function rdvMensuel( req , res ) {
 }
 
 module.exports = {
-    rdvMensuel
+    rdvMensuel, rdvJournalier, avgTempsTravail
 };
