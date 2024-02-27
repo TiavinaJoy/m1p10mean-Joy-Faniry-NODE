@@ -3,6 +3,7 @@ const { mongoose } = require("../configuration/database");
 const { ObjectId } = require("mongodb");
 const rendezVous = require("../model/rendezVous");
 const horairePersonnel = require("../model/horairePersonnel");
+const paiement = require("../model/paiement");
 const { filtreValidation } = require("../helper/validation");
 const { timezoneDateTime } = require("../helper/DateHelper");
 
@@ -178,8 +179,94 @@ async function tempsMoyenTrav(query){
         mongoose.connection.close
     }
 }
+async function chiffreAffaireParMois(query){
+    try {
+      const pipelineAggregate = [
+        {
+          $project: {
+            month: { $month: '$createdAt' }, // Extraire le mois de la date de paiement
+            amount: '$facture.prix' // Utiliser le montant du paiement à partir de l'attribut facture
+          }
+        },
+        {
+          $group: {
+            _id: {
+              month: '$month'
+            },
+            totalAmount: { $sum: '$amount' } // Calculer la somme des montants pour chaque mois
+          }
+        },
+        {
+          $sort: {
+            '_id.month': 1
+          }
+        }
+      ];
+          
+        const cursor = await paiement.aggregate(pipelineAggregate)
+        return {
+            data: {data: cursor, aggregate: pipelineAggregate},
+            status: 200,
+            message: "OK"
+        }
+    } catch (error) {
+        throw error;
+    } finally {
+        mongoose.connection.close
+    }
+}
+async function calculerBeneficeParMois() {
+  try {
+    // Agrégation des paiements par mois
+    const paiementsParMois = await paiement.aggregate([
+      {
+        $project: {
+          month: { $month: '$datePaiement' }, // Extraire le mois de la date de paiement
+          amount: '$facture.prix' // Utiliser le montant du paiement à partir de l'attribut facture
+        }
+      },
+      {
+        $group: {
+          _id: {
+            month: '$month'
+          },
+          totalPayment: { $sum: '$amount' } // Calculer la somme des montants des paiements pour chaque mois
+        }
+      }
+    ]);
 
+    // Agrégation des dépenses par mois
+    const depensesParMois = await depense.aggregate([
+      {
+        $project: {
+          month: { $month: '$datePaiement' }, // Extraire le mois de la date de paiement des dépenses
+          amount: '$montant' // Utiliser le montant de la dépense
+        }
+      },
+      {
+        $group: {
+          _id: {
+            month: '$month'
+          },
+          totalExpense: { $sum: '$amount' } // Calculer la somme des montants des dépenses pour chaque mois
+        }
+      }
+    ]);
+
+    // Combinaison des résultats pour calculer le bénéfice
+    const beneficeParMois = paiementsParMois.map(paiement => ({
+      month: paiement._id.month,
+      profit: (paiement.totalPayment || 0) - ((depensesParMois.find(depense => depense._id.month === paiement._id.month) || {}).totalExpense || 0)
+    }));
+
+    console.log(beneficeParMois);
+  } catch (error) {
+    console.error('Erreur lors du calcul du bénéfice par mois :', error);
+  }finally{
+    mongoose.connection.close
+  }
+}
 
 module.exports = {
-    rdvParMois , rdvParJour, tempsMoyenTrav
+    rdvParMois , rdvParJour, tempsMoyenTrav, chiffreAffaireParMois
 };
