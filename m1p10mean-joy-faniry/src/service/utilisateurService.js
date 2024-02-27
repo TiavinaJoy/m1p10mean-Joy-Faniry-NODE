@@ -4,6 +4,7 @@ const { generateAccessToken  } = require("./tokenService");
 const { mongoose } = require("../configuration/database");
 const bcrypt = require("bcrypt");
 const role = require("../model/role");
+const { sendMailToClient } = require("./mailService");
 
 /*Inscription utilisateur*/
 async function inscription(data) {
@@ -30,6 +31,10 @@ async function inscription(data) {
         // });
         newutilisateur.statut = 1;
         const retourUser = await newutilisateur.save();
+        await sendMailToClient({
+            prenom:data.prenom,
+            mail:"joytiavina@gmail.com"
+        }, "Inscription")
         const token = generateAccessToken(retourUser, 'utilisateur');
         retourUser.mdp = "";
         retour.status = 201;
@@ -40,6 +45,7 @@ async function inscription(data) {
         };
         return retour;
     }catch(error){
+        console.log(error);
        throw error;
     }finally{
         mongoose.connection.close
