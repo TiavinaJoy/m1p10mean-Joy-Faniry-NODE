@@ -6,7 +6,8 @@ const { connexion,
     getDetailPersonnel, 
     find, 
     modificationInfoEmploye,
-    getAllActivePersonnel
+    getAllActivePersonnel,
+    getCommission
 } = require("../service/personnelService");
 const { getError } = require("../helper/error");
 
@@ -127,6 +128,23 @@ async function getAllPersonnel(req, res){
         });  
     }
 }
+
+async function commissionPersonnel(req, res){
+    try {
+        const personnel = await getCommission(req.params, req.query);
+        res.status(personnel.status).send({
+            "status": personnel.status,
+            "message": personnel.message,
+            "data": personnel.data
+        });
+    }catch(error){
+        res.status(getError(error).status).send({
+            "status": getError(error).status,
+            "message": getError(error).message,
+            "data": req.body
+        });  
+    }
+}
 module.exports = {
-    addPersonnel, updatePersonnel, changePersonnelStatut, detailPersonnel, updateInfoEmploye, searchPersonnel, getAllPersonnel
+    addPersonnel, updatePersonnel, changePersonnelStatut, detailPersonnel, updateInfoEmploye, searchPersonnel, getAllPersonnel, commissionPersonnel
 }
