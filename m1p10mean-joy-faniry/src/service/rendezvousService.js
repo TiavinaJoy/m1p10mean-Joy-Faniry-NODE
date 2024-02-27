@@ -233,6 +233,11 @@ async function trouverCheuvauchement(dateDebut, dateFin, client, personnel){
 
 async function transitRendezVous(params){
     try {
+        if(!filtreValidation(params.statutId))return{
+            message: "Le statut est obligatoire",
+            data:{},
+            status: 400
+        }
         const transition = await statutRendezVous.findOne({_id:params.statutId});
         if(transition === null) throw new Error('Statut introuvable.')
         await rendezVous.updateOne({_id: new ObjectId(params.rendezVousId)},{$set:{ statut: transition}})
