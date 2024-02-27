@@ -85,7 +85,7 @@ async function rendezVousStatut(req, res) {
         });
     }
 }
-async function changerStatutService(req, res) {
+async function changerStatutRendezVous(req, res) {
     try {
         const rendesVous = await transitRendezVous(req.params);
         res.status(rendesVous.status).send({
@@ -119,5 +119,5 @@ async function majRendezVous(req, res){
     }
 }
 module.exports = {
-    addRendezVous, detailRendezVous, personnelRendezVous, clientRendezVous, changerStatutService, rendezVousStatut, majRendezVous
+    addRendezVous, detailRendezVous, personnelRendezVous, clientRendezVous, changerStatutRendezVous, rendezVousStatut, majRendezVous
 };
