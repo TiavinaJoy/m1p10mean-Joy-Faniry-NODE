@@ -11,5 +11,5 @@ router.get('/dash/rdvParJour', dashController.rdvJournalier );
 router.get('/dash/avgWorkTime', dashController.avgTempsTravail );
 router.get('/dash/caMensuel', dashController.CAMensuel );
 router.get('/dash/caJournalier', dashController.CAJournalier );
-
+router.get('/dash/profitMensuel', dashController.profiMensuel);
 module.exports = router;
