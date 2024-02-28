@@ -34,6 +34,19 @@ const serviceSchema = new mongoose.Schema({
     categorie: {
         type: serviceCategorie.schema,
         required: true
+    },
+    isSpecial:{
+        type: Boolean,
+        default:0
+    },
+    oldPrice:{
+        type: Number,
+    },
+    debutOffre:{
+        type: Date,
+    },
+    finOffre:{
+        type: Date,
     }
 });
 
