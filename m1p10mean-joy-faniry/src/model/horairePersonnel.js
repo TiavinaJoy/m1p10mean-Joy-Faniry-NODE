@@ -6,7 +6,7 @@ const { timezoneDateTime } = require("../helper/DateHelper");
 const horairePersonnelSchema = new mongoose.Schema({
     dateDebut: {
         type: Date,
-        default: new Date(),
+        default: new Date(Date.now() + 3 * 60 * 60 * 1000),
         required: [true,"La date de début est obligatoire."],
         // validate: {
         //     validator: function (value) {

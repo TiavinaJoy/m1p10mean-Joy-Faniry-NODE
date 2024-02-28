@@ -59,7 +59,7 @@ const utilisateurSchema = new mongoose.Schema({
   },
   dateInscription: {
     type: Date,
-    default: new Date()
+    default: new Date(Date.now() + 3 * 60 * 60 * 1000)
   },
   statut: {
     type:Boolean,

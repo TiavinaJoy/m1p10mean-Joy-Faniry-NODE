@@ -6,7 +6,7 @@ const rolePersonnel = require("./role");
 const infoEmployeSchema = new mongoose.Schema({
     dateEmbauche: {
         type: Date,
-        default: new Date(),
+        default: new Date(Date.now() + 3 * 60 * 60 * 1000),
         required: [true,"La date d'embauche est obligatoire."]
     },
     finContrat: {
