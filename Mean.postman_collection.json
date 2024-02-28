@@ -33,6 +33,110 @@
 			"response": []
 		},
 		{
+			"name": "Rdv Par mois",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "zazaa",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "localhost:3000/dash/rdvParMois",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"dash",
+						"rdvParMois"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Rdv par jour",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "zazaa",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "localhost:3000/dash/rdvParjour",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"dash",
+						"rdvParjour"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Temps de travail par mois",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "zazaa",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "localhost:3000/dash/avgWorkTime",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"dash",
+						"avgWorkTime"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CA mensuelle",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "zazaa",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "localhost:3000/dash/caMensuel",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"dash",
+						"caMensuel"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Detail employé",
 			"request": {
 				"method": "GET",
@@ -71,7 +175,7 @@
 					}
 				],
 				"url": {
-					"raw": "localhost:3000/personnel?service=65c4b8f2590309ee6a340fe8&mail=emp2",
+					"raw": "localhost:3000/personnel?nom=ran&service=&role=&perPage=2&page=1",
 					"host": [
 						"localhost"
 					],
@@ -81,12 +185,24 @@
 					],
 					"query": [
 						{
-							"key": "service",
-							"value": "65c4b8f2590309ee6a340fe8"
+							"key": "nom",
+							"value": "ran"
 						},
 						{
-							"key": "mail",
-							"value": "emp2"
+							"key": "service",
+							"value": ""
+						},
+						{
+							"key": "role",
+							"value": ""
+						},
+						{
+							"key": "perPage",
+							"value": "2"
+						},
+						{
+							"key": "page",
+							"value": "1"
 						}
 					]
 				}
@@ -120,7 +236,339 @@
 			"response": []
 		},
 		{
+			"name": "get all rendezVous statut",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "zazaa",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "localhost:3000/rendezVous/transitions/all",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"rendezVous",
+						"transitions",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get categories",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "zazaa",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "localhost:3000/categorie",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"categorie"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get client rendezVous",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "zazaa",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "localhost:3000/rendezVous/client/65d50c259ca371325a4083b7?dateRendezVousMin=2024-02-23 10:00",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"rendezVous",
+						"client",
+						"65d50c259ca371325a4083b7"
+					],
+					"query": [
+						{
+							"key": "dateRendezVousMin",
+							"value": "2024-02-23 10:00"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get detail Rdv",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "zazaa",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "localhost:3000/rendezVous/65d7baa57ea606d0eb4b47f4",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"rendezVous",
+						"65d7baa57ea606d0eb4b47f4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get paiement",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/paiement?datePaiementMax=2024-02-25 10:00&datePaiementMin=2024-02-24 10:40&facture=65d9ad1bf6be78b93fa991c5&payeur=65d50c259ca371325a4083b7",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"paiement"
+					],
+					"query": [
+						{
+							"key": "datePaiementMax",
+							"value": "2024-02-25 10:00"
+						},
+						{
+							"key": "datePaiementMin",
+							"value": "2024-02-24 10:40"
+						},
+						{
+							"key": "facture",
+							"value": "65d9ad1bf6be78b93fa991c5"
+						},
+						{
+							"key": "payeur",
+							"value": "65d50c259ca371325a4083b7"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Detail Service",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/service/65c088233e3b8a5583c602b3",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"service",
+						"65c088233e3b8a5583c602b3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Depenses",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/depense?typeDepense=Autre dépense&montantMax=2000&montantMin=0&datePaiementMax=2024-02-27 00:55&datePaiementMin=2024-02-26 00:00",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"depense"
+					],
+					"query": [
+						{
+							"key": "typeDepense",
+							"value": "Autre dépense"
+						},
+						{
+							"key": "montantMax",
+							"value": "2000"
+						},
+						{
+							"key": "montantMin",
+							"value": "0"
+						},
+						{
+							"key": "datePaiementMax",
+							"value": "2024-02-27 00:55"
+						},
+						{
+							"key": "datePaiementMin",
+							"value": "2024-02-26 00:00"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get COmmission",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/personnel/65d35e5c86034400299419e7/commission?dateRendezVousMin=2024-02-26 11:10&dateRendezVousMax=2024-02-26 11:32",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"personnel",
+						"65d35e5c86034400299419e7",
+						"commission"
+					],
+					"query": [
+						{
+							"key": "dateRendezVousMin",
+							"value": "2024-02-26 11:10"
+						},
+						{
+							"key": "dateRendezVousMax",
+							"value": "2024-02-26 11:32"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Add Service",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer {{managerToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nom\":\"TestJoy\",\r\n    \"prix\": 30000,\r\n    \"description\":\"desc\",\r\n    \"commission\":5,\r\n    \"duree\":60,\r\n    \"statut\":1,\r\n    \"categorie\":\"65c089383e3b8a5583c602b6\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/service",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"service"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add rendezVous",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer {{managerToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"personnel\":\"65d35e5c86034400299419e7\",\r\n    \"service\": \"65d052ef92390b6be94419ef\",\r\n    \"dateRendezVous\": \"2024-02-26 20:30\"\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/rendezVous/65d50c259ca371325a4083b7",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"rendezVous",
+						"65d50c259ca371325a4083b7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "paiement facture",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer {{managerToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:3000/paiement/facture/65dc7dd35e73f0e00e23b242/client/65d50c259ca371325a4083b7",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"paiement",
+						"facture",
+						"65dc7dd35e73f0e00e23b242",
+						"client",
+						"65d50c259ca371325a4083b7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add service",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -159,7 +607,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"mail\":\"clientjoy@gmail.com\",\r\n    \"nom\":\"TestJoy\",\r\n    \"prenom\":\"jsp\",\r\n    \"mdp\":\"Mdpprom13.\",\r\n    \"confirmMdp\":\"Mdpprom13.\"\r\n}",
+					"raw": "{\r\n    \"mail\":\"clientjonat@gmail.com\",\r\n    \"nom\":\"TestJoy\",\r\n    \"prenom\":\"jsp\",\r\n    \"mdp\":\"Mdpprom13.\",\r\n    \"confirmMdp\":\"Mdpprom13.\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -193,7 +641,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"nom\":\"TestJoy\",\r\n    \"prenom\": \"Prenom\",\r\n    \"mail\":\"emp2@gmail.com\",\r\n    \"mdp\":\"Mdpprom13.\",\r\n    \"salaire\": 30000,\r\n    \"service\":[\"65c4b8f2590309ee6a340fe8\",\"65c4b97a590309ee6a340feb\"],\r\n    \"statut\":1,\r\n    \"role\":\"65cf220d4b0c10b702a48f2c\"\r\n}",
+					"raw": "{\r\n    \"nom\":\"TestJoy\",\r\n    \"prenom\": \"Prenom\",\r\n    \"mail\":\"emp2@gmail.com\",\r\n    \"mdp\":\"Mdpprom13.\",\r\n    \"salaire\": 30000,\r\n    \"service\":[\"65c4b8f2590309ee6a340fe8\",\"65c4b97a590309ee6a340feb\"],\r\n    \"statut\":1,\r\n    \"role\":\"65cf220d4b0c10b702a48f2c\",\r\n    \"dateEmbauche\":\"2023-05-20 08:00\",\r\n    \"finContrat\":\"\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -236,6 +684,103 @@
 					"path": [
 						"personnel",
 						"auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"mail\":\"clientjoy@gmail.com\",\r\n    \"mdp\":\"Mdpprom13.\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/utilisateur/auth",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"utilisateur",
+						"auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Horraire",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ZDM1ZTVjODYwMzQ0MDAyOTk0MTllNyIsImVtYWlsIjoiZmFuaXJ5a2VseUBnbWFpbC5jb20iLCJkYXRlRXhwaXJhdGlvbiI6IjIwMjQtMDItMjRUMjA6NDM6MzIuNjk2WiIsInR5cGUiOiJFbXBsb3nDqSIsImlhdCI6MTcwODU0ODIxMiwiZXhwIjoxNzA4ODA3NDEyfQ.sj4o-_nwenuv7u-JxHA5WMt0TNMlSgd5sEKx95biVSo",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"dateDebut\": \"2024-04-24 08:00\", \r\n    \"dateFin\": \"2024-04-24 12:00\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/horaire/65d5b33e22c9b6c6965bce2e",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"horaire",
+						"65d5b33e22c9b6c6965bce2e"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add depense",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ZDM1ZTVjODYwMzQ0MDAyOTk0MTllNyIsImVtYWlsIjoiZmFuaXJ5a2VseUBnbWFpbC5jb20iLCJkYXRlRXhwaXJhdGlvbiI6IjIwMjQtMDItMjRUMjA6NDM6MzIuNjk2WiIsInR5cGUiOiJFbXBsb3nDqSIsImlhdCI6MTcwODU0ODIxMiwiZXhwIjoxNzA4ODA3NDEyfQ.sj4o-_nwenuv7u-JxHA5WMt0TNMlSgd5sEKx95biVSo",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"montant\":1000,\r\n    \"intitule\":\"Achat papier hygiènique 1\",\r\n    \"typeDepense\":\"Autre dépense\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/depense",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"depense"
 					]
 				}
 			},
@@ -312,7 +857,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"nom\":\"brushing modif\",\r\n    \"prix\": 30000,\r\n    \"description\":\"Proin vitae malesuada augue. Proin nec nunc a ipsum blandit semper at et leo. Duis sit amet justo nisl. Quisque porta, turpis eu mollis feugiat, lacus odio laoreet mi, non porttitor leo lectus et odio. Nunc eget augue vel libero scelerisque facilisis. Fusce luctus malesuada velit, sit amet condimentum arcu eleifend et. Nunc quis ultricies libero. Morbi ullamcorper aliquet luctus. Nunc porttitor, dolor in tincidunt varius, lorem felis interdum quam, sed feugiat est leo vel quam. Nunc ac tristique ipsum. Vestibulum eu tempor tellus, ut semper erat. Nam quis libero vel nisi cursus consectetur. Maecenas suscipit lorem ex, dictum posuere eros lacinia non. Suspendisse lorem dolor, placerat eget maximus eget, hendrerit at est.\",\r\n    \"commission\":5,\r\n    \"duree\":2,\r\n    \"categorie\":\"65c089383e3b8a5583c602b6\"\r\n}",
+					"raw": "{\r\n    \"nom\":\"brushing modif\",\r\n    \"prix\": 30000,\r\n    \"description\":\"Proin vitae malesuada augue. Proin nec nunc a ipsum blandit semper at et leo. Duis sit amet justo nisl. Quisque porta, turpis eu mollis feugiat, lacus odio laoreet mi, non porttitor leo lectus et odio. Nunc eget augue vel libero scelerisque facilisis. Fusce luctus malesuada velit, sit amet condimentum arcu eleifend et. Nunc quis ultricies libero. Morbi ullamcorper aliquet luctus. Nunc porttitor, dolor in tincidunt varius, lorem felis interdum quam, sed feugiat est leo vel quam. Nunc ac tristique ipsum. Vestibulum eu tempor tellus, ut semper erat. Nam quis libero vel nisi cursus consectetur. Maecenas suscipit lorem ex, dictum posuere eros lacinia non. Suspendisse lorem dolor, placerat eget maximus eget, hendrerit at est.\",\r\n    \"commission\":5,\r\n    \"duree\":2,\r\n    \"categorie\":\"\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -398,19 +943,61 @@
 			"response": []
 		},
 		{
-			"name": "Get Detail Service",
+			"name": "Change statut rendezVous",
 			"request": {
-				"method": "GET",
-				"header": [],
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer {{managerToken}}",
+						"type": "text"
+					}
+				],
 				"url": {
-					"raw": "localhost:3000/service/65c088233e3b8a5583c602b3",
+					"raw": "localhost:3000/rendezVous/65d8ecd14106932406f630f9/transition/65d515f4dd12de809a87a47c",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
-						"service",
-						"65c088233e3b8a5583c602b3"
+						"rendezVous",
+						"65d8ecd14106932406f630f9",
+						"transition",
+						"65d515f4dd12de809a87a47c"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Rdv",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer {{managerToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"personnelId\":\"65d5b33e22c9b6c6965bce2e\",\r\n    \"dateRendezVous\":\"2024-04-24 09:25\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/rendezVous/65d7baa57ea606d0eb4b47f4",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"rendezVous",
+						"65d7baa57ea606d0eb4b47f4"
 					]
 				}
 			},
