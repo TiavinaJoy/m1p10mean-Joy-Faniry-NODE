@@ -20,9 +20,9 @@ async function ajoutHoraire(data,params) {
         const heureAlreadyIn = await horairePersonnel.find(
             {
                 $or: [
-                  { $and: [{ dateDebut: { $lte: timezoneDateTime(data.dateDebut).toISOString() } }, { dateFin: { $gte: timezoneDateTime(data.dateDebut).toISOString() } }] },
-                  { $and: [{ dateDebut: { $lte: timezoneDateTime(data.dateFin).toISOString() } }, { dateFin: { $gte: timezoneDateTime(data.dateFin).toISOString() } }] },
-                  { $and: [{ dateDebut: { $gte: timezoneDateTime(data.dateDebut).toISOString() } }, { dateFin: { $lte: timezoneDateTime(data.dateFin).toISOString() } }] }
+                  { $and: [ {"personnel._id":params.personnelId },{ dateDebut: { $lte: timezoneDateTime(data.dateDebut).toISOString() } }, { dateFin: { $gte: timezoneDateTime(data.dateDebut).toISOString() } }] },
+                  { $and: [ {"personnel._id":params.personnelId },{ dateDebut: { $lte: timezoneDateTime(data.dateFin).toISOString() } }, { dateFin: { $gte: timezoneDateTime(data.dateFin).toISOString() } }] },
+                  { $and: [ {"personnel._id":params.personnelId },{ dateDebut: { $gte: timezoneDateTime(data.dateDebut).toISOString() } }, { dateFin: { $lte: timezoneDateTime(data.dateFin).toISOString() } }] }
                 ]
               }
         );
