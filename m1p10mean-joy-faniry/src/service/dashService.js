@@ -128,45 +128,49 @@ async function rdvParJour(query){
 }
 async function tempsMoyenTrav(query){
     try {
-        const pipelineAggregate = [
-            {
-              $project: {
-                year: { $year: '$dateDebut' },
-                month: { $month: '$dateDebut' },
-                duration: {
-                  $divide: [
-                    { $subtract: ['$dateFin', '$dateDebut'] }, // Calculer la durée en millisecondes
-                    1000 * 60 * 60 // Convertir en heures
-                  ]
-                } 
-              }
-            },
-            {
-              $group: {
-                _id: {
-                  year: '$year',
-                  month: '$month',
-                  employee: '$employé' // Grouper par mois et employé
-                },
-                totalHours: { $sum: '$duration' } // Calculer la somme des heures de travail pour chaque employé
-              }
-            },
-            {
-              $group: {
-                _id: {
-                  year: '$_id.year',
-                  month: '$_id.month'
-                },
-                averageHours: { $avg: '$totalHours' } // Calculer la moyenne des heures de travail pour chaque mois
-              }
-            },
-            {
-              $sort: {
-                '_id.year': 1,
-                '_id.month': 1
+        const pipelineAggregate =[
+          {
+            '$project': {
+              'year': {
+                '$year': '$dateDebut'
+              }, 
+              'month': {
+                '$month': '$dateDebut'
+              }, 
+              'employe': '$personnel._id', 
+              'duration': {
+                '$divide': [
+                  {
+                    '$subtract': [
+                      '$dateFin', '$dateDebut'
+                    ]
+                  }, 1000 * 60 * 60
+                ]
               }
             }
-          ];
+          }, {
+            '$group': {
+              '_id': {
+                'year': '$year', 
+                'month': '$month', 
+                'employee': '$employe'
+              }, 
+              'totalHours': {
+                '$sum': '$duration'
+              }
+            }
+          }, {
+            '$group': {
+              '_id': {
+                'year': '$_id.year', 
+                'month': '$_id.month'
+              }, 
+              'averageHours': {
+                '$avg': '$totalHours'
+              }
+            }
+          }
+        ];
           
         const cursor = await horairePersonnel.aggregate(pipelineAggregate)
         return {
