@@ -184,6 +184,7 @@ async function chiffreAffaireParMois(query){
       const pipelineAggregate = [
         {
           $project: {
+            year: {$year: '$createdAt'},
             month: { $month: '$createdAt' }, // Extraire le mois de la date de paiement
             amount: '$facture.prix' // Utiliser le montant du paiement à partir de l'attribut facture
           }
@@ -191,6 +192,7 @@ async function chiffreAffaireParMois(query){
         {
           $group: {
             _id: {
+              year: '$year',
               month: '$month'
             },
             totalAmount: { $sum: '$amount' } // Calculer la somme des montants pour chaque mois
@@ -198,7 +200,51 @@ async function chiffreAffaireParMois(query){
         },
         {
           $sort: {
+            '_id.year': 1,
             '_id.month': 1
+          }
+        }
+      ];
+          
+        const cursor = await paiement.aggregate(pipelineAggregate)
+        return {
+            data: {data: cursor, aggregate: pipelineAggregate},
+            status: 200,
+            message: "OK"
+        }
+    } catch (error) {
+        throw error;
+    } finally {
+        mongoose.connection.close
+    }
+}
+
+async function chiffreAffaireParJour(query){
+    try {
+      const pipelineAggregate =  [
+        {
+          $project: {
+            year: {$year: '$createdAt'},
+            month: { $month: '$createdAt' }, // Extraire le mois de la date de paiement
+            day: { $dayOfMonth: '$createdAt' }, // Extraire le mois de la date de paiement
+            amount: '$facture.prix' // Utiliser le montant du paiement à partir de l'attribut facture
+          }
+        },
+        {
+          $group: {
+            _id: {
+              year: '$year',
+              month: '$month',
+              day: '$day'
+            },
+            totalAmount: { $sum: '$amount' } // Calculer la somme des montants pour chaque mois
+          }
+        },
+        {
+          $sort: {
+            '_id.year': 1,
+            '_id.month': 1,
+            '_id.day': 1
           }
         }
       ];
@@ -268,5 +314,5 @@ async function calculerBeneficeParMois() {
 }
 
 module.exports = {
-    rdvParMois , rdvParJour, tempsMoyenTrav, chiffreAffaireParMois
+    rdvParMois , rdvParJour, tempsMoyenTrav, chiffreAffaireParMois, chiffreAffaireParJour
 };

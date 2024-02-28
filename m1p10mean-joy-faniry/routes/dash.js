@@ -10,5 +10,6 @@ router.get('/dash/rdvParMois', dashController.rdvMensuel );
 router.get('/dash/rdvParJour', dashController.rdvJournalier );
 router.get('/dash/avgWorkTime', dashController.avgTempsTravail );
 router.get('/dash/caMensuel', dashController.CAMensuel );
+router.get('/dash/caJournalier', dashController.CAJournalier );
 
 module.exports = router;

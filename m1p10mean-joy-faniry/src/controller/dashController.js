@@ -1,5 +1,5 @@
 const { getError } = require("../helper/error");
-const { rdvParMois, rdvParJour, tempsMoyenTrav, chiffreAffaireParMois } = require("../service/dashService");
+const { rdvParMois, rdvParJour, tempsMoyenTrav, chiffreAffaireParMois, chiffreAffaireParJour } = require("../service/dashService");
 
 async function rdvMensuel( req , res ) {
     try{
@@ -67,6 +67,23 @@ async function CAMensuel(req, res){
     }
 }
 
+async function CAJournalier(req, res){
+    try{
+        const dashs = await chiffreAffaireParJour(req.query);
+        res.status(dashs.status).send({
+            "status": dashs.status,
+            "message": dashs.message,
+            "data": dashs.data
+        });
+    }catch(error){
+        res.status(getError(error).status).send({
+            "status": getError(error).status,
+            "message": getError(error).message,
+            "data": req.body
+        });
+    }
+}
+
 module.exports = {
-    rdvMensuel, rdvJournalier, avgTempsTravail, CAMensuel
+    rdvMensuel, rdvJournalier, avgTempsTravail, CAMensuel, CAJournalier
 };
