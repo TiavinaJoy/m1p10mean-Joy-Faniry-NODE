@@ -1,5 +1,6 @@
 const { mongoose } = require("../configuration/database");
 const nodemailer = require("nodemailer");
+const rendezVous =require('../model/rendezVous');
 const { ObjectId } = require("mongodb");
 const { timezoneDateTime } = require("../helper/DateHelper");
 require("dotenv").config();
@@ -157,34 +158,35 @@ async function chercheRdv(){
                 $lte: dateFin.toISOString() // Rendez-vous avant 30 minutes à partir de maintenant
             },
             "statut._id": new ObjectId('65d515a1dd12de809a87a47a')
-        }).select('dateRendezVous client.mail client.nom service.nom').lean();
-        console.log(rdvs);
-        const promises = rdvs.map(async rdv => {
-            console.log({
-                prenom: rdv.client.prenom,
-                mail: rdv.client.mail,
-                nom: rdv.client.nom,
-                service: rdv.service.nom,
-                daty: rdv.dateRendezVous
-            });
-            await sendMailToClient({
-                prenom: rdv.client.prenom,
-                mail: rdv.client.mail,
-                nom: rdv.client.nom,
-                service: rdv.service.nom,
-                daty: rdv.dateRendezVous
-            }, "Rappel");
         });
-        
-        await Promise.all(promises); // Attendre l'exécution de toutes les promesses
-        
+        console.log(rdvs);
+        if(rdvs.length >0){
+            const promises = rdvs.map(async rdv => {
+                console.log({
+                    prenom: rdv.client.prenom,
+                    mail: rdv.client.mail,
+                    nom: rdv.client.nom,
+                    service: rdv.service.nom,
+                    daty: rdv.dateRendezVous
+                });
+                await sendMailToClient({
+                    prenom: rdv.client.prenom,
+                    mail: rdv.client.mail,
+                    nom: rdv.client.nom,
+                    service: rdv.service.nom,
+                    daty: rdv.dateRendezVous
+                }, "Rappel");
+            });
+            
+            await Promise.all(promises); // Attendre l'exécution de toutes les promesses    
+        }
     } catch (error) {
+        console.log(error);
         throw error
     }finally{
         mongoose.connection.close
     }
 }
 module.exports ={
-    sendMailToClient
+    sendMailToClient, chercheRdv
 }
-// main().catch(console.error);

@@ -21,7 +21,7 @@ const paiementRouter = require('./routes/paiement');
 const depenseRouter = require('./routes/depense');
 const dashRouter = require('./routes/dash');
 const offreRouter = require('./routes/offreSpecial');
-const {chercherRdv} = require('./src/service/mailService');
+const {startCron} = require('./src/service/cronService');
 
 var app = express();
 /* Connexion */
@@ -62,14 +62,7 @@ app.use(function(req, res, next) {
   next(createError(404));
 });
 
-const cron = require('node-cron');
-
-cron.schedule('*/10 * * * *', () => {
-  // Votre code à exécuter toutes les 5 minutes va ici
-  console.log('EXEC CRON');
-  chercherRdv().catch(error => console.log(error));
-});
-// error handler
+startCron();
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
