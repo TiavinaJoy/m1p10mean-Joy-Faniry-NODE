@@ -1,14 +1,15 @@
 function timezoneDateTime(dateString) {
-    const daty = new Date(dateString);
-    const part1 = dateString.split(' ')[1];
-    const hourString = part1.split(':')[0];
-    const hour = parseInt(hourString);
-    if(daty.getHours() != hour ){
-        console.log(hour - daty.getHours());
-        daty.setHours(daty.getHours() + 3);
-    }
-    const iso = daty.toISOString();
-    return daty;
+    const datySplit = dateString.split(' ');
+    const dString = datySplit[0].split('-');
+    const hString = datySplit[1].split(':');
+    return new Date(
+        dString[0],
+        dString[1] - 1,
+        dString[2],
+        (Number(hString[0]) + 3).toString(),
+        hString[1]
+    );
+   
 }
 
 module.exports = {

@@ -1,6 +1,6 @@
 const cron = require('node-cron');
 const {chercheRdv} = require ('./mailService');
-const cronJob = cron.schedule('*/1 * * * *', async () => {
+const cronJob = cron.schedule('*/15 * * * *', async () => {
   // Votre code à exécuter toutes les 5 minutes va ici
   console.log('EXEC CRON');
   try {
