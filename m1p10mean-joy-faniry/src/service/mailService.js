@@ -2,6 +2,8 @@ const { mongoose } = require("../configuration/database");
 const nodemailer = require("nodemailer");
 const { ObjectId } = require("mongodb");
 const { timezoneDateTime } = require("../helper/DateHelper");
+const rendezVous = require("../model/rendezVous");
+
 require("dotenv").config();
 
 const htmInscription = (prenom) =>`
@@ -75,13 +77,13 @@ htmOffre = (prenom, nomOffre, debutOffre, finOffre, prixOffre) => `
 </div>
 `
 
-htmRdv = (prenom, daty) => `
+htmRdv = (prenom, daty, service) => `
 <div style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; color: #333;">
 <div style="max-width: 600px; margin: 0 auto; background-color: #fff; padding: 20px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
     <h1 style="color: #007bff;">Notification de rendez-vous</h1>
     <p>Bonjour `+prenom+`,</p>
-    <p>Nous vous rappelons que vous avez un rendez-vous prévu pour `+daty+`.</p>
-    <p>N'hésitez pas à nous contacter si vous avez des questions ou si vous souhaitez modifier votre rendez-vous.</p>
+    <p>Nous vous rappelons que vous avez un rendez-vous (`+service+`) prévu pour `+daty+`.</p>
+    <p>N'hésitez pas à nous contacter si vous avez des questions.</p>
     <p>Cordialement,<br>L'équipe de M1P11mean-Joy-Faniry</p>
 </div>
 </div>
@@ -133,7 +135,7 @@ async function sendMailToClient(info, type) {
         to: info.mail, // list of receivers
         subject: subject,
         // text: "Hello world?", // plain text body
-        html: htm
+        html: htmRdv(info.prenom, info.daty, info.service)
     });
 
     console.log("Message sent: %s", email.messageId);
@@ -149,7 +151,7 @@ async function sendMailToClient(info, type) {
 async function chercheRdv(){
     try {
         const today = new Date(Date.now());
-        const dateFin =  new Date(today.getTime() + 5 * 60000);
+        const dateFin =  new Date(today.getTime() + 15 * 60000);
         console.log(today,"....", dateFin);
         const rdvs = await rendezVous.find({
             dateRendezVous: {
@@ -177,7 +179,6 @@ async function chercheRdv(){
         });
         
         await Promise.all(promises); // Attendre l'exécution de toutes les promesses
-        
     } catch (error) {
         throw error
     }finally{
@@ -185,6 +186,6 @@ async function chercheRdv(){
     }
 }
 module.exports ={
-    sendMailToClient
+    sendMailToClient, chercheRdv
 }
 // main().catch(console.error);

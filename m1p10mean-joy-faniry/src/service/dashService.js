@@ -64,14 +64,10 @@ async function rdvParMois(query) {
                 pipelineAggregate.unshift({ $match: { dateRendezVous: { $lte: timezoneDateTime(query.dateRendezVousMax).toISOString() } } })
             }
         }
-        console.log(pipelineAggregate[0])
         const cursor = await rendezVous.aggregate(pipelineAggregate)
 
-        console.log(cursor.forEach(element => {
-            console.log(element)
-        }))
         return {
-            data: {data: cursor, aggregate: pipelineAggregate},
+            data: {data: cursor, aggregate: ""},
             status: 200,
             message: "OK"
         }
@@ -116,7 +112,7 @@ async function rdvParJour(query){
             console.log(element)
         }))
         return {
-            data: {data: cursor, aggregate: pipelineAggregate},
+            data: {data: cursor, aggregate: ""},
             status: 200,
             message: "OK"
         }
@@ -174,7 +170,7 @@ async function tempsMoyenTrav(query){
           
         const cursor = await horairePersonnel.aggregate(pipelineAggregate)
         return {
-            data: {data: cursor, aggregate: pipelineAggregate},
+            data: {data: cursor, aggregate: ""},
             status: 200,
             message: "OK"
         }
@@ -213,7 +209,7 @@ async function chiffreAffaireParMois(query){
           
         const cursor = await paiement.aggregate(pipelineAggregate)
         return {
-            data: {data: cursor, aggregate: pipelineAggregate},
+            data: {data: cursor, aggregate: ""},
             status: 200,
             message: "OK"
         }
@@ -256,7 +252,7 @@ async function chiffreAffaireParJour(query){
           
         const cursor = await paiement.aggregate(pipelineAggregate)
         return {
-            data: {data: cursor, aggregate: pipelineAggregate},
+            data: {data: cursor, aggregate: ""},
             status: 200,
             message: "OK"
         }
@@ -307,8 +303,6 @@ async function calculerBeneficeParMois(query) {
         }
       }
     ]);
-    console.log(paiementsParMois);
-      console.log(depensesParMois);
     // Combinaison des résultats pour calculer le bénéfice
     const beneficeParMois = paiementsParMois.map(paiement => 
       ({

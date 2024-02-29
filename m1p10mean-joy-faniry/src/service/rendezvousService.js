@@ -70,6 +70,7 @@ async function ajoutRendezVous(params, data) {
         const serviceData = await service.findOne({_id: new ObjectId(data.service)});
 
         const dateRdv = timezoneDateTime(data.dateRendezVous);
+        console.log(dateRdv);
         const dateFinRdv = new Date(dateRdv.getTime() + serviceData.duree * 60000); // Ajouter la durée du service en minutes
 
         const checkHorraire = await checkHoraireRdv(dateRdv, dateFinRdv, data.personnel);
@@ -196,7 +197,7 @@ async function getClientRendezVous(params, query){
                limit: perPage
            }
        );
-       console.log(rdv);
+    //    console.log(rdv);
         rdv.docs.forEach(element => {
             delete element.client.mdp;
             delete element.personnel.mdp;
@@ -206,7 +207,7 @@ async function getClientRendezVous(params, query){
         retour.data = rdv;
         return retour;
     }catch(error){
-        console.log(error);
+        // console.log(error);
         throw error;
      }finally{
          mongoose.connection.close
