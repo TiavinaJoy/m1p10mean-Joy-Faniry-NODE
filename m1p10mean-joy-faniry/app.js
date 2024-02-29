@@ -19,15 +19,16 @@ const horaireRouter = require('./routes/horaire');
 const rendezVousRouter = require('./routes/rendezVous');
 const paiementRouter = require('./routes/paiement');
 const depenseRouter = require('./routes/depense');
-const dashRouter = require('./routes/dash')
-const offreRouter = require('./routes/offreSpecial')
+const dashRouter = require('./routes/dash');
+const offreRouter = require('./routes/offreSpecial');
+const {chercherRdv} = require('./src/service/mailService');
 
 var app = express();
 /* Connexion */
 const {connection} = require("./src/configuration/database");
 connection();
 
-const allowedOrigin = ["http://localhost:4200","https://m1p10mean-joy-faniry-angular.vercel.app"];
+const allowedOrigin = ["http://localhost:4200","https://m1p11mean-joy-faniry-angular.vercel.app"];
 const options = cors.CorsOptions = {
   origin:allowedOrigin
 }
@@ -61,6 +62,13 @@ app.use(function(req, res, next) {
   next(createError(404));
 });
 
+const cron = require('node-cron');
+
+cron.schedule('*/10 * * * *', () => {
+  // Votre code à exécuter toutes les 5 minutes va ici
+  console.log('EXEC CRON');
+  chercherRdv().catch(error => console.log(error));
+});
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development

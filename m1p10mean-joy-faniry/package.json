@@ -1,5 +1,5 @@
 {
-  "name": "m1p10mean-joy-faniry",
+  "name": "m1p11mean-joy-faniry",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -21,6 +21,7 @@
     "mongoose-paginate-v2": "^1.8.0",
     "mongoose-unique-validator": "^5.0.0",
     "morgan": "~1.9.1",
+    "node-cron": "^3.0.3",
     "nodemailer": "^6.9.10",
     "nodemon": "^3.0.3"
   }

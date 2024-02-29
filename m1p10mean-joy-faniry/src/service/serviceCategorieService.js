@@ -19,10 +19,13 @@ async function listeCategorie() {
 }
 
 async function findById(id){
-    const retour = id;
+    console.log(id);
+    const filtre = {_id: new ObjectId(id)}; 
+    console.log(filtre)
     try {
-        const categorie = await serviceCategorie.find({_id: new ObjectId(id)});
-        if(categorie.length == 1) return categorie[0];
+        const categorie = await serviceCategorie.findOne(filtre);
+        console.log(categorie == null);
+        if(categorie != null) return categorie;
         throw new Error('Categorie introuvable.')
     } catch (error) {
         throw error;

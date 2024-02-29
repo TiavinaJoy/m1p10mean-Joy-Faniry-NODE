@@ -5,6 +5,8 @@ const {findById} = require("./serviceCategorieService");
 const { ObjectId } = require("mongodb");
 const {filtreValidation, toBoolean} = require('../helper/validation');
 const {timezoneDateTime} = require('../helper/DateHelper');
+const { sendMailToClient } = require("./mailService");
+const utilisateur = require("../model/utilisateur");
 
 async function lesOffres() {
     const retour = {};
@@ -155,6 +157,20 @@ async function createOffre(data) {
         newService.categorie = categorie;
         newService.statut = 1;
         await newService.save();
+        const listeClient = await utilisateur.find({"role.intitule":{$regex:"client", $options:"i"}, statut: 1});
+        const promises = listeClient.map(async (client) => {
+            await sendMailToClient({
+                prenom: client.prenom,
+                mail : client.mail,
+                nomOffre: data.nom,
+                prixOffre: data.prix,
+                debutOffre: offre.finOffre,
+                finOffre: data.finOffre
+            },"Offre");
+        });
+        
+        // Attendre que toutes les promesses soient résolues
+        await Promise.all(promises);
         retour.status = 201;
         retour.message = "Offre spécial créé.";
         retour.data = {

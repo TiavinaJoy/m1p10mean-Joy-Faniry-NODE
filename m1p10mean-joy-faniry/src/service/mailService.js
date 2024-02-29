@@ -1,4 +1,7 @@
+const { mongoose } = require("../configuration/database");
 const nodemailer = require("nodemailer");
+const { ObjectId } = require("mongodb");
+const { timezoneDateTime } = require("../helper/DateHelper");
 require("dotenv").config();
 
 const htmInscription = (prenom) =>`
@@ -14,7 +17,7 @@ const htmInscription = (prenom) =>`
         <p>Votre compte a été créé avec succès. Vous pouvez maintenant vous connecter en utilisant les identifiants que vous avez fournis lors de l'inscription.</p>
         <p>Si vous n'avez pas créé de compte, veuillez ignorer ce message.</p>
         <p>Merci,</p>
-        <p>L'équipe de <strong>M1P10Mean-Joy-Faniry</strong> </p>
+        <p>L'équipe de <strong>m1p11Mean-Joy-Faniry</strong> </p>
     </td>
 </tr>
 </table>
@@ -42,6 +45,47 @@ const htmPaiement = (prenom, montant, datePaiement) =>`
 </tr>
 </table>
 `
+
+htmOffre = (prenom, nomOffre, debutOffre, finOffre, prixOffre) => `
+    
+<div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 10px; overflow: hidden;">
+<table style="width: 100%;">
+    <tr style="background-color: #ffd54f; color: #333333; text-align: center;">
+        <td colspan="2" style="padding: 20px;">
+            <h1>Bonjour cher(e) `+ prenom +`,</h1>
+            <p>Ne manquez pas notre dernière offre spéciale!</p>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" style="padding: 20px;">
+            <h2 style="color: #ff5722;">Voici ce qui vous attend:</h2>
+            <h2 style="color: #ff5722;">`+nomOffre+`</h2>
+            <p>Seulement à `+ prixOffre +` Ariary !!!</p>
+            <p>Valable du `+debutOffre+` au `+finOffre+`.</p>
+            <p>C'est l'occasion parfaite de faire des économies sur votre service préféré!</p>
+            <p>Dépêchez-vous, l'offre est limité!</p>
+        </td>
+    </tr>
+    <tr style="background-color: #ffd54f; color: #333333; text-align: center;">
+        <td colspan="2" style="padding: 20px;">
+            <p>Restez informé(e)!</p>
+        </td>
+    </tr>
+</table>
+</div>
+`
+
+htmRdv = (prenom, daty) => `
+<div style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; color: #333;">
+<div style="max-width: 600px; margin: 0 auto; background-color: #fff; padding: 20px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
+    <h1 style="color: #007bff;">Notification de rendez-vous</h1>
+    <p>Bonjour `+prenom+`,</p>
+    <p>Nous vous rappelons que vous avez un rendez-vous prévu pour `+daty+`.</p>
+    <p>N'hésitez pas à nous contacter si vous avez des questions ou si vous souhaitez modifier votre rendez-vous.</p>
+    <p>Cordialement,<br>L'équipe de M1P11mean-Joy-Faniry</p>
+</div>
+</div>
+`
 const transporter = nodemailer.createTransport({
     // service:'gmail',
     host: "smtp.gmail.com",
@@ -59,24 +103,40 @@ const transporter = nodemailer.createTransport({
 // async..await is not allowed in global scope, must use a wrapper
 
 // 
-// Type infoClient {
+// Type info {
     //    mail, 
     //    prenom, 
     //    montant?,
     //    datePaiement?, 
 // }
-async function sendMailToClient(infoClient, type) {
-    // send mail with defined transport object
-    const info = await transporter.sendMail({
-        from: '"M1P10Mean-Joy-Faniry👻<noreply>" <noreply@gmail.com>', // sender address
+async function sendMailToClient(info, type) {
+    var subject = "";
+    var htm = "";
+    if(type === "Inscription") {
+        subject = "Compte créé ✔";
+        htm =  htmInscription(info.prenom);
+    }
+    if(type === "Paiement") {
+        subject = "Paiement réussi";
+        htm =htmPaiement(info.prenom, info.montant, info.datePaiement);
+    }
+    if(type === "Offre") {
+        subject = "Nouvelle Offre";
+        htm = htmOffre(info.prenom, info.nomOffre, info.debutOffre, info.finOffre, info.prixOffre);
+    }
+    if(type === "Rappel") {
+        subject = "Rappel de rendez-vous";
+    }
+    const email = await transporter.sendMail({
+        from: '"m1p11Mean-Joy-Faniry👻<noreply>" <noreply@gmail.com>', // sender address
         // to: ["joytiavina@gmail.com"], // list of receivers
-        to: infoClient.mail, // list of receivers
-        subject: type === 'Inscription' ? "Compte créé ✔" : "Paiement réussi", // Subject line
+        to: info.mail, // list of receivers
+        subject: subject,
         // text: "Hello world?", // plain text body
-        html: type === 'Inscription' ? htmInscription(infoClient.prenom) : htmPaiement(infoClient.prenom, infoClient.montant, infoClient.datePaiement), // html body
+        html: htm
     });
 
-    console.log("Message sent: %s", info.messageId);
+    console.log("Message sent: %s", email.messageId);
     // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
 
     //
@@ -86,6 +146,36 @@ async function sendMailToClient(infoClient, type) {
     //
 }
 
+async function chercheRdv(){
+    try {
+        const today = new Date(Date.now());
+        const dateFin =  new Date(today.getTime() + 5 * 60000);
+        const rdvs = await rendezVous.find({
+            dateRendezVous: {
+                $gte: today.toISOString(), // Rendez-vous après la date et l'heure actuelles
+                $lte: dateFin.toISOString() // Rendez-vous avant 30 minutes à partir de maintenant
+            },
+            "statut._id": new ObjectId('65d515a1dd12de809a87a47a')
+        }).select('dateRendezVous client.mail client.nom service.nom').lean();
+        
+        const promises = rdvs.map(async rdv => {
+            await sendMailToClient({
+                prenom: rdv.client.prenom,
+                mail: rdv.client.mail,
+                nom: rdv.client.nom,
+                service: rdv.service.nom,
+                daty: rdv.dateRendezVous
+            }, "Rappel");
+        });
+        
+        await Promise.all(promises); // Attendre l'exécution de toutes les promesses
+        
+    } catch (error) {
+        throw error
+    }finally{
+        mongoose.connection.close
+    }
+}
 module.exports ={
     sendMailToClient
 }
