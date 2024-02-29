@@ -150,6 +150,7 @@ async function chercheRdv(){
     try {
         const today = new Date(Date.now());
         const dateFin =  new Date(today.getTime() + 5 * 60000);
+        console.log(today,"....", dateFin);
         const rdvs = await rendezVous.find({
             dateRendezVous: {
                 $gte: today.toISOString(), // Rendez-vous après la date et l'heure actuelles
@@ -157,8 +158,15 @@ async function chercheRdv(){
             },
             "statut._id": new ObjectId('65d515a1dd12de809a87a47a')
         }).select('dateRendezVous client.mail client.nom service.nom').lean();
-        
+        console.log(rdvs);
         const promises = rdvs.map(async rdv => {
+            console.log({
+                prenom: rdv.client.prenom,
+                mail: rdv.client.mail,
+                nom: rdv.client.nom,
+                service: rdv.service.nom,
+                daty: rdv.dateRendezVous
+            });
             await sendMailToClient({
                 prenom: rdv.client.prenom,
                 mail: rdv.client.mail,
