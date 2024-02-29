@@ -4,7 +4,6 @@ function timezoneDateTime(dateString) {
     const hourString = part1.split(':')[0];
     const hour = parseInt(hourString);
     daty.getHours() == hour ? true : daty.setHours(daty.getHours() + 3);
-    daty.setHours(daty.getHours() + 3);
     return daty;
 }
 
