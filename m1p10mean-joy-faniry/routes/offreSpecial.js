@@ -16,7 +16,7 @@ router.get('/offre/:serviceId',offreSpecialController.getOffreDetail)
 
 
 
-router.post('/offre', /* authenticateManagerToken, */[
+router.post('/offre', authenticateManagerToken,[
     body('oldPrix').notEmpty().trim().escape().isNumeric().withMessage("Le prix original est obligatoire"),
     body('prix').notEmpty().trim().escape().isNumeric().withMessage("Le prix promotionnel est obligatoire"),
     body('finOffre').notEmpty().trim().escape().withMessage("La date de fin de l'offre est obligatoire"),  

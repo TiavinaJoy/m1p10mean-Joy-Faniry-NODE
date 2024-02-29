@@ -12,7 +12,7 @@ router.get('/personnel/all', personnelController.getAllPersonnel)
 router.get('/personnel/:personnelId', personnelController.detailPersonnel)
 // router.post('/personnel/auth', personnelController.login);
 
-router.post ('/personnel' /*,authenticateManagerToken*/,
+router.post ('/personnel' ,authenticateManagerToken,
     [
         body('nom').notEmpty().trim().escape().withMessage("Le nom est obligatoire"),
         body('prenom').isString().notEmpty().trim().escape().withMessage("Le prénom est obligatoire"),
@@ -26,11 +26,11 @@ router.post ('/personnel' /*,authenticateManagerToken*/,
         await personnelController.addPersonnel(req, res);
     });
     
-router.get('/personnel/:personnelId/commission', /* authenticateEmployeToken,*/ personnelController.commissionPersonnel);
-router.put('/personnel/:personnelId', /*authenticateEmployeToken,*/ personnelController.updatePersonnel);
+router.get('/personnel/:personnelId/commission', authenticateEmployeToken, personnelController.commissionPersonnel);
+router.put('/personnel/:personnelId', authenticateEmployeToken, personnelController.updatePersonnel);
 
-router.put('/personnel/infoEmploye/:personnelId', /*authenticateManagerToken,*/ personnelController.updateInfoEmploye);
-router.put('/personnel/:personnelId/statut', /*authenticateManagerToken,*/
+router.put('/personnel/infoEmploye/:personnelId', authenticateManagerToken, personnelController.updateInfoEmploye);
+router.put('/personnel/:personnelId/statut', authenticateManagerToken,
     [
         query('statut').notEmpty().isNumeric().withMessage("statut invalide")
     ], async (req, res)=>{
