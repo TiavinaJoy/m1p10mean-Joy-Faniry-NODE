@@ -5,7 +5,7 @@ const { body, validationResult, param } = require('express-validator');
 var { authenticateClientToken } = require("../src/middleware/clientMiddleware");
 const { getExpressValidatorError } = require('../src/helper/error');
 
-router.post('/rendezVous/:utilisateurId', /*authenticateClientToken, */
+router.post('/rendezVous/:utilisateurId', authenticateClientToken,
 [
     param('utilisateurId').notEmpty().trim().escape().withMessage("Le client est obligatoire"),
     body('personnel').isString().notEmpty().trim().escape().withMessage("Le personnel est obligatoire"),
